@@ -9,10 +9,13 @@ import { AddressService, AddressServiceKey } from './address.service';
 export const OrganizationServiceKey = 'OrganizationService';
 
 @Injectable()
-export class OrganizationService extends BaseEntityService<OrganizationModel, OrganizationSaveArgsModel>{
+export class OrganizationService extends BaseEntityService<
+  OrganizationModel,
+  OrganizationSaveArgsModel
+> {
   constructor(
-    @Inject(AddressServiceKey) public readonly addressService: AddressService,
-    ) {
+    @Inject(AddressServiceKey) public readonly addressService: AddressService
+  ) {
     super();
   }
 
@@ -23,20 +26,24 @@ export class OrganizationService extends BaseEntityService<OrganizationModel, Or
   protected async doSave(
     transactionalEntityManager: EntityManager,
     args: OrganizationSaveArgsModel,
-    organization: OrganizationModel,
+    organization: OrganizationModel
   ): Promise<OrganizationModel> {
     organization.contact = args.contact;
     organization.registration = args.registration;
     organization.displayName = args.displayName;
     organization.legalName = args.legalName;
-    organization.legalAddress = await this.addressService.save(transactionalEntityManager, args.legalAddress);
+    organization.legalAddress = await this.addressService.save(
+      transactionalEntityManager,
+      args.legalAddress
+    );
     organization.idNumber = args.idNumber;
 
     return organization;
   }
 
-  protected getRepository(transactionalEntityManager: EntityManager): Repository<OrganizationModel> {
+  protected getRepository(
+    transactionalEntityManager: EntityManager
+  ): Repository<OrganizationModel> {
     return transactionalEntityManager.getRepository(Organization);
   }
-
 }

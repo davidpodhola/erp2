@@ -10,19 +10,27 @@ import { CountryService, CountryServiceKey } from './country.service';
 export const AddressServiceKey = 'AddressService';
 
 @Injectable()
-export class AddressService extends BaseEntityService<AddressModel, AddressSaveArgsModel>{
+export class AddressService extends BaseEntityService<
+  AddressModel,
+  AddressSaveArgsModel
+> {
   constructor(
-    @Inject(CountryServiceKey) public readonly countryService: CountryService,
+    @Inject(CountryServiceKey) public readonly countryService: CountryService
   ) {
     super();
   }
 
   createEntity(): AddressModel {
-    return new Address;
+    return new Address();
   }
 
-  protected async doSave(transactionalEntityManager, newAddress: AddressSaveArgsModel): Promise<AddressModel> {
-    const oldAddress = newAddress.id ? await this.loadEntity(transactionalEntityManager, newAddress.id) : null;
+  protected async doSave(
+    transactionalEntityManager,
+    newAddress: AddressSaveArgsModel
+  ): Promise<AddressModel> {
+    const oldAddress = newAddress.id
+      ? await this.loadEntity(transactionalEntityManager, newAddress.id)
+      : null;
 
     const oldAddressSimple: AddressSaveArgsModel = {
       city: oldAddress ? oldAddress.city : '',
@@ -40,7 +48,10 @@ export class AddressService extends BaseEntityService<AddressModel, AddressSaveA
       if (newAddress.country) {
         address.country = newAddress.country;
       } else {
-        address.country = await this.countryService.getCountry(transactionalEntityManager, newAddress.countryIsoCode);
+        address.country = await this.countryService.getCountry(
+          transactionalEntityManager,
+          newAddress.countryIsoCode
+        );
       }
 
       // address.country = Promise.resolve(newAddress.country ? newAddress.country : await base.loadCountry(newAddress.countryId));
@@ -50,8 +61,9 @@ export class AddressService extends BaseEntityService<AddressModel, AddressSaveA
     return oldAddress;
   }
 
-  protected getRepository(transactionalEntityManager: EntityManager): Repository<AddressModel> {
+  protected getRepository(
+    transactionalEntityManager: EntityManager
+  ): Repository<AddressModel> {
     return transactionalEntityManager.getRepository(Address);
   }
-
 }

@@ -7,15 +7,20 @@ import { AddressModel } from './address.model';
 
 @Entity()
 @ObjectType()
-export class Organization extends UniqueDisplayEntityBase implements OrganizationModel {
+export class Organization extends UniqueDisplayEntityBase
+  implements OrganizationModel {
   @Column()
   @Field()
   contact: string;
 
   @Field((type) => Address)
-  @ManyToOne((type) => Address, (address) => address.organizationRegisteredAddresses, {
-    nullable: true,
-  })
+  @ManyToOne(
+    (type) => Address,
+    (address) => address.organizationRegisteredAddresses,
+    {
+      nullable: true,
+    }
+  )
   legalAddress: AddressModel;
 
   @Column()

@@ -32,8 +32,7 @@ import { serviceProviders } from './serviceProviders';
         entitiesDir: 'src/entity',
         migrationsDir: 'src/entity/migration',
       },
-
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders],

@@ -11,7 +11,9 @@ import { OrganizationModel } from './organization.model';
 @ObjectType()
 export class Address extends EntityBase implements AddressModel {
   @Field((type) => Country)
-  @ManyToOne((type) => Country, (country) => country.addresses, { nullable: false })
+  @ManyToOne((type) => Country, (country) => country.addresses, {
+    nullable: false,
+  })
   country: CountryModel;
 
   get displayName(): string {

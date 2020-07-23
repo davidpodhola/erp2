@@ -11,21 +11,32 @@ export const CountryServiceKey = 'CountryService';
 export class CountryService extends BaseEntityService<
   CountryModel,
   CountrySaveArgsModel
-  > {
+> {
   createEntity(): CountryModel {
-    return new Country;
+    return new Country();
   }
 
-  protected async doSave(transactionalEntityManager: EntityManager, args: CountrySaveArgsModel, country: CountryModel): Promise<CountryModel> {
+  protected async doSave(
+    transactionalEntityManager: EntityManager,
+    args: CountrySaveArgsModel,
+    country: CountryModel
+  ): Promise<CountryModel> {
     country.displayName = args.displayName;
     country.isoCode = args.isoCode;
     return country;
   }
 
-  protected getRepository(transactionalEntityManager: EntityManager): Repository<CountryModel> {
+  protected getRepository(
+    transactionalEntityManager: EntityManager
+  ): Repository<CountryModel> {
     return transactionalEntityManager.getRepository(Country);
   }
 
-  getCountry = async (transactionalEntityManager: EntityManager, isoCode: string) =>
-    this.getRepository(transactionalEntityManager).findOne({ where: { isoCode } });
+  getCountry = async (
+    transactionalEntityManager: EntityManager,
+    isoCode: string
+  ) =>
+    this.getRepository(transactionalEntityManager).findOne({
+      where: { isoCode },
+    });
 }

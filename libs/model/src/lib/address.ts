@@ -30,7 +30,7 @@ export class Address extends EntityBase implements AddressModel {
   @Field()
   zipCode: string;
 
-  @Field((type) => [Organization], { nullable: true })
-  @OneToMany((type) => Organization, (organization) => organization.legalAddress)
+  @Field(() => [Organization], { nullable: true })
+  @OneToMany(() => Organization, (organization) => organization.legalAddress)
   organizationRegisteredAddresses: Array<OrganizationModel>;
 }

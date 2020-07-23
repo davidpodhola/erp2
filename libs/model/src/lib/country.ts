@@ -47,7 +47,7 @@ export class Country extends UniqueDisplayEntityBase implements CountryModel {
   @Field()
   isoCode: string;
 
-  @Field((type) => [Address], { nullable: true })
-  @OneToMany((type) => Address, (address) => address.country)
+  @Field(() => [Address], { nullable: true })
+  @OneToMany(() => Address, (address) => address.country)
   addresses: Promise<Array<AddressModel>>;
 }

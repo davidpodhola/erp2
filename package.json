@@ -29,13 +29,20 @@
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/graphql": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/typeorm": "^7.0.0",
+    "deep-equal": "^2.0.3",
     "document-register-element": "1.13.1",
+    "graphql": "^15.3.0",
+    "graphql-tools": "^6.0.15",
+    "pg": "^8.3.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.5",
-    "styled-jsx": "3.3.0"
+    "styled-jsx": "3.3.0",
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

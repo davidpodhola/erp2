@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { entities } from './entities';
 import { migrations } from './migrations';
+import { MigrationService } from './migration.service';
+import { serviceProviders } from './serviceProviders';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -34,6 +36,6 @@ import { migrations } from './migrations';
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MigrationService, ...serviceProviders],
 })
 export class AppModule {}

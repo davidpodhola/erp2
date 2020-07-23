@@ -40,8 +40,7 @@ export class AddressService extends BaseEntityService<AddressModel, AddressSaveA
       if (newAddress.country) {
         address.country = newAddress.country;
       } else {
-        const country = await this.countryService.getCountry(transactionalEntityManager, newAddress.countryIsoCode);
-        address.country = country;
+        address.country = await this.countryService.getCountry(transactionalEntityManager, newAddress.countryIsoCode);
       }
 
       // address.country = Promise.resolve(newAddress.country ? newAddress.country : await base.loadCountry(newAddress.countryId));

@@ -1,15 +1,13 @@
-import {
-  AddressService,
-  AddressServiceKey,
-} from '../../../../libs/model/src/lib/address.service';
+import { AddressServiceKey } from '../../../../libs/model/src/lib/address.service';
 import {
   CountryService,
   CountryServiceKey,
 } from '../../../../libs/model/src/lib/country.service';
+import { CustomAddressService } from './custom/custom.address.service';
 
 const addressServiceProvider = {
   provide: AddressServiceKey,
-  useClass: AddressService,
+  useClass: CustomAddressService,
 };
 
 const countryServiceProvider = {

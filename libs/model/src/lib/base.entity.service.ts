@@ -29,7 +29,9 @@ export abstract class BaseEntityService<
     const entity = args.id
       ? await this.loadEntity(transactionalEntityManager, args.id)
       : await this.createEntity();
-    return await this.doSave(transactionalEntityManager, args, entity);
+    return await this.getRepository(transactionalEntityManager).save(
+      await this.doSave(transactionalEntityManager, args, entity)
+    );
   }
   persist = async (
     transactionalEntityManager: EntityManager,

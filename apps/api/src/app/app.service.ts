@@ -1,9 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  AddressService,
-  AddressServiceKey,
-} from '../../../../libs/model/src/lib/address.service';
-import { CountryService } from '../../../../libs/model/src/lib/country.service';
+import { AddressService, AddressServiceKey } from '@erp2/model';
 
 @Injectable()
 export class AppService {

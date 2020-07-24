@@ -1,4 +1,4 @@
-import { Address } from '../../../../../libs/model/src/lib/address';
+import { Address } from '@erp2/model';
 import { Column, Entity } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 

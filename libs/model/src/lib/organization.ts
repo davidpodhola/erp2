@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UniqueDisplayEntityBase } from './unique.display.entity.base';
 import { OrganizationModel } from './organization.model';

@@ -1,6 +1,10 @@
 name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -13,10 +17,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install --immutable
-      - run: yarn affected:build
-      - run: yarn affected:test
+      - run: git fetch --no-tags --prune --depth=5 origin master
+      - run: yarn install --frozen-lockfile
+      - run: yarn affected:build --base=origin/master
+        env:
+          CI: true
+      - run: yarn affected:test --base=origin/master
+        env:
+          CI: true

@@ -28,6 +28,7 @@
   },
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.0.2",
     "@clr/core": "^4.0.0-rc.1",
     "@clr/react": "^4.0.0-rc.1",
     "@nestjs/common": "^7.0.0",

@@ -7,20 +7,20 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private configService: ConfigService
-  ) {
+  constructor(private configService: ConfigService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: `https://${configService.get<string>('AUTH0_DOMAIN')}/.well-known/jwks.json`
+        jwksUri: `https://${configService.get<string>(
+          'AUTH0_DOMAIN'
+        )}/.well-known/jwks.json`,
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // 1
       audience: '@erpjs',
-      issuer: `https://${configService.get<string>('AUTH0_DOMAIN')}/`
+      issuer: `https://${configService.get<string>('AUTH0_DOMAIN')}/`,
     });
   }
 

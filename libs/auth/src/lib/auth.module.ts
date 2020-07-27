@@ -8,6 +8,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [PassportModule, ConfigModule],
   providers: [JwtStrategy, GqlAuthGuard],
-  exports: [JwtStrategy, GqlAuthGuard]
+  exports: [JwtStrategy, GqlAuthGuard],
 })
 export class AuthModule {}

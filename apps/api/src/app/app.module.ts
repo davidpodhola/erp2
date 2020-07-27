@@ -36,21 +36,19 @@ import { resolvers } from './resolvers';
         migrationsDir: 'src/entity/migration',
       },
     }),
-    GraphQLModule.forRootAsync(
-      {
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService) => {
-          const aws = configService.get<string>('AWS') === 'true';
-          return {
-            installSubscriptionHandlers: true,
-            autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
-            debug: true,
-            context: ({ req }) => ({ req })
-          };
-        }
-      }
-    ),
+    GraphQLModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const aws = configService.get<string>('AWS') === 'true';
+        return {
+          installSubscriptionHandlers: true,
+          autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
+          debug: true,
+          context: ({ req }) => ({ req }),
+        };
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],

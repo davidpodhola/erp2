@@ -51,5 +51,5 @@ export const DateTimeScalarType = new GraphQLScalarType({
       return new Date(ast.value);
     }
     return null;
-  }
+  },
 });

@@ -20,6 +20,7 @@
     "format": "nx format:write",
     "format:write": "nx format:write",
     "format:check": "nx format:check",
+    "storybook": "nx run ui:storybook",
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
@@ -27,6 +28,8 @@
   },
   "private": true,
   "dependencies": {
+    "@clr/core": "^4.0.0-rc.1",
+    "@clr/react": "^4.0.0-rc.1",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/graphql": "^7.0.0",

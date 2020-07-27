@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Country {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  displayName: String!
+  isoCode: String!
+  addresses: [Address!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Address {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  country: Country!
+  line1: String!
+  city: String!
+  zipCode: String!
+  organizationRegisteredAddresses: [Organization!]
+}
+
+type Organization {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  displayName: String!
+  contact: String!
+  legalAddress: Address!
+  legalName: String!
+  registration: String!
+  idNumber: String!
+}
+
+type Query {
+  now: UniversalDateTime!
+}
+
+scalar UniversalDateTime

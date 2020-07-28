@@ -8,7 +8,7 @@ describe(' Ui', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <MockedProvider addTypename={false}>
-        <Ui/>
+        <Ui />
       </MockedProvider>
     );
     expect(baseElement).toBeTruthy();
@@ -17,11 +17,10 @@ describe(' Ui', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(
       <MockedProvider addTypename={false}>
-        <Ui/>
+        <Ui />
       </MockedProvider>
     );
 
     expect(getByText('Welcome to ui!')).toBeTruthy();
   });
-
 });

@@ -10,8 +10,8 @@ const mocks = [...SERVER_TIME_MOCKS];
 describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <MockedProvider mocks={mocks}  addTypename={false}>
-        <App/>
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <App />
       </MockedProvider>
     );
 
@@ -21,7 +21,7 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <App/>
+        <App />
       </MockedProvider>
     );
 

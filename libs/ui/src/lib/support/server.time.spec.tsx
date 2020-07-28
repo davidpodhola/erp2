@@ -10,18 +10,17 @@ export const SERVER_TIME_MOCKS = [
     },
     result: {
       data: {
-        now: 1595875906557
+        now: 1595875906557,
       },
     },
   },
 ];
 
-
 describe(' Server Time', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <MockedProvider mocks={SERVER_TIME_MOCKS} addTypename={false}>
-        <ServerTime/>
+        <ServerTime />
       </MockedProvider>
     );
     expect(baseElement).toBeTruthy();
@@ -29,12 +28,17 @@ describe(' Server Time', () => {
   it('should display the value', async () => {
     const { getByText } = render(
       <MockedProvider mocks={SERVER_TIME_MOCKS} addTypename={false}>
-        <ServerTime/>
+        <ServerTime />
       </MockedProvider>
     );
 
-    await act(async () =>await new Promise(resolve => setTimeout(resolve, 0))); // wait for response
-    await expect(getByText('Mon Jul 27 2020 20:51:46 GMT+0200 (Central European Summer Time)')).toBeTruthy();
+    await act(
+      async () => await new Promise((resolve) => setTimeout(resolve, 0))
+    ); // wait for response
+    await expect(
+      getByText(
+        'Mon Jul 27 2020 20:51:46 GMT+0200 (Central European Summer Time)'
+      )
+    ).toBeTruthy();
   });
-
 });

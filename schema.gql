@@ -50,3 +50,7 @@ type Query {
 }
 
 scalar UniversalDateTime
+
+type Mutation {
+  keepAlive(clientId: String!): UniversalDateTime!
+}

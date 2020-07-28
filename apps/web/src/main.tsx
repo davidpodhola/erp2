@@ -6,10 +6,10 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './client';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById('root')
 );

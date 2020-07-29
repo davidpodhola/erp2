@@ -2,7 +2,7 @@ import React from 'react';
 import { act, render, wait, screen, waitFor } from '@testing-library/react';
 import ServerTime, { SERVER_TIME } from './server.time';
 import { MockedProvider } from '@apollo/client/testing';
-import { SERVER_TIME_MOCKS } from './server.time.mocks';
+import { SERVER_TIME_MOCK_NOW, SERVER_TIME_MOCKS } from './server.time.mocks';
 
 describe(' Server Time', () => {
   it('should render successfully', () => {
@@ -25,7 +25,7 @@ describe(' Server Time', () => {
     ); // wait for response
     await expect(
       getByText(
-        'Mon Jul 27 2020 20:51:46 GMT+0200 (Central European Summer Time)'
+        new Date(SERVER_TIME_MOCK_NOW).toString()
       )
     ).toBeTruthy();
   });

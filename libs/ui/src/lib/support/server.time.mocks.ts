@@ -1,5 +1,7 @@
 import { SERVER_TIME } from './server.time';
 
+export const SERVER_TIME_MOCK_NOW = 1595875906557;
+
 export const SERVER_TIME_MOCKS = [
   {
     request: {
@@ -7,7 +9,7 @@ export const SERVER_TIME_MOCKS = [
     },
     result: {
       data: {
-        now: 1595875906557,
+        now: SERVER_TIME_MOCK_NOW,
       },
     },
   },

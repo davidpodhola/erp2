@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './app/app';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './client';
+import '@clr/core/global.css';
 
 ReactDOM.render(
   <ApolloProvider client={client}>

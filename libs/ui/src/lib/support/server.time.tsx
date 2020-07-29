@@ -23,7 +23,6 @@ export const ServerTime = () => {
         }
       `}</style>
       <h1>
-        <span>Server time:</span>
         <span>{new Date(data.now).toString()}</span>
       </h1>
     </div>

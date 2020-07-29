@@ -2,19 +2,7 @@ import React from 'react';
 import { act, render, wait, screen, waitFor } from '@testing-library/react';
 import ServerTime, { SERVER_TIME } from './server.time';
 import { MockedProvider } from '@apollo/client/testing';
-
-export const SERVER_TIME_MOCKS = [
-  {
-    request: {
-      query: SERVER_TIME,
-    },
-    result: {
-      data: {
-        now: 1595875906557,
-      },
-    },
-  },
-];
+import { SERVER_TIME_MOCKS } from './server.time.mocks';
 
 describe(' Server Time', () => {
   it('should render successfully', () => {

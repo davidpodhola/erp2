@@ -3,9 +3,7 @@ import { render } from '@testing-library/react';
 
 import App from './app';
 import { MockedProvider } from '@apollo/client/testing';
-import { SERVER_TIME_MOCKS } from '../../../../libs/ui/src/lib/support/server.time.spec';
-
-const mocks = [...SERVER_TIME_MOCKS];
+import { mocks } from '@erp2/ui';
 
 describe('App', () => {
   it('should render successfully', () => {

@@ -23,6 +23,6 @@ describe('App', () => {
       </MockedProvider>
     );
 
-    expect(getByText('Welcome to web!')).toBeTruthy();
+    expect(getByText('Header')).toBeTruthy();
   });
 });

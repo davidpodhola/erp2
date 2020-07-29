@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactComponent as Logo } from './logo.svg';
 import star from './star.svg';
-import { Ui } from '@erp2/ui';
+import { Ui, ServerTime } from '@erp2/ui';
 
 export const App = () => {
   /*
@@ -222,6 +222,7 @@ nx g @nrwl/react:lib ui
 # Add a component
 nx g @nrwl/react:component xyz --project ui`}</pre>
           <Ui />
+          <ServerTime />
         </details>
         <details>
           <summary>View dependency graph</summary>

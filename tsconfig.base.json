@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@erp2/ui": ["libs/ui/src/index.ts"],
-      "@erp2/model": ["libs/model/src/index.ts"]
+      "@erp2/model": ["libs/model/src/index.ts"],
+      "@erp2/auth": ["libs/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

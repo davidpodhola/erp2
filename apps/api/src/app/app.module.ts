@@ -7,6 +7,9 @@ import { entities } from './entities';
 import { migrations } from './migrations';
 import { MigrationService } from './migration.service';
 import { serviceProviders } from './serviceProviders';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { resolvers } from './resolvers';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -33,8 +36,21 @@ import { serviceProviders } from './serviceProviders';
         migrationsDir: 'src/entity/migration',
       },
     }),
+    GraphQLModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const aws = configService.get<string>('AWS') === 'true';
+        return {
+          installSubscriptionHandlers: true,
+          autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
+          debug: true,
+          context: ({ req }) => ({ req }),
+        };
+      },
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService, MigrationService, ...serviceProviders],
+  providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],
 })
 export class AppModule {}

@@ -17,11 +17,6 @@ export const ServerTime = () => {
   }
   return (
     <div>
-      <style jsx>{`
-        div {
-          color: yellow;
-        }
-      `}</style>
       <h1>
         <span>{new Date(data.now).toString()}</span>
       </h1>

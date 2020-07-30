@@ -1,6 +1,6 @@
 import React from 'react';
-import { act, render, wait, screen, waitFor } from '@testing-library/react';
-import ServerTime, { SERVER_TIME } from './server.time';
+import { act, render } from '@testing-library/react';
+import ServerTime from './server.time';
 import { MockedProvider } from '@apollo/client/testing';
 import { SERVER_TIME_MOCK_NOW, SERVER_TIME_MOCKS } from './server.time.mocks';
 

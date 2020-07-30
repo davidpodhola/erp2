@@ -27,6 +27,7 @@ jobs:
       - run: git fetch --no-tags --prune --depth=5 origin master
       - run: yarn install --frozen-lockfile
       - run: yarn affected:lint --base=origin/master
+      - run: yarn build model
       - run: yarn affected:build --base=origin/master
         env:
           CI: true

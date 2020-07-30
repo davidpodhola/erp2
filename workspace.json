@@ -325,19 +325,19 @@
     },
     "@nrwl/react": {
       "application": {
-        "style": "styled-jsx",
+        "style": "styled-components",
         "linter": "eslint",
         "babel": true
       },
       "library": {
-        "style": "styled-jsx",
+        "style": "styled-components",
         "linter": "eslint"
       },
       "storybook-configuration": {
         "linter": "eslint"
       },
       "component": {
-        "style": "styled-jsx"
+        "style": "styled-components"
       }
     },
     "@nrwl/next": {

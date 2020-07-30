@@ -1,10 +1,17 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
+import styled from 'styled-components';
 
 export const SERVER_TIME = gql`
   query {
     now
   }
+`;
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
 `;
 
 export const ServerTime = () => {
@@ -17,14 +24,9 @@ export const ServerTime = () => {
   }
   return (
     <div>
-      <style jsx>{`
-        div {
-          color: yellow;
-        }
-      `}</style>
-      <h1>
+      <Title>
         <span>{new Date(data.now).toString()}</span>
-      </h1>
+      </Title>
     </div>
   );
 };

@@ -1,9 +1,8 @@
-import { dateToISO, groupBy, onlyDate, roundNumber, sum } from '../../util';
-import { SalesInvoiceModel } from '../entities/sales.invoice.model';
-import { BaseEntityServiceImplementation } from './base.entity.service';
-import { SalesInvoiceSaveArgsModel } from '../args/sales.invoice.save.args.model';
-import { SalesInvoiceVatModel } from '../entities/sales.invoice.vat.model';
-import { SalesInvoiceJob } from '../jobs/sales.invoice.job';
+import { BaseEntityService } from '@erp2/model';
+import { SalesInvoiceModel } from './sales.invoice.model';
+import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
+import { SalesInvoice } from './sales.invoice';
+import { Repository } from 'typeorm/index';
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
 
@@ -11,6 +10,13 @@ export class SalesInvoiceService extends BaseEntityService<
   SalesInvoiceModel,
   SalesInvoiceSaveArgsModel
 > {
+  createEntity(): SalesInvoiceModel {
+    return new SalesInvoice();
+  }
+
+  protected getRepository(transactionalEntityManager): Repository<SalesInvoiceModel>{
+    return transactionalEntityManager.getRepository(SalesInvoice);
+  }
   protected async doSave(
     args: SalesInvoiceSaveArgsModel,
     invoice: SalesInvoiceModel

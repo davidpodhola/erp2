@@ -6,7 +6,7 @@ import { ModuleRef } from '@nestjs/core';
 let _moduleRef: ModuleRef = null;
 
 export class BaseMigration {
-  get moduleRef() : ModuleRef {
+  get moduleRef(): ModuleRef {
     return _moduleRef;
   }
 }

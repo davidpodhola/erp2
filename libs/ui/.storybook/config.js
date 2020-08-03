@@ -4,9 +4,8 @@ import { withKnobs } from '@storybook/addon-knobs';
 import '@clr/core/global.css';
 import { GlobalStyles } from '../src/styles';
 
-
 addDecorator(withKnobs);
-addDecorator(story => (
+addDecorator((story) => (
   <>
     <GlobalStyles />
     {story()}

@@ -1,4 +1,8 @@
-import { AddressServiceKey, CountryService, CountryServiceKey } from '@erp2/model';
+import {
+  AddressServiceKey,
+  CountryService,
+  CountryServiceKey,
+} from '@erp2/model';
 import { CustomAddressService } from './custom/custom.address.service';
 
 const addressServiceProvider = {

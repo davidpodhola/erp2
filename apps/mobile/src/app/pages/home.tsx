@@ -11,7 +11,7 @@ import React from 'react';
 import ExploreContainer from '../components/explore-container';
 
 import styled from 'styled-components';
-import {UiMobile} from '@erp2/ui-mobile';
+import { UiMobile } from '@erp2/ui-mobile';
 
 const StyledHome = styled.div``;
 

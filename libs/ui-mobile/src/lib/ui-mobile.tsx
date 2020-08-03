@@ -15,8 +15,8 @@ import {
   IonSelect,
   IonItem,
   IonLabel,
-  IonDatetime
-} from '@ionic/react'
+  IonDatetime,
+} from '@ionic/react';
 
 /* eslint-disable-next-line */
 export interface UiMobileProps {}
@@ -34,7 +34,11 @@ export const UiMobile = (props: UiMobileProps) => {
         <IonItem>
           <IonIcon name="calendar" slot="start"></IonIcon>
           <IonLabel>Date Picker</IonLabel>
-          <IonDatetime displayFormat="MMM DD, YYYY" max="2056" value={null}></IonDatetime>
+          <IonDatetime
+            displayFormat="MMM DD, YYYY"
+            max="2056"
+            value={null}
+          ></IonDatetime>
         </IonItem>
 
         <IonItem>

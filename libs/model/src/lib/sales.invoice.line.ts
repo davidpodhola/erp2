@@ -7,6 +7,7 @@ import { SalesInvoiceModel } from './sales.invoice.model';
 import { ProductModel } from './product.model';
 import { Tax } from './tax';
 import { Product } from './product';
+import { SalesInvoice } from './sales.invoice';
 
 @Entity()
 @ObjectType()

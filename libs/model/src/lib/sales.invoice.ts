@@ -1,20 +1,16 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { EntityBase } from './shared/EntityBase';
-import {
-  LanguageModel,
-  CustomerOrderModel,
-  SalesInvoiceModel,
-  SalesInvoiceVatModel
-} from '@erpjs/model';
+
 import { Customer } from './customer';
 import { Organization } from './organization';
 import { Currency } from './currency';
 import { SalesInvoiceLine } from './sales.invoice.line';
 import { BankAccount } from './bank.account';
 import { SalesInvoiceVat } from './sales.invoice.vat';
-import { languages } from './shared/language';
-import { CustomerOrder } from './customer.order';
+import { EntityBase } from '@erp2/model';
+import { SalesInvoiceModel } from './sales.invoice.model';
+import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
+import { LanguageModel } from './language.model';
 
 @Entity()
 @ObjectType()
@@ -25,7 +21,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     bankAccount => bankAccount.salesInvoices,
     { nullable: false }
   )
-  bankAccount: Promise<BankAccount>;
+  bankAccount: BankAccount;
 
   @Column({ type: 'date' })
   @Field()
@@ -41,7 +37,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     organization => organization.salesInvoices,
     { nullable: false }
   )
-  organization: Promise<Organization>;
+  organization: Organization;
 
   @Field(() => Currency)
   @ManyToOne(
@@ -49,7 +45,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     currency => currency.salesInvoices,
     { nullable: false }
   )
-  currency: Promise<Currency>;
+  currency: Currency;
 
   @Field(() => Customer)
   @ManyToOne(
@@ -57,15 +53,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     customer => customer.salesInvoices,
     { nullable: false }
   )
-  customer: Promise<Customer>;
-
-  @Field(() => CustomerOrder)
-  @ManyToOne(
-    () => CustomerOrder,
-    order => order.salesInvoices,
-    { nullable: true }
-  )
-  originalOrder?: Promise<CustomerOrderModel>;
+  customer: Customer;
 
   get displayName(): string {
     return this.isDraft ? `#${this.id}` : `${this.documentNo}`;
@@ -92,7 +80,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     () => SalesInvoiceLine,
     salesInvoiceLine => salesInvoiceLine.invoice
   )
-  lines: Promise<Array<SalesInvoiceLine>>;
+  lines: Array<SalesInvoiceLine>;
 
   @Column()
   @Field()
@@ -123,7 +111,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
     () => SalesInvoiceVat,
     salesInvoiceVat => salesInvoiceVat.invoice
   )
-  vatReport: Promise<Array<SalesInvoiceVatModel>>;
+  vatReport: Array<SalesInvoiceVatModel>;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -146,7 +134,8 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   paymentTermInDays: number;
 
   get printLanguage(): LanguageModel {
-    return languages.find(x => x.isoCode === this.printLanguageIsoCode);
+    // TODO: return languages.find(x => x.isoCode === this.printLanguageIsoCode);
+    return null;
   }
 
   set printLanguage(value: LanguageModel) {

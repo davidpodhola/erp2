@@ -6,6 +6,8 @@ import { Country } from './country';
 import { CountryModel } from './country.model';
 import { Organization } from './organization';
 import { OrganizationModel } from './organization.model';
+import { CustomerModel } from './customer.model';
+import { Customer } from './customer';
 
 @Entity()
 @ObjectType()
@@ -35,4 +37,11 @@ export class Address extends EntityBase implements AddressModel {
   @Field(() => [Organization], { nullable: true })
   @OneToMany(() => Organization, (organization) => organization.legalAddress)
   organizationRegisteredAddresses: Array<OrganizationModel>;
+
+  @Field(type => [Customer], { nullable: true })
+  @OneToMany(
+    type => Customer,
+    customer => customer.legalAddress
+  )
+  customerRegistratedAddresses: Array<CustomerModel>;
 }

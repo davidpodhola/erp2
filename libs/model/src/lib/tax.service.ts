@@ -11,7 +11,7 @@ export class TaxService extends BaseEntityService<
   TaxSaveArgsModel
 > {
   createEntity(): TaxModel {
-    return Tax();
+    return new Tax();
   }
 
   protected getRepository(transactionalEntityManager): Repository<TaxModel>{

@@ -5,6 +5,7 @@ import { SalesInvoiceLineModel } from './sales.invoice.line.model';
 import { CustomerModel } from './customer.model';
 import { OrganizationModel } from '@erp2/model';
 import { BankAccountModel } from './bank.account.model';
+import { LanguageModel } from './language.model';
 
 export interface SalesInvoiceModel
   extends BaseModel {

@@ -1,18 +1,4 @@
 import { Test } from '@nestjs/testing';
-import {
-  CustomerGroupModel,
-  CustomerGroupService,
-  CustomerModel,
-  CustomerPriceListModel,
-  CustomerPriceListService,
-  CustomerProductPriceModel,
-  Injector,
-  ProductModel,
-  SalesInvoiceLineModel,
-  SalesInvoiceLineService,
-  SalesInvoiceModel,
-  TaxModel
-} from '@erpjs/model';
 
 class TestInvoiceLine implements SalesInvoiceLineModel {
   displayName: string;

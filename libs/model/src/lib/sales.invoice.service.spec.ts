@@ -1,20 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { roundNumber, sum } from '../../util';
-import { SalesInvoiceModel } from '../entities/sales.invoice.model';
-import { SalesInvoiceVatModel } from '../entities/sales.invoice.vat.model';
-import { BankAccountModel } from '../entities/bank.account.model';
-import { CustomerModel } from '../entities/customer.model';
-import {
-  CurrencyModel,
-  CurrencyRateService,
-  Injector,
-  LanguageModel,
-  OrganizationModel,
-  ProductQuantityPriceTaxModel,
-  SalesInvoiceService,
-  SalesInvoiceVatService,
-  TaxModel
-} from '@erpjs/model';
 
 class TestInvoice implements SalesInvoiceModel {
   paymentTermInDays: number;

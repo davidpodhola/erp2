@@ -1,8 +1,8 @@
-import { EntityBase } from './shared/EntityBase';
-import { SalesInvoiceVatModel } from '@erpjs/model';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { SalesInvoice } from './sales.invoice';
+import { EntityBase } from '@erp2/model';
+import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
 
 @Entity()
 @ObjectType()

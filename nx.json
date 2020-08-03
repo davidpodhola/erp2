@@ -50,6 +50,23 @@
     },
     "auth": {
       "tags": []
+    },
+    "mobile": {
+      "tags": []
+    },
+    "mobile-e2e": {
+      "tags": [],
+      "implicitDependencies": ["mobile"]
+    },
+    "mobile-cap": {
+      "tags": []
+    },
+    "ui-mobile": {
+      "tags": []
+    },
+    "ui-mobile-e2e": {
+      "tags": [],
+      "implicitDependencies": ["ui-mobile"]
     }
   }
 }

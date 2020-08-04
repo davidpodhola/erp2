@@ -10,4 +10,5 @@ export interface SalesInvoiceLineModel extends BaseModel {
   linePrice: number;
   product: ProductModel;
   quantity: number;
+  narration: string;
 }

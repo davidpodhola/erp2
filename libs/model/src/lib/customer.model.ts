@@ -9,4 +9,5 @@ export interface CustomerModel
 
   invoicingEmail: string;
   idNumber: string;
+  displayName: string;
 }

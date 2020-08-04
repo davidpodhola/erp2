@@ -32,4 +32,5 @@ export interface SalesInvoiceModel
   printError?: string;
   content?: string;
   printLanguage: LanguageModel;
+  transactionDate: Date;
 }

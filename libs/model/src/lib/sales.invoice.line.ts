@@ -49,4 +49,8 @@ export class SalesInvoiceLine extends EntityBase {
     { nullable: false }
   )
   invoice: SalesInvoiceModel;
+
+  @Column()
+  @Field()
+  narration: string;
 }

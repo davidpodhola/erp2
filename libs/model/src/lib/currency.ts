@@ -6,6 +6,8 @@ import { SalesInvoice } from './sales.invoice';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { CurrencyRate } from './currency.rate';
 import { CurrencyRateModel } from './currency.rate.model';
+import { AccountingScheme } from './accounting.scheme';
+import { AccountingSchemeModel } from './accounting.scheme.model';
 
 @Entity()
 @ObjectType()
@@ -33,4 +35,10 @@ export class Currency extends UniqueDisplayEntityBase implements CurrencyModel {
     currencyRate => currencyRate.to
   )
   currencyRatesTo: Array<CurrencyRateModel>;
+
+  @OneToMany(
+    type => AccountingScheme,
+    accountingScheme => accountingScheme.currency
+  )
+  accountingSchemas: Array<AccountingSchemeModel>;
 }

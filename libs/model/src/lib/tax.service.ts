@@ -33,4 +33,10 @@ export class TaxService extends BaseEntityService<
   typeName(): string {
     return TaxServiceKey;
   }
+
+  getZeroTax = async (transactionalEntityManager: EntityManager,) =>
+    await this.getRepository(transactionalEntityManager).findOne({ where: { ratePercent: 0 } });
+  getStandardTax = async (transactionalEntityManager: EntityManager,) =>
+    await this.getRepository(transactionalEntityManager).findOne({ where: { isStandard: true } });
+
 }

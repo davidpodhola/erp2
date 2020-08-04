@@ -1,8 +1,18 @@
-import { BaseEntityService } from '@erp2/model';
+import { BaseEntityService, OrganizationService, OrganizationServiceKey } from '@erp2/model';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
 import { SalesInvoice } from './sales.invoice';
-import { Repository } from 'typeorm/index';
+import { EntityManager, Repository } from 'typeorm/index';
+import { BankAccountService, BankAccountServiceKey } from './bank.account.service';
+import { CustomerService, CustomerServiceKey } from './customer.service';
+import { Inject } from '@nestjs/common';
+import { CurrencyService, CurrencyServiceKey } from './currency.service';
+import { SalesInvoiceLineService, SalesInvoiceLineServiceKey } from './sales.invoice.line.service';
+import { TaxService, TaxServiceKey } from './tax.service';
+import { ReportsService, ReportsServiceKey } from './reports.service';
+import { LanguagesService } from './languages.service';
+import moment = require('moment');
+import { CurrencyRateService, CurrencyRateServiceKey } from './currency.rate.service';
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
 
@@ -10,6 +20,20 @@ export class SalesInvoiceService extends BaseEntityService<
   SalesInvoiceModel,
   SalesInvoiceSaveArgsModel
 > {
+  constructor(
+    @Inject(BankAccountServiceKey) protected readonly bankAccountService : BankAccountService,
+    @Inject(CustomerServiceKey) protected readonly customerService : CustomerService,
+    @Inject(OrganizationServiceKey) protected readonly organizationService : OrganizationService,
+    @Inject(CurrencyServiceKey) protected readonly currencyService : CurrencyService,
+    @Inject(SalesInvoiceLineServiceKey) protected readonly salesInvoiceLineService : SalesInvoiceLineService,
+    @Inject(TaxServiceKey) protected readonly taxService : TaxService,
+    @Inject(ReportsServiceKey) protected readonly reportsServiceModel : ReportsService,
+    @Inject(OrganizationServiceKey) protected readonly languagesService : LanguagesService,
+    @Inject(CurrencyRateServiceKey) protected readonly currencyRateService: CurrencyRateService
+  ) {
+    super();
+  }
+
   createEntity(): SalesInvoiceModel {
     return new SalesInvoice();
   }
@@ -18,46 +42,36 @@ export class SalesInvoiceService extends BaseEntityService<
     return transactionalEntityManager.getRepository(SalesInvoice);
   }
   protected async doSave(
+    transactionalEntityManager: EntityManager,
     args: SalesInvoiceSaveArgsModel,
     invoice: SalesInvoiceModel
   ): Promise<SalesInvoiceModel> {
-    const {
-      bankAccountService,
-      customerService,
-      organizationService,
-      currencyService,
-      salesInvoiceLineService,
-      taxService,
-      reportsServiceModel,
-      languagesService
-    } = this.getInjector();
-    invoice.customer = Promise.resolve(
+    invoice.customer =
       args.customer
         ? args.customer
-        : await customerService.getCustomer(args.customerDisplayName)
-    );
+        : await this.customerService.getCustomer(transactionalEntityManager, args.customerDisplayName)
+    ;
     const organization = args.organization
       ? args.organization
-      : await organizationService.getOrg(args.organizationDisplayName);
-    invoice.organization = Promise.resolve(organization);
+      : await this.organizationService.getOrg(transactionalEntityManager, args.organizationDisplayName);
+    invoice.organization = organization;
     invoice.bankAccount = organization.bankAccount;
-    invoice.issuedOn = onlyDate(args.issuedOn);
-    invoice.dueDate = onlyDate(
+    invoice.issuedOn = moment(args.issuedOn).startOf('day').toDate();
+    invoice.dueDate = moment(
       new Date(+invoice.issuedOn + args.paymentTermInDays * 86400000)
-    );
+    ).startOf('day').toDate();
     invoice.grandTotal = 0;
     invoice.grandTotalAccountingSchemeCurrency = 0;
     invoice.totalLines = 0;
     invoice.totalLinesAccountingSchemeCurrency = 0;
     invoice.transactionDate = args.transactionDate;
     invoice.paymentTermInDays = args.paymentTermInDays;
-    invoice.currency = Promise.resolve(
+    invoice.currency =
       args.currency
         ? args.currency
-        : await currencyService.getCurrency(args.currencyIsoCode)
-    );
+        : await this.currencyService.getCurrency(transactionalEntityManager,args.currencyIsoCode)
+    ;
     invoice.currencyMultiplyingRateToAccountingSchemeCurrency = 0;
-    invoice.narration = 'invalid';
     invoice.isDraft = true;
     invoice.isCalculated = false;
     // TODO: implement also other reverse charge conditions
@@ -72,7 +86,7 @@ export class SalesInvoiceService extends BaseEntityService<
       customerCountry.isoCode !== supplierCountry.isoCode;
 
     // TODO: get better printLanguage implementation
-    const languages = languagesService.getLanguages();
+    const languages = this.languagesService.getLanguages();
     const language =
       customerCountry.isoCode === supplierCountry.isoCode
         ? languages.find(
@@ -90,32 +104,31 @@ export class SalesInvoiceService extends BaseEntityService<
       );
     invoice.printLanguage = language;
 
-    await this.persist(invoice);
+    await this.persist(transactionalEntityManager, invoice);
 
-    const vatRegistrations = await organization.vatRegistrations;
-    const vatRegistered = vatRegistrations && vatRegistrations.length > 0;
+    const vatRegistered = !!organization.vatNumber;
 
     let lineOrder = 10;
     const invoiceLines = [];
     for (const line1 of args.lines) {
-      const line = await salesInvoiceLineService.save({
+      const line = await this.salesInvoiceLineService.save(transactionalEntityManager, {
         ...line1,
         product: await line1.product,
         lineTax:
           vatRegistered && !invoice.reverseCharge
             ? await line1.lineTax
-            : await taxService.getZeroTax(),
+            : await this.taxService.getZeroTax(transactionalEntityManager),
         invoice,
         lineOrder
       });
       lineOrder += 10;
       invoiceLines.push(line);
     }
-    invoice.lines = Promise.resolve(invoiceLines);
+    invoice.lines = invoiceLines;
 
     const result = await this.calculatePrices(invoice);
 
-    await reportsServiceModel.printSalesInvoice(result, result.printLanguage);
+    await this.reportsServiceModel.printSalesInvoice(result, result.printLanguage);
 
     return result;
   }
@@ -127,10 +140,9 @@ export class SalesInvoiceService extends BaseEntityService<
   async calculatePrices(
     invoiceWithLines: SalesInvoiceModel
   ): Promise<SalesInvoiceModel> {
-    const { currencyRateService, salesInvoiceVatService } = this.getInjector();
     if (!invoiceWithLines) return invoiceWithLines;
 
-    const currencyRate = await currencyRateService.getAccountingForDateAndOrg(
+    const currencyRate = await this.currencyRateService.getAccountingForDateAndOrg(
       invoiceWithLines.transactionDate,
       await invoiceWithLines.currency,
       await invoiceWithLines.organization
@@ -148,8 +160,7 @@ export class SalesInvoiceService extends BaseEntityService<
     invoiceWithLines.totalLines = 0;
     invoiceWithLines.grandTotal = 0;
     const org = await invoiceWithLines.organization;
-    const vatRegistrations = await org.vatRegistrations;
-    const vatRegistered = vatRegistrations && vatRegistrations.length > 0;
+    const vatRegistered = !!org.vatNumber;
     const lineCalculatedTaxes = [];
     if (lines) {
       for (const line of lines) {
@@ -248,4 +259,5 @@ export class SalesInvoiceService extends BaseEntityService<
     await this.persist(invoice);
     return invoice;
   }
+
 }

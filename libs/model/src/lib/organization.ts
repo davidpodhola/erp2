@@ -6,7 +6,9 @@ import { Address } from './address';
 import { AddressModel } from './address.model';
 import { BankAccount } from './bank.account';
 import { SalesInvoice } from './sales.invoice';
-import { OneToMany } from 'typeorm/index';
+import { Index, OneToMany } from 'typeorm/index';
+import { AccountingScheme } from './accounting.scheme';
+import { AccountingSchemeModel } from './accounting.scheme.model';
 
 @Entity()
 @ObjectType()
@@ -52,4 +54,17 @@ export class Organization extends UniqueDisplayEntityBase
     salesInvoice => salesInvoice.organization
   )
   salesInvoices: Array<SalesInvoice>;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  @Index({ unique: true })
+  vatNumber?: string;
+
+  @Field(type => AccountingScheme)
+  @ManyToOne(
+    type => AccountingScheme,
+    accountingScheme => accountingScheme.organizations,
+    { nullable: false }
+  )
+  accountingScheme: AccountingSchemeModel;
 }

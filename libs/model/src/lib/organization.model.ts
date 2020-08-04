@@ -1,5 +1,7 @@
 import { BaseModel } from './base.model';
 import { AddressModel } from './address.model';
+import { AccountingSchemeModel } from './accounting.scheme.model';
+import { BankAccountModel } from './bank.account.model';
 
 export interface OrganizationModel extends BaseModel {
   displayName: string;
@@ -8,4 +10,7 @@ export interface OrganizationModel extends BaseModel {
   registration: string;
   contact: string;
   idNumber: string;
+  vatNumber?: string;
+  accountingScheme: AccountingSchemeModel;
+  bankAccount: BankAccountModel;
 }

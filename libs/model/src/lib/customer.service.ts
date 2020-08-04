@@ -1,8 +1,7 @@
-import { AddressService, BaseEntityService } from '@erp2/model';
+import { AddressService, BaseEntityService, Customer } from '@erp2/model';
 import { CustomerModel } from './customer.model';
 import { CustomerSaveArgsModel } from './customer.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
-import { Customer } from './customer';
 
 export const CustomerServiceKey = 'CustomerService';
 

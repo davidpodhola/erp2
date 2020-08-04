@@ -1,7 +1,6 @@
-import { BaseEntityService, OrganizationService, OrganizationServiceKey } from '@erp2/model';
+import { BaseEntityService, OrganizationService, OrganizationServiceKey, SalesInvoice } from '@erp2/model';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
-import { SalesInvoice } from './sales.invoice';
 import { EntityManager, Repository } from 'typeorm/index';
 import { BankAccountService, BankAccountServiceKey } from './bank.account.service';
 import { CustomerService, CustomerServiceKey } from './customer.service';

@@ -2,10 +2,10 @@ import { BaseEntityService } from './base.entity.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { AddressModel } from './address.model';
 import { AddressSaveArgsModel } from './address.save.args.model';
-import { Address } from './address';
 import { EntityManager, Repository } from 'typeorm';
 import * as deepEqual from 'deep-equal';
 import { CountryService, CountryServiceKey } from './country.service';
+import { Address } from './entity.base';
 
 export const AddressServiceKey = 'AddressService';
 

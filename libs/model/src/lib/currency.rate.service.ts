@@ -1,11 +1,10 @@
 import { CurrencyRateModel } from './currency.rate.model';
-import { BaseEntityService, OrganizationModel } from '@erp2/model';
+import { BaseEntityService, CurrencyRate, OrganizationModel } from '@erp2/model';
 import { CurrencyRateSaveArgsModel } from './currency.rate.save.args.model';
 import { CurrencyModel } from './currency.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { Inject } from '@nestjs/common';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
-import { CurrencyRate } from './currency.rate';
 
 export const CurrencyRateServiceKey = 'CurrencyRateService';
 

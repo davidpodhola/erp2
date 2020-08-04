@@ -1,6 +1,5 @@
-import { BaseModel, OrganizationModel } from '@erp2/model';
+import { BaseModel, DocumentNumberSequence, OrganizationModel } from '@erp2/model';
 import { EntityManager } from 'typeorm/index';
-import { DocumentNumberSequence } from './document.number.sequence';
 import { Injectable } from '@nestjs/common';
 
 export const DocumentNumberingServiceKey = 'DocumentNumberingService';

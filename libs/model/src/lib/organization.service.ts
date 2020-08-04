@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseEntityService } from './base.entity.service';
 import { OrganizationModel } from './organization.model';
 import { OrganizationSaveArgsModel } from './organization.save.args.model';
-import { Organization } from './organization';
 import { EntityManager, Repository } from 'typeorm';
 import { AddressService, AddressServiceKey } from './address.service';
+import { Organization } from './entity.base';
 
 export const OrganizationServiceKey = 'OrganizationService';
 

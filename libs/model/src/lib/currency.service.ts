@@ -1,8 +1,7 @@
 import { EntityManager, Repository } from 'typeorm/index';
-import { BaseEntityService } from '@erp2/model';
+import { BaseEntityService, Currency } from '@erp2/model';
 import { CurrencyModel } from './currency.model';
 import { CurrencySaveArgsModel } from './currency.save.args.model';
-import { Currency } from './currency';
 
 export const CurrencyServiceKey = 'CurrencyService';
 

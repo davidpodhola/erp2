@@ -2,8 +2,7 @@ import { BaseEntityService } from './base.entity.service';
 import { ProductModel } from './product.model';
 import { ProductSaveArgsModel } from './product.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
-import { Product } from './product';
-import { Organization } from '@erp2/model';
+import { Organization, Product } from '@erp2/model';
 
 export const ProductServiceKey = 'ProductService';
 

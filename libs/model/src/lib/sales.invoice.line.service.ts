@@ -1,12 +1,12 @@
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
 import { SalesInvoiceLineSaveArgsModel } from './sales.invoice.line.save.args.model';
 import { EntityManager, Repository } from 'typeorm';
-import { SalesInvoiceLine } from './sales.invoice.line';
 import { BaseEntityService } from './base.entity.service';
 import { Inject } from '@nestjs/common';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ProductService, ProductServiceKey } from './product.service';
 import { SalesInvoiceService, SalesInvoiceServiceKey } from './sales.invoice.service';
+import { SalesInvoiceLine } from '@erp2/model';
 
 export const SalesInvoiceLineServiceKey = 'SalesInvoiceLineService';
 

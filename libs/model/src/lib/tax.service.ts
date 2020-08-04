@@ -1,7 +1,6 @@
 import { TaxModel } from './tax.model';
-import { BaseEntityService, Organization } from '@erp2/model';
+import { BaseEntityService, Organization, Tax } from '@erp2/model';
 import { TaxSaveArgsModel } from './tax.save.args.model';
-import { Tax } from './tax';
 import { EntityManager, Repository } from 'typeorm/index';
 
 export const TaxServiceKey = 'TaxService';

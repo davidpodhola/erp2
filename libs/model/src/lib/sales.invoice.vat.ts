@@ -14,7 +14,7 @@ export class SalesInvoiceVat extends EntityBase
     salesInvoice => salesInvoice.vatReport,
     { nullable: false }
   )
-  invoice: Promise<SalesInvoice>;
+  invoice: SalesInvoice;
 
   @Column({ type: 'numeric', scale: 2, precision: 12 })
   @Field()

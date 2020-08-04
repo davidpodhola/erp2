@@ -11,8 +11,12 @@ import { SalesInvoiceLineService, SalesInvoiceLineServiceKey } from './sales.inv
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ReportsService, ReportsServiceKey } from './reports.service';
 import { LanguagesService } from './languages.service';
-import moment = require('moment');
 import { CurrencyRateService, CurrencyRateServiceKey } from './currency.rate.service';
+import * as _ from "lodash";
+import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
+import { SalesInvoiceVatService, SalesInvoiceVatServiceKey } from './sales.invoice.vat.service';
+import { DocumentNumberingService, DocumentNumberingServiceKey } from './document.numbering.service';
+import moment = require('moment');
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
 
@@ -29,7 +33,10 @@ export class SalesInvoiceService extends BaseEntityService<
     @Inject(TaxServiceKey) protected readonly taxService : TaxService,
     @Inject(ReportsServiceKey) protected readonly reportsServiceModel : ReportsService,
     @Inject(OrganizationServiceKey) protected readonly languagesService : LanguagesService,
-    @Inject(CurrencyRateServiceKey) protected readonly currencyRateService: CurrencyRateService
+    @Inject(CurrencyRateServiceKey) protected readonly currencyRateService: CurrencyRateService,
+    @Inject(SalesInvoiceVatServiceKey) protected readonly salesInvoiceVatService: SalesInvoiceVatService,
+    @Inject(ReportsServiceKey) protected readonly reportsService : ReportsService,
+    @Inject(DocumentNumberingServiceKey) protected readonly documentNumberingServiceModel: DocumentNumberingService
   ) {
     super();
   }
@@ -126,7 +133,7 @@ export class SalesInvoiceService extends BaseEntityService<
     }
     invoice.lines = invoiceLines;
 
-    const result = await this.calculatePrices(invoice);
+    const result = await this.calculatePrices(transactionalEntityManager, invoice);
 
     await this.reportsServiceModel.printSalesInvoice(result, result.printLanguage);
 
@@ -138,6 +145,7 @@ export class SalesInvoiceService extends BaseEntityService<
   }
 
   async calculatePrices(
+    transactionalEntityManager: EntityManager,
     invoiceWithLines: SalesInvoiceModel
   ): Promise<SalesInvoiceModel> {
     if (!invoiceWithLines) return invoiceWithLines;
@@ -186,29 +194,29 @@ export class SalesInvoiceService extends BaseEntityService<
           lineCalculatedTax.vatTotal;
       }
     }
-    const taxes = await groupBy(lineCalculatedTaxes, x => x.vatRatePercent);
+    const taxes = _.groupBy(lineCalculatedTaxes, x => x.vatRatePercent);
     const vatReport: SalesInvoiceVatModel[] = [];
 
     // remove the old invoiceWithLines.vatReport
-    const oldVatReports = await invoiceWithLines.vatReport;
+    const oldVatReports = invoiceWithLines.vatReport;
     if (oldVatReports) {
       for (const oldVatReport of oldVatReports) {
-        await salesInvoiceVatService.delete(oldVatReport);
+        await this.salesInvoiceVatService.delete(transactionalEntityManager, oldVatReport);
       }
     }
 
-    for (const [vatRatePercent, toBeSummed] of taxes) {
-      const vatTotal = sum(toBeSummed.map(x => x.vatTotal));
-      const vatTotalAccountingSchemeCurrency = sum(
+    for (const [vatRatePercent, toBeSummed] of Object.entries(taxes)) {
+      const vatTotal = _.sum(toBeSummed.map(x => x.vatTotal));
+      const vatTotalAccountingSchemeCurrency = _.sum(
         toBeSummed.map(x => x.vatTotalAccountingSchemeCurrency)
       );
       vatReport.push(
-        await salesInvoiceVatService.save({
-          vatRatePercent: vatRatePercent as number,
+        await this.salesInvoiceVatService.save(transactionalEntityManager,{
+          vatRatePercent: +vatRatePercent,
           vatTotalRaw: vatTotal,
-          vatTotal: roundNumber(vatTotal, 2),
+          vatTotal: _.round(vatTotal, 2),
           vatTotalAccountingSchemeCurrencyRaw: vatTotalAccountingSchemeCurrency,
-          vatTotalAccountingSchemeCurrency: roundNumber(
+          vatTotalAccountingSchemeCurrency: _.round(
             vatTotalAccountingSchemeCurrency,
             2
           ),
@@ -217,47 +225,71 @@ export class SalesInvoiceService extends BaseEntityService<
       );
     }
 
-    invoiceWithLines.vatReport = Promise.resolve(vatReport);
-    invoiceWithLines.totalLinesAccountingSchemeCurrency = roundNumber(
+    invoiceWithLines.vatReport = vatReport;
+    invoiceWithLines.totalLinesAccountingSchemeCurrency = _.round(
       invoiceWithLines.totalLines *
         currencyMultiplyingRateToAccountingSchemeCurrency,
       2
     );
-    invoiceWithLines.totalLines = roundNumber(invoiceWithLines.totalLines, 2);
-    invoiceWithLines.grandTotalAccountingSchemeCurrency = roundNumber(
+    invoiceWithLines.totalLines = _.round(invoiceWithLines.totalLines, 2);
+    invoiceWithLines.grandTotalAccountingSchemeCurrency = _.round(
       invoiceWithLines.grandTotal *
         currencyMultiplyingRateToAccountingSchemeCurrency,
       2
     );
-    invoiceWithLines.grandTotal = roundNumber(invoiceWithLines.grandTotal, 2);
+    invoiceWithLines.grandTotal = _.round(invoiceWithLines.grandTotal, 2);
 
     invoiceWithLines.currencyMultiplyingRateToAccountingSchemeCurrency = currencyMultiplyingRateToAccountingSchemeCurrency;
-    invoiceWithLines.narration =
-      `${
-        ((await invoiceWithLines.organization) || { displayName: 'noorg' })
-          .displayName
-      } -> ` +
-      `${((await invoiceWithLines.customer) || { displayName: 'nocust' })
-        .displayName || ''}:` +
-      `${dateToISO(invoiceWithLines.issuedOn)}:${
-        invoiceWithLines.grandTotal
-      }:${dateToISO(invoiceWithLines.dueDate)}`;
     invoiceWithLines.isCalculated = true;
 
     return invoiceWithLines;
   }
 
-  async confirm(invoice: SalesInvoiceModel): Promise<SalesInvoiceModel> {
-    const { reportsServiceModel } = this.getInjector();
-    const salesInvoiceJob = new SalesInvoiceJob();
+  async confirm(manager: EntityManager, invoice: SalesInvoiceModel): Promise<SalesInvoiceModel> {
     invoice.isDraft = false;
-    await salesInvoiceJob.assignDocumentNumbers(
+    await this.assignDocumentNumbersToInvoices(
+      manager,
       [invoice],
-      this.getInjector().documentNumberingServiceModel
     );
-    await reportsServiceModel.printSalesInvoice(invoice, invoice.printLanguage);
-    await this.persist(invoice);
+    await this.reportsServiceModel.printSalesInvoice(invoice, invoice.printLanguage);
+    await this.persist(manager, invoice);
     return invoice;
   }
 
+  async fixPrint(manager: EntityManager) {
+    const invoices = await manager
+      .createQueryBuilder()
+      .setLock('pessimistic_write')
+      .select('invoice')
+      .from(SalesInvoice, 'invoice')
+      .where(`invoice.content is NULL`, {})
+      .orderBy('id')
+      .getMany();
+
+    for (const invoice of invoices) {
+      const printed = await this.reportsService.printSalesInvoice(
+        invoice,
+        invoice.printLanguage
+      );
+      await manager.save(printed);
+    }
+  }
+
+  async assignDocumentNumbersToInvoices(
+    manager: EntityManager,
+    notDraftInvoicesWithoutDocumentNumber: Array<SalesInvoiceModel>,
+  ) {
+    for (const invoice of notDraftInvoicesWithoutDocumentNumber) {
+      if (invoice.documentNo || invoice.isDraft) {
+        throw new Error(
+          'Call with non draft invoices without document number only!'
+        );
+      }
+      invoice.documentNo = await this.documentNumberingServiceModel.getNextDocumentNumber(
+        manager,
+        invoice.constructor,
+        await invoice.organization
+      );
+    }
+  }
 }

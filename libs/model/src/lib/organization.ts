@@ -9,6 +9,7 @@ import { SalesInvoice } from './sales.invoice';
 import { Index, OneToMany } from 'typeorm/index';
 import { AccountingScheme } from './accounting.scheme';
 import { AccountingSchemeModel } from './accounting.scheme.model';
+import { DocumentNumberSequence } from './document.number.sequence';
 
 @Entity()
 @ObjectType()
@@ -67,4 +68,11 @@ export class Organization extends UniqueDisplayEntityBase
     { nullable: false }
   )
   accountingScheme: AccountingSchemeModel;
+
+  @Field(type => [DocumentNumberSequence], { nullable: true })
+  @OneToMany(
+    type => DocumentNumberSequence,
+    documentNumberSequence => documentNumberSequence.organization
+  )
+  documentNumberSequences: Array<DocumentNumberSequence>;
 }

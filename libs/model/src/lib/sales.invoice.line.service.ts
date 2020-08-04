@@ -4,7 +4,6 @@ import { EntityManager, Repository } from 'typeorm';
 import { SalesInvoiceLine } from './sales.invoice.line';
 import { BaseEntityService } from './base.entity.service';
 import { Inject } from '@nestjs/common';
-import { AddressService, AddressServiceKey } from '@erp2/model';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ProductService, ProductServiceKey } from './product.service';
 import { SalesInvoiceService, SalesInvoiceServiceKey } from './sales.invoice.service';
@@ -24,7 +23,6 @@ export class SalesInvoiceLineService extends BaseEntityService<
   }
 
   constructor(
-    @Inject(AddressServiceKey) public readonly addressService: AddressService,
     @Inject(TaxServiceKey) public readonly taxService: TaxService,
     @Inject(ProductServiceKey) public readonly productService: ProductService,
     @Inject(SalesInvoiceServiceKey) public readonly salesInvoiceService: SalesInvoiceService

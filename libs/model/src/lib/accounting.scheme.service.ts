@@ -18,11 +18,15 @@ export class AccountingSchemeService extends BaseEntityService<
   }
 
   constructor(
-    @Inject(CurrencyServiceKey) protected readonly currencyService: CurrencyService) {
+    @Inject(CurrencyServiceKey)
+    protected readonly currencyService: CurrencyService
+  ) {
     super();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<AccountingSchemeModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<AccountingSchemeModel> {
     return transactionalEntityManager.getRepository(AccountingScheme);
   }
   typeName(): string {
@@ -34,11 +38,12 @@ export class AccountingSchemeService extends BaseEntityService<
     accountingScheme: AccountingSchemeModel
   ): Promise<AccountingSchemeModel> {
     accountingScheme.displayName = newAccountingScheme.displayName;
-    accountingScheme.currency =
-      newAccountingScheme.currency
-        ? newAccountingScheme.currency
-        : await this.currencyService.getCurrency(transactionalEntityManager, newAccountingScheme.currencyIsoCode)
-    ;
+    accountingScheme.currency = newAccountingScheme.currency
+      ? newAccountingScheme.currency
+      : await this.currencyService.getCurrency(
+          transactionalEntityManager,
+          newAccountingScheme.currencyIsoCode
+        );
     return accountingScheme;
   }
 }

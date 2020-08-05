@@ -14,11 +14,17 @@ export class CurrencyService extends BaseEntityService<
     return new Currency();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<CurrencyModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<CurrencyModel> {
     return transactionalEntityManager.getRepository(Currency);
   }
 
-  getCurrency(transactionalEntityManager: EntityManager, isoCode: string) { return this.getRepository(transactionalEntityManager).findOne({ where: { isoCode } }); }
+  getCurrency(transactionalEntityManager: EntityManager, isoCode: string) {
+    return this.getRepository(transactionalEntityManager).findOne({
+      where: { isoCode },
+    });
+  }
 
   protected async doSave(
     transactionalEntityManager: EntityManager,

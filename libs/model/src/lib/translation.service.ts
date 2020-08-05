@@ -36,17 +36,17 @@ const messagesCZ: LocalizedMessages = {
     `${
       invoice.printRate
         ? 'Úhradu můžete provést také v ' +
-        invoice.accountingSchemeCurrency +
-        ' ve výši ' +
-        invoice.grandTotalAccountingSchemeCurrency +
-        ' ' +
-        invoice.accountingSchemeCurrency +
-        ' na náš účet ' +
-        invoice.payTo +
-        ', tím přistupujete na dohodu o změně platebních podmínek (platba v ' +
-        'Kč, přepočet kursem na faktuře).'
+          invoice.accountingSchemeCurrency +
+          ' ve výši ' +
+          invoice.grandTotalAccountingSchemeCurrency +
+          ' ' +
+          invoice.accountingSchemeCurrency +
+          ' na náš účet ' +
+          invoice.payTo +
+          ', tím přistupujete na dohodu o změně platebních podmínek (platba v ' +
+          'Kč, přepočet kursem na faktuře).'
         : ''
-    } Věříme, že jste s našimi službami spokojeni a těšíme se na úspěšnou a dlouhodobou spolupráci.`
+    } Věříme, že jste s našimi službami spokojeni a těšíme se na úspěšnou a dlouhodobou spolupráci.`,
 };
 const messagesEN: LocalizedMessages = {
   totalToBePaid: '',
@@ -54,7 +54,7 @@ const messagesEN: LocalizedMessages = {
   buyer: '',
   dueDate: '',
   idNumber: '',
-  invoiceFooter: function(p1) {
+  invoiceFooter: function (p1) {
     return '';
   },
   invoiceNumber: '',
@@ -71,7 +71,7 @@ const messagesEN: LocalizedMessages = {
     `You have ${unread === 0 ? 'no' : unread} unread message${
       unread === 1 ? '' : 's'
     }.`,
-  invoice: (vatRegistered: boolean) => `Invoice`
+  invoice: (vatRegistered: boolean) => `Invoice`,
 };
 const messagesCZDE: LocalizedMessages = {
   totalToBePaid: 'Celkem k úhradě / Insgesamt zu einzahlen',
@@ -107,16 +107,17 @@ const messagesCZDE: LocalizedMessages = {
     `${invoice.printRate ? invoice.iban : ''} spätestens ${
       invoice.dueDatePrintable
     }. ` +
-    `Wir glauben, dass Sie mit unseren Dienstleistungen zufrieden sind und freuen uns auf eine erfolgreiche und langfristige Zusammenarbeit`
+    `Wir glauben, dass Sie mit unseren Dienstleistungen zufrieden sind und freuen uns auf eine erfolgreiche und langfristige Zusammenarbeit`,
 };
 
 const messages = {
   en: messagesEN,
   cz: messagesCZ,
-  'cz-de': messagesCZDE
+  'cz-de': messagesCZDE,
 };
 
 @Injectable()
 export class TranslationService {
-  getMessages = (language: LanguageModel): LocalizedMessages => messages[language.isoCode];
+  getMessages = (language: LanguageModel): LocalizedMessages =>
+    messages[language.isoCode];
 }

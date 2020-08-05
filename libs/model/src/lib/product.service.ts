@@ -16,7 +16,9 @@ export class ProductService extends BaseEntityService<
     return new Product();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<ProductModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<ProductModel> {
     return transactionalEntityManager.getRepository(Product);
   }
 

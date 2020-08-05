@@ -19,14 +19,17 @@ export class SalesInvoiceLineService extends BaseEntityService<
     return new SalesInvoiceLine();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<SalesInvoiceLineModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<SalesInvoiceLineModel> {
     return transactionalEntityManager.getRepository(SalesInvoiceLine);
   }
 
   constructor(
     @Inject(TaxServiceKey) public readonly taxService: TaxService,
     @Inject(ProductServiceKey) public readonly productService: ProductService,
-    @Inject(forwardRef(() => SalesInvoiceService)) public readonly salesInvoiceService: SalesInvoiceService
+    @Inject(forwardRef(() => SalesInvoiceService))
+    public readonly salesInvoiceService: SalesInvoiceService
   ) {
     super();
   }
@@ -36,16 +39,26 @@ export class SalesInvoiceLineService extends BaseEntityService<
     args: SalesInvoiceLineSaveArgsModel,
     line: SalesInvoiceLineModel
   ): Promise<SalesInvoiceLineModel> {
-    line.lineTax =
-      args.lineTax ? args.lineTax : await this.taxService.loadEntity(transactionalEntityManager, args.lineTaxId);
+    line.lineTax = args.lineTax
+      ? args.lineTax
+      : await this.taxService.loadEntity(
+          transactionalEntityManager,
+          args.lineTaxId
+        );
     line.product = args.product
       ? args.product
-      : await this.productService.loadEntity(transactionalEntityManager, args.productId);
+      : await this.productService.loadEntity(
+          transactionalEntityManager,
+          args.productId
+        );
     line.lineOrder = args.lineOrder;
 
     const invoice = args.invoice
       ? args.invoice
-      : await this.salesInvoiceService.loadEntity(transactionalEntityManager, args.invoiceId);
+      : await this.salesInvoiceService.loadEntity(
+          transactionalEntityManager,
+          args.invoiceId
+        );
     line.invoice = invoice;
     await invoice.customer;
     line.linePrice = args.linePrice;

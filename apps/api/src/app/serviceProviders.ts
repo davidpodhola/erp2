@@ -1,4 +1,7 @@
-import { AddressServiceKey, serviceProviders as modelServiceProviders } from '@erp2/model';
+import {
+  AddressServiceKey,
+  serviceProviders as modelServiceProviders,
+} from '@erp2/model';
 import { CustomAddressService } from './custom/custom.address.service';
 
 const addressServiceProvider = {
@@ -8,5 +11,5 @@ const addressServiceProvider = {
 
 export const serviceProviders = [
   addressServiceProvider,
-  ...(modelServiceProviders.filter((x) => x.provide !== AddressServiceKey ))
+  ...modelServiceProviders.filter((x) => x.provide !== AddressServiceKey),
 ];

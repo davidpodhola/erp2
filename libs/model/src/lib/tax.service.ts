@@ -8,15 +8,12 @@ import { Tax } from './entity.base';
 export const TaxServiceKey = 'TaxService';
 
 @Injectable()
-export class TaxService extends BaseEntityService<
-  TaxModel,
-  TaxSaveArgsModel
-> {
+export class TaxService extends BaseEntityService<TaxModel, TaxSaveArgsModel> {
   createEntity(): TaxModel {
     return new Tax();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<TaxModel>{
+  protected getRepository(transactionalEntityManager): Repository<TaxModel> {
     return transactionalEntityManager.getRepository(Tax);
   }
 
@@ -36,9 +33,12 @@ export class TaxService extends BaseEntityService<
     return TaxServiceKey;
   }
 
-  getZeroTax = async (transactionalEntityManager: EntityManager,) =>
-    await this.getRepository(transactionalEntityManager).findOne({ where: { ratePercent: 0 } });
-  getStandardTax = async (transactionalEntityManager: EntityManager,) =>
-    await this.getRepository(transactionalEntityManager).findOne({ where: { isStandard: true } });
-
+  getZeroTax = async (transactionalEntityManager: EntityManager) =>
+    await this.getRepository(transactionalEntityManager).findOne({
+      where: { ratePercent: 0 },
+    });
+  getStandardTax = async (transactionalEntityManager: EntityManager) =>
+    await this.getRepository(transactionalEntityManager).findOne({
+      where: { isStandard: true },
+    });
 }

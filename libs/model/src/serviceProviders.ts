@@ -1,21 +1,48 @@
 import { CountryService, CountryServiceKey } from './lib/country.service';
-import { AccountingSchemeService, AccountingSchemeServiceKey } from './lib/accounting.scheme.service';
+import {
+  AccountingSchemeService,
+  AccountingSchemeServiceKey,
+} from './lib/accounting.scheme.service';
 import { AddressService, AddressServiceKey } from './lib/address.service';
-import { BankAccountService, BankAccountServiceKey } from './lib/bank.account.service';
+import {
+  BankAccountService,
+  BankAccountServiceKey,
+} from './lib/bank.account.service';
 import { BankService, BankServiceKey } from './lib/bank.service';
 import { CurrencyService, CurrencyServiceKey } from './lib/currency.service';
-import { CurrencyRateService, CurrencyRateServiceKey } from './lib/currency.rate.service';
+import {
+  CurrencyRateService,
+  CurrencyRateServiceKey,
+} from './lib/currency.rate.service';
 import { CustomerService, CustomerServiceKey } from './lib/customer.service';
-import { DocumentNumberingService, DocumentNumberingServiceKey } from './lib/document.numbering.service';
+import {
+  DocumentNumberingService,
+  DocumentNumberingServiceKey,
+} from './lib/document.numbering.service';
 import { LanguagesService, LanguagesServiceKey } from './lib/languages.service';
-import { OrganizationService, OrganizationServiceKey } from './lib/organization.service';
+import {
+  OrganizationService,
+  OrganizationServiceKey,
+} from './lib/organization.service';
 import { ProductService, ProductServiceKey } from './lib/product.service';
 import { ReportsService, ReportsServiceKey } from './lib/reports.service';
-import { SalesInvoiceLineService, SalesInvoiceLineServiceKey } from './lib/sales.invoice.line.service';
-import { SalesInvoiceService, SalesInvoiceServiceKey } from './lib/sales.invoice.service';
-import { SalesInvoiceVatService, SalesInvoiceVatServiceKey } from './lib/sales.invoice.vat.service';
+import {
+  SalesInvoiceLineService,
+  SalesInvoiceLineServiceKey,
+} from './lib/sales.invoice.line.service';
+import {
+  SalesInvoiceService,
+  SalesInvoiceServiceKey,
+} from './lib/sales.invoice.service';
+import {
+  SalesInvoiceVatService,
+  SalesInvoiceVatServiceKey,
+} from './lib/sales.invoice.vat.service';
 import { TaxService, TaxServiceKey } from './lib/tax.service';
-import { TranslationService, TranslationServiceKey } from './lib/translation.service';
+import {
+  TranslationService,
+  TranslationServiceKey,
+} from './lib/translation.service';
 
 const accountingSchemeServiceProvider = {
   provide: AccountingSchemeServiceKey,
@@ -59,52 +86,52 @@ const customerServiceProvider = {
 
 const documentNumberingServiceProvider = {
   provide: DocumentNumberingServiceKey,
-  useClass: DocumentNumberingService
+  useClass: DocumentNumberingService,
 };
 
 const languagesServiceProvider = {
   provide: LanguagesServiceKey,
-  useClass: LanguagesService
+  useClass: LanguagesService,
 };
 
 const organizationServiceProvider = {
   provide: OrganizationServiceKey,
-  useClass: OrganizationService
+  useClass: OrganizationService,
 };
 
 const productServiceProvider = {
   provide: ProductServiceKey,
-  useClass: ProductService
+  useClass: ProductService,
 };
 
 const reportsServiceProvider = {
   provide: ReportsServiceKey,
-  useClass: ReportsService
+  useClass: ReportsService,
 };
 
 const salesInvoiceLineServiceProvider = {
   provide: SalesInvoiceLineServiceKey,
-  useClass: SalesInvoiceLineService
+  useClass: SalesInvoiceLineService,
 };
 
 const salesInvoiceServiceProvider = {
   provide: SalesInvoiceServiceKey,
-  useClass: SalesInvoiceService
+  useClass: SalesInvoiceService,
 };
 
 const salesInvoiceVatServiceProvider = {
   provide: SalesInvoiceVatServiceKey,
-  useClass: SalesInvoiceVatService
+  useClass: SalesInvoiceVatService,
 };
 
 const taxServiceProvider = {
   provide: TaxServiceKey,
-  useClass: TaxService
+  useClass: TaxService,
 };
 
 const translationServiceProvider = {
   provide: TranslationServiceKey,
-  useClass: TranslationService
+  useClass: TranslationService,
 };
 
 export const serviceProviders = [

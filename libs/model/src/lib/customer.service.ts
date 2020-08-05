@@ -17,12 +17,12 @@ export class CustomerService extends BaseEntityService<
     return new Customer();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<CustomerModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<CustomerModel> {
     return transactionalEntityManager.getRepository(Customer);
   }
-  constructor(
-    protected readonly addressService: AddressService
-  ) {
+  constructor(protected readonly addressService: AddressService) {
     super();
   }
 
@@ -49,6 +49,11 @@ export class CustomerService extends BaseEntityService<
     return CustomerServiceKey;
   }
 
-  getCustomer = (transactionalEntityManager: EntityManager,displayName: string) =>
-    this.getRepository(transactionalEntityManager).findOne({ where: { displayName } })
+  getCustomer = (
+    transactionalEntityManager: EntityManager,
+    displayName: string
+  ) =>
+    this.getRepository(transactionalEntityManager).findOne({
+      where: { displayName },
+    });
 }

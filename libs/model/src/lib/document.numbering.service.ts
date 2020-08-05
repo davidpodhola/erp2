@@ -7,7 +7,7 @@ import { DocumentNumberSequence } from './entity.base';
 export const DocumentNumberingServiceKey = 'DocumentNumberingService';
 
 @Injectable()
-export class DocumentNumberingService  {
+export class DocumentNumberingService {
   async getNextDocumentNumber<M extends BaseModel>(
     manager: EntityManager,
     modelCtor: (new () => M) | Function,
@@ -15,7 +15,7 @@ export class DocumentNumberingService  {
   ): Promise<string> {
     const model = await manager.getRepository(DocumentNumberSequence).findOne({
       where: { forType: modelCtor.name, organization },
-      order: { id: 'DESC' }
+      order: { id: 'DESC' },
     });
     const result = model.current;
     model.current = +model.current + 1;

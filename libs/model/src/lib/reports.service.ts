@@ -1,10 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { TranslationService, TranslationServiceKey } from './translation.service';
-import { PrintSalesInvoice, PrintSalesInvoiceParty } from './print.sales.invoice';
+import {
+  TranslationService,
+  TranslationServiceKey,
+} from './translation.service';
+import {
+  PrintSalesInvoice,
+  PrintSalesInvoiceParty,
+} from './print.sales.invoice';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { LanguageModel } from './language.model';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 const fs = require('fs');
 const PDFDocument = require('pdfkit');
@@ -39,10 +45,10 @@ async function createInvoice(path: string, invoice: PrintSalesInvoice) {
     doc
       .font('Cardo')
       .text(`${messages.issuedOn}: ${invoice.issuedOnPrintable}`, 200, 87, {
-        align: 'right'
+        align: 'right',
       })
       .text(`${messages.dueDate}: ${invoice.dueDatePrintable}`, 200, 87 + 15, {
-        align: 'right'
+        align: 'right',
       })
       .text(
         `${messages.invoiceNumber}: ${invoice.invoiceNumber}`,
@@ -95,12 +101,12 @@ async function createInvoice(path: string, invoice: PrintSalesInvoice) {
       .text(buyer.name, 200, line + 15, { align: 'right' })
       .text(buyer.road, 200, line + 2 * 15, { align: 'right' })
       .text(buyer.zipCode + ' ' + buyer.city, 200, line + 3 * 15, {
-        align: 'right'
+        align: 'right',
       })
       .text(buyer.country, 200, line + 4 * 15, { align: 'right' })
       .text(invoice.buyerEmail, 200, line + 5 * 15, { align: 'right' })
       .text(`${messages.idNumber}: ${buyer.idNumber}`, 200, line + 6 * 15, {
-        align: 'right'
+        align: 'right',
       })
       .text(
         buyer.vatNumber && invoice.vatRegistered
@@ -120,7 +126,7 @@ async function createInvoice(path: string, invoice: PrintSalesInvoice) {
       .fontSize(5)
       .text(messages.invoiceFooter(invoice), 50, 700, {
         align: 'center',
-        width: 500
+        width: 500,
       });
   }
 
@@ -261,7 +267,7 @@ async function createInvoice(path: string, invoice: PrintSalesInvoice) {
 }
 
 function savePdfToFile(pdf, fileName: string): Promise<void> {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     // To determine when the PDF has finished being written successfully
     // we need to confirm the following 2 conditions:
     //
@@ -287,7 +293,7 @@ function savePdfToFile(pdf, fileName: string): Promise<void> {
 }
 
 @Injectable()
-export class ReportsService  {
+export class ReportsService {
   constructor(
     @Inject(TranslationServiceKey)
     private readonly translationService: TranslationService
@@ -307,7 +313,7 @@ export class ReportsService  {
       vatNumber,
       zipCode: organizationLegalAddress.zipCode,
       registration: organization.registration,
-      idNumber: organization.idNumber
+      idNumber: organization.idNumber,
     };
     const customer = await data.customer;
     const customerLegalAddress = await customer.legalAddress;
@@ -319,7 +325,7 @@ export class ReportsService  {
       vatNumber: customer.vatNumber,
       zipCode: customerLegalAddress.zipCode,
       registration: customer.idNumber,
-      idNumber: customer.idNumber
+      idNumber: customer.idNumber,
     };
 
     function dateToString(d: Date): string {
@@ -340,7 +346,7 @@ export class ReportsService  {
           line.linePrice * (1 + lineTaxPercent / 100),
           2
         ),
-        description: line.narration
+        description: line.narration,
       });
     }
     const bankAccount = await data.bankAccount;
@@ -372,12 +378,12 @@ export class ReportsService  {
       grandTotalAccountingSchemeCurrency: (+data.grandTotalAccountingSchemeCurrency).toFixed(
         2
       ),
-      vatReport: (await data.vatReport).map(x => ({
+      vatReport: (await data.vatReport).map((x) => ({
         vatRatePercent: (+x.vatRatePercent).toFixed(0),
         vatTotal: (+x.vatTotal).toFixed(2),
         vatTotalAccountingSchemeCurrency: (+x.vatTotalAccountingSchemeCurrencyRaw).toFixed(
           2
-        )
+        ),
       })),
       printRate:
         (await data.currency).displayName !==
@@ -387,7 +393,7 @@ export class ReportsService  {
       vatRegistered,
       buyerEmail: customer.invoicingEmail,
       sellerContact: organization.contact,
-      reverseCharge: data.reverseCharge
+      reverseCharge: data.reverseCharge,
     };
 
     try {

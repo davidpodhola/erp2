@@ -16,7 +16,7 @@ export class BankService extends BaseEntityService<
     return new Bank();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<BankModel>{
+  protected getRepository(transactionalEntityManager): Repository<BankModel> {
     return transactionalEntityManager.getRepository(Bank);
   }
   protected async doSave(

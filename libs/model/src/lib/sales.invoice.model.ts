@@ -7,8 +7,7 @@ import { BankAccountModel } from './bank.account.model';
 import { LanguageModel } from './language.model';
 import { OrganizationModel } from './organization.model';
 
-export interface SalesInvoiceModel
-  extends BaseModel {
+export interface SalesInvoiceModel extends BaseModel {
   grandTotal: number;
   grandTotalAccountingSchemeCurrency: number;
   totalLines: number;

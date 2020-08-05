@@ -2,7 +2,14 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { UpdateDateColumn } from 'typeorm';
 import { AccountingSchemeModel } from './accounting.scheme.model';
 import { CurrencyModel } from './currency.model';
-import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm/index';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm/index';
 import { AddressModel } from './address.model';
 import { CountryModel } from './country.model';
 import { OrganizationModel } from './organization.model';
@@ -48,7 +55,6 @@ const euMembersISOCodes = [
   'UK',
 ];
 
-
 @ObjectType()
 export abstract class EntityBase {
   @Field()
@@ -86,11 +92,9 @@ export abstract class EntityBase {
 export class SalesInvoiceVat extends EntityBase
   implements SalesInvoiceVatModel {
   @Field(() => SalesInvoice)
-  @ManyToOne(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.vatReport,
-    { nullable: false }
-  )
+  @ManyToOne(() => SalesInvoice, (salesInvoice) => salesInvoice.vatReport, {
+    nullable: false,
+  })
   invoice: SalesInvoiceModel;
 
   @Column({ type: 'numeric', scale: 2, precision: 12 })
@@ -120,11 +124,9 @@ export class SalesInvoiceVat extends EntityBase
 @ObjectType()
 export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   @Field(() => BankAccount)
-  @ManyToOne(
-    () => BankAccount,
-    bankAccount => bankAccount.salesInvoices,
-    { nullable: false }
-  )
+  @ManyToOne(() => BankAccount, (bankAccount) => bankAccount.salesInvoices, {
+    nullable: false,
+  })
   bankAccount: BankAccountModel;
 
   @Column({ type: 'date' })
@@ -136,27 +138,21 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   issuedOn: Date;
 
   @Field(() => Organization)
-  @ManyToOne(
-    () => Organization,
-    organization => organization.salesInvoices,
-    { nullable: false }
-  )
+  @ManyToOne(() => Organization, (organization) => organization.salesInvoices, {
+    nullable: false,
+  })
   organization: OrganizationModel;
 
   @Field(() => Currency)
-  @ManyToOne(
-    () => Currency,
-    currency => currency.salesInvoices,
-    { nullable: false }
-  )
+  @ManyToOne(() => Currency, (currency) => currency.salesInvoices, {
+    nullable: false,
+  })
   currency: CurrencyModel;
 
   @Field(() => Customer)
-  @ManyToOne(
-    () => Customer,
-    customer => customer.salesInvoices,
-    { nullable: false }
-  )
+  @ManyToOne(() => Customer, (customer) => customer.salesInvoices, {
+    nullable: false,
+  })
   customer: CustomerModel;
 
   get displayName(): string {
@@ -182,7 +178,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   @Field(() => [SalesInvoiceLine], { nullable: true })
   @OneToMany(
     () => SalesInvoiceLine,
-    salesInvoiceLine => salesInvoiceLine.invoice
+    (salesInvoiceLine) => salesInvoiceLine.invoice
   )
   lines: Array<SalesInvoiceLineModel>;
 
@@ -209,7 +205,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   @Field(() => [SalesInvoiceVat], { nullable: true })
   @OneToMany(
     () => SalesInvoiceVat,
-    salesInvoiceVat => salesInvoiceVat.invoice
+    (salesInvoiceVat) => salesInvoiceVat.invoice
   )
   vatReport: Array<SalesInvoiceVatModel>;
 
@@ -234,7 +230,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   paymentTermInDays: number;
 
   get printLanguage(): LanguageModel {
-    return languages.find(x => x.isoCode === this.printLanguageIsoCode);
+    return languages.find((x) => x.isoCode === this.printLanguageIsoCode);
   }
 
   set printLanguage(value: LanguageModel) {
@@ -264,29 +260,20 @@ export class Currency extends UniqueDisplayEntityBase implements CurrencyModel {
   @Field()
   isoCode: string;
 
-  @OneToMany(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.currency
-  )
+  @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.currency)
   salesInvoices: Array<SalesInvoiceModel>;
 
   @Field(() => [CurrencyRate], { nullable: true })
-  @OneToMany(
-    () => CurrencyRate,
-    currencyRate => currencyRate.from
-  )
+  @OneToMany(() => CurrencyRate, (currencyRate) => currencyRate.from)
   currencyRatesFrom: Array<CurrencyRateModel>;
 
   @Field(() => [CurrencyRate], { nullable: true })
-  @OneToMany(
-    () => CurrencyRate,
-    currencyRate => currencyRate.to
-  )
+  @OneToMany(() => CurrencyRate, (currencyRate) => currencyRate.to)
   currencyRatesTo: Array<CurrencyRateModel>;
 
   @OneToMany(
     () => AccountingScheme,
-    accountingScheme => accountingScheme.currency
+    (accountingScheme) => accountingScheme.currency
   )
   accountingSchemas: Array<AccountingSchemeModel>;
 }
@@ -304,7 +291,7 @@ export class Organization extends UniqueDisplayEntityBase
     () => Address,
     (address) => address.organizationRegisteredAddresses,
     {
-      nullable: true
+      nullable: true,
     }
   )
   legalAddress: AddressModel;
@@ -322,18 +309,13 @@ export class Organization extends UniqueDisplayEntityBase
   idNumber: string;
 
   @Field(() => BankAccount)
-  @ManyToOne(
-    () => BankAccount,
-    bankAccount => bankAccount.organizations,
-    { nullable: true }
-  )
+  @ManyToOne(() => BankAccount, (bankAccount) => bankAccount.organizations, {
+    nullable: true,
+  })
   bankAccount: BankAccountModel;
 
   @Field(() => [SalesInvoice], { nullable: true })
-  @OneToMany(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.organization
-  )
+  @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.organization)
   salesInvoices: Array<SalesInvoice>;
 
   @Column({ nullable: true })
@@ -344,7 +326,7 @@ export class Organization extends UniqueDisplayEntityBase
   @Field(() => AccountingScheme)
   @ManyToOne(
     () => AccountingScheme,
-    accountingScheme => accountingScheme.organizations,
+    (accountingScheme) => accountingScheme.organizations,
     { nullable: false }
   )
   accountingScheme: AccountingSchemeModel;
@@ -352,7 +334,7 @@ export class Organization extends UniqueDisplayEntityBase
   @Field(() => [DocumentNumberSequence], { nullable: true })
   @OneToMany(
     () => DocumentNumberSequence,
-    documentNumberSequence => documentNumberSequence.organization
+    (documentNumberSequence) => documentNumberSequence.organization
   )
   documentNumberSequences: Array<DocumentNumberSequence>;
 }
@@ -362,17 +344,15 @@ export class Organization extends UniqueDisplayEntityBase
 export class AccountingScheme extends UniqueDisplayEntityBase
   implements AccountingSchemeModel {
   @Field(() => Currency)
-  @ManyToOne(
-    () => Currency,
-    currency => currency.accountingSchemas,
-    { nullable: false }
-  )
+  @ManyToOne(() => Currency, (currency) => currency.accountingSchemas, {
+    nullable: false,
+  })
   currency: CurrencyModel;
 
   // do not propagate array of Organization to the client
   @OneToMany(
     () => Organization,
-    organization => organization.accountingScheme
+    (organization) => organization.accountingScheme
   )
   organizations: Promise<Array<Organization>>;
 }
@@ -397,13 +377,10 @@ export class Country extends UniqueDisplayEntityBase implements CountryModel {
 @ObjectType()
 export class Customer extends UniqueDisplayEntityBase implements CustomerModel {
   @Field(() => Address)
-  @ManyToOne(
-    () => Address,
-    address => address.customerRegistratedAddresses,
-    { nullable: false }
-  )
+  @ManyToOne(() => Address, (address) => address.customerRegistratedAddresses, {
+    nullable: false,
+  })
   legalAddress: AddressModel;
-
 
   @Column()
   @Field()
@@ -416,10 +393,7 @@ export class Customer extends UniqueDisplayEntityBase implements CustomerModel {
   vatNumber?: string;
 
   @Field(() => [SalesInvoice], { nullable: true })
-  @OneToMany(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.customer
-  )
+  @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.customer)
   salesInvoices: Promise<Array<SalesInvoice>>;
 
   @Column()
@@ -436,7 +410,7 @@ export class Customer extends UniqueDisplayEntityBase implements CustomerModel {
 export class Address extends EntityBase implements AddressModel {
   @Field(() => Country)
   @ManyToOne(() => Country, (country) => country.addresses, {
-    nullable: false
+    nullable: false,
   })
   country: CountryModel;
 
@@ -461,10 +435,7 @@ export class Address extends EntityBase implements AddressModel {
   organizationRegisteredAddresses: Array<OrganizationModel>;
 
   @Field(() => [Customer], { nullable: true })
-  @OneToMany(
-    () => Customer,
-    customer => customer.legalAddress
-  )
+  @OneToMany(() => Customer, (customer) => customer.legalAddress)
   customerRegistratedAddresses: Array<CustomerModel>;
 }
 
@@ -476,10 +447,7 @@ export class Bank extends UniqueDisplayEntityBase implements BankModel {
   bankIdentifierCode: string;
 
   @Field(() => [BankAccount], { nullable: true })
-  @OneToMany(
-    () => BankAccount,
-    bankAccount => bankAccount.bank
-  )
+  @OneToMany(() => BankAccount, (bankAccount) => bankAccount.bank)
   bankAccounts: Array<BankAccountModel>;
 }
 
@@ -495,11 +463,7 @@ export class BankAccount extends UniqueDisplayEntityBase
   @Field()
   swift: string;
   @Field(() => Bank)
-  @ManyToOne(
-    () => Bank,
-    bank => bank.bankAccounts,
-    { nullable: false }
-  )
+  @ManyToOne(() => Bank, (bank) => bank.bankAccounts, { nullable: false })
   bank: BankModel;
 
   @Column()
@@ -507,17 +471,11 @@ export class BankAccount extends UniqueDisplayEntityBase
   bankAccountCustomerPrintableNumber: string;
 
   @Field(() => [SalesInvoice], { nullable: true })
-  @OneToMany(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.bankAccount
-  )
+  @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.bankAccount)
   salesInvoices: Array<SalesInvoice>;
 
   @Field(() => [Organization], { nullable: true })
-  @OneToMany(
-    () => Organization,
-    organization => organization.bankAccount
-  )
+  @OneToMany(() => Organization, (organization) => organization.bankAccount)
   organizations: Array<Organization>;
 }
 
@@ -535,21 +493,17 @@ export class CurrencyRate extends EntityBase implements CurrencyRateModel {
   @Field()
   end: Date;
   @Field(() => Currency)
-  @ManyToOne(
-    () => Currency,
-    currency => currency.currencyRatesFrom,
-    { nullable: false }
-  )
+  @ManyToOne(() => Currency, (currency) => currency.currencyRatesFrom, {
+    nullable: false,
+  })
   from: CurrencyModel;
   @Column({ type: 'date' })
   @Field()
   start: Date;
   @Field(() => Currency)
-  @ManyToOne(
-    () => Currency,
-    currency => currency.currencyRatesTo,
-    { nullable: false }
-  )
+  @ManyToOne(() => Currency, (currency) => currency.currencyRatesTo, {
+    nullable: false,
+  })
   to: CurrencyModel;
 }
 
@@ -567,7 +521,7 @@ export class DocumentNumberSequence extends EntityBase {
   @Field(() => Organization)
   @ManyToOne(
     () => Organization,
-    organization => organization.documentNumberSequences,
+    (organization) => organization.documentNumberSequences,
     { nullable: false }
   )
   organization: OrganizationModel;
@@ -590,7 +544,7 @@ export class Tax extends EntityBase implements TaxModel {
 
   @OneToMany(
     () => SalesInvoiceLine,
-    salesInvoiceLine => salesInvoiceLine.lineTax
+    (salesInvoiceLine) => salesInvoiceLine.lineTax
   )
   salesInvoiceLine: Promise<Array<SalesInvoiceLine>>;
 }
@@ -605,11 +559,7 @@ export class SalesInvoiceLine extends EntityBase {
   lineOrder: number;
 
   @Field(() => Tax)
-  @ManyToOne(
-    () => Tax,
-    tax => tax.salesInvoiceLine,
-    { nullable: false }
-  )
+  @ManyToOne(() => Tax, (tax) => tax.salesInvoiceLine, { nullable: false })
   lineTax: TaxModel;
 
   @Column({ type: 'float8' })
@@ -617,11 +567,9 @@ export class SalesInvoiceLine extends EntityBase {
   linePrice: number;
 
   @Field(() => Product)
-  @ManyToOne(
-    () => Product,
-    product => product.salesInvoiceLine,
-    { nullable: false }
-  )
+  @ManyToOne(() => Product, (product) => product.salesInvoiceLine, {
+    nullable: false,
+  })
   product: ProductModel;
 
   @Column({ type: 'float8' })
@@ -629,11 +577,9 @@ export class SalesInvoiceLine extends EntityBase {
   quantity: number;
 
   @Field(() => SalesInvoice)
-  @ManyToOne(
-    () => SalesInvoice,
-    salesInvoice => salesInvoice.lines,
-    { nullable: false }
-  )
+  @ManyToOne(() => SalesInvoice, (salesInvoice) => salesInvoice.lines, {
+    nullable: false,
+  })
   invoice: SalesInvoiceModel;
 
   @Column()
@@ -647,7 +593,7 @@ export class Product extends UniqueDisplayEntityBase implements ProductModel {
   @Field(() => [SalesInvoiceLine], { nullable: true })
   @OneToMany(
     () => SalesInvoiceLine,
-    salesInvoiceLine => salesInvoiceLine.product
+    (salesInvoiceLine) => salesInvoiceLine.product
   )
   salesInvoiceLine: Promise<Array<SalesInvoiceLine>>;
 

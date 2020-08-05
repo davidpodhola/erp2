@@ -34,7 +34,9 @@ export class SalesInvoiceVatService extends BaseEntityService<
     return new SalesInvoiceVat();
   }
 
-  protected getRepository(transactionalEntityManager): Repository<SalesInvoiceVatModel>{
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<SalesInvoiceVatModel> {
     return transactionalEntityManager.getRepository(SalesInvoiceVat);
   }
 }

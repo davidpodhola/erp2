@@ -48,7 +48,7 @@ class TestInvoiceServiceImpl extends SalesInvoiceService {
       from: Promise.resolve(from),
       to: Promise.resolve(from),
       start: transactionDate,
-      end: transactionDate
+      end: transactionDate,
     });
 
     injector.salesInvoiceVatService = new SalesInvoiceVatService();
@@ -64,7 +64,7 @@ describe('SalesInvoiceService', () => {
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [TestInvoiceServiceImpl]
+      providers: [TestInvoiceServiceImpl],
     }).compile();
 
     service = app.get<TestInvoiceServiceImpl>(TestInvoiceServiceImpl);
@@ -74,19 +74,19 @@ describe('SalesInvoiceService', () => {
     id: 0,
     displayName: null,
     ratePercent: 10,
-    isStandard: false
+    isStandard: false,
   });
   const tax2 = Promise.resolve({
     id: 0,
     displayName: null,
     ratePercent: 18.5,
-    isStandard: false
+    isStandard: false,
   });
   const tax3 = Promise.resolve({
     id: 0,
     displayName: null,
     ratePercent: 21,
-    isStandard: false
+    isStandard: false,
   });
 
   describe('SalesInvoiceService', () => {
@@ -102,15 +102,15 @@ describe('SalesInvoiceService', () => {
           lineTax: tax1,
           product: null,
           quantity: 0,
-          narration: null
+          narration: null,
         },
         {
           linePrice: 10,
           lineTax: tax2,
           product: null,
           quantity: 0,
-          narration: null
-        }
+          narration: null,
+        },
       ];
       const invoice = new TestInvoice();
       invoice.lines = Promise.resolve(lines);
@@ -129,7 +129,7 @@ describe('SalesInvoiceService', () => {
       expect(vatReport.length).toBe(2);
       expect(
         roundNumber(
-          sum(vatReport.map(x => x.vatTotalAccountingSchemeCurrency)),
+          sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
           2
         )
       ).toBe(roundNumber(1111.85 - 1010, 2));
@@ -141,15 +141,15 @@ describe('SalesInvoiceService', () => {
           lineTax: tax1,
           product: null,
           quantity: 0,
-          narration: null
+          narration: null,
         },
         {
           linePrice: 0.1,
           lineTax: tax2,
           product: null,
           quantity: 0,
-          narration: null
-        }
+          narration: null,
+        },
       ];
       const invoice = new TestInvoice();
       invoice.lines = Promise.resolve(lines);
@@ -166,7 +166,7 @@ describe('SalesInvoiceService', () => {
       expect(vatReport.length).toBe(2);
       expect(
         roundNumber(
-          sum(vatReport.map(x => x.vatTotalAccountingSchemeCurrency)),
+          sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
           2
         )
       ).toBe(roundNumber(0.67 - 0.6, 2));
@@ -178,8 +178,8 @@ describe('SalesInvoiceService', () => {
           lineTax: tax3,
           product: null,
           quantity: 0,
-          narration: null
-        }
+          narration: null,
+        },
       ];
       const invoice = new TestInvoice();
       invoice.lines = Promise.resolve(lines);

@@ -16,7 +16,7 @@ const customer: CustomerModel = {
   id: 0,
   displayName: '',
   legalName: '',
-  legalAddress: {} as any
+  legalAddress: {} as any,
 };
 
 const invoice: SalesInvoiceModel = {
@@ -33,20 +33,20 @@ const invoice: SalesInvoiceModel = {
   currency: {} as any,
   totalLines: 0,
   transactionDate: new Date(),
-  organization: {  } as any,
+  organization: {} as any,
   dueDate: new Date(),
   bankAccount: {} as any,
   printed: false,
   issuedOn: new Date(),
   grandTotalAccountingSchemeCurrency: 0,
   grandTotal: 0,
-  totalLinesAccountingSchemeCurrency: 0
+  totalLinesAccountingSchemeCurrency: 0,
 };
 
 const product: ProductModel = {
   sku: '',
   id: 0,
-  displayName: ''
+  displayName: '',
 };
 
 const PRODUCT_PRICE = 123;
@@ -57,7 +57,7 @@ describe('SalesInvoiceLineService', () => {
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [SalesInvoiceLineService]
+      providers: [SalesInvoiceLineService],
     }).compile();
 
     service = app.get<SalesInvoiceLineService>(SalesInvoiceLineService);
@@ -71,7 +71,7 @@ describe('SalesInvoiceLineService', () => {
       lineOrder: 0,
       quantity: QUANTITY,
       lineTax: {} as any,
-      product
+      product,
     });
     expect(line.linePrice).toBe(QUANTITY * PRODUCT_PRICE);
   });

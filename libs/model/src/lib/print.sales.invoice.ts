@@ -27,7 +27,7 @@ export interface PrintSalesInvoice {
   reverseCharge: boolean;
 }
 
-export interface PrintSalesInvoiceParty  {
+export interface PrintSalesInvoiceParty {
   name: string;
   road: string;
   city: string;

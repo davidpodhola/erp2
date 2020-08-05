@@ -53,9 +53,9 @@ export abstract class BaseEntityService<
     relations?: string[]
   ): Promise<T> => ({
     ...entity,
-    ...await this.getRepository(transactionalEntityManager).findOne({
+    ...(await this.getRepository(transactionalEntityManager).findOne({
       where: { id: entity.id },
       relations,
-    })
-  })
+    })),
+  });
 }

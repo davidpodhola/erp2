@@ -34,13 +34,15 @@ export class CurrencyRateService extends BaseEntityService<
     from: CurrencyModel,
     org: OrganizationModel
   ) => {
-    const toCurrency : CurrencyModel =
+    const toCurrency: CurrencyModel =
       org?.accountingScheme?.currency ||
-      (await this.organizationService.reloadEntity(
-        transactionalEntityManager,
-        org,
-        ['accountingScheme', 'accountingScheme.currency']
-      )).accountingScheme.currency;
+      (
+        await this.organizationService.reloadEntity(
+          transactionalEntityManager,
+          org,
+          ['accountingScheme', 'accountingScheme.currency']
+        )
+      ).accountingScheme.currency;
 
     if (from.id === toCurrency.id)
       return {

@@ -205,9 +205,7 @@ export class SalesInvoiceService extends BaseEntityService<
     );
     if (!currencyRate)
       throw new Error(
-        `No currency rate for ${
-          invoiceWithLines.currency.displayName
-        } at ${invoiceWithLines.transactionDate}`
+        `No currency rate for ${invoiceWithLines.currency.displayName} at ${invoiceWithLines.transactionDate}`
       );
     const currencyMultiplyingRateToAccountingSchemeCurrency: number =
       currencyRate.currencyMultiplyingRate;
@@ -220,7 +218,8 @@ export class SalesInvoiceService extends BaseEntityService<
     const lineCalculatedTaxes = [];
     if (lines) {
       for (const line of lines) {
-        if (vatRegistered && !line.lineTax) throw new Error('Vat registered and no line tax');
+        if (vatRegistered && !line.lineTax)
+          throw new Error('Vat registered and no line tax');
 
         // make sure we work with number, so do not use +=
         invoiceWithLines.totalLines =

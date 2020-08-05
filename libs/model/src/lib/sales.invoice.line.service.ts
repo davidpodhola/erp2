@@ -41,12 +41,12 @@ export class SalesInvoiceLineService extends BaseEntityService<
   ): Promise<SalesInvoiceLineModel> {
     line.lineTax =
       args.lineTax ||
-      (args.lineTaxIsStandard ?
-        await this.taxService.getStandardTax(transactionalEntityManager) :
-        await this.taxService.loadEntity(
-        transactionalEntityManager,
-        args.lineTaxId
-      ));
+      (args.lineTaxIsStandard
+        ? await this.taxService.getStandardTax(transactionalEntityManager)
+        : await this.taxService.loadEntity(
+            transactionalEntityManager,
+            args.lineTaxId
+          ));
     line.product =
       args.product ||
       (args.productSku

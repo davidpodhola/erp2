@@ -387,9 +387,7 @@ export class ReportsService {
       })),
       printRate:
         data.currency.displayName !==
-        (accountingScheme
-          ? accountingScheme.currency.displayName
-          : '###'),
+        (accountingScheme ? accountingScheme.currency.displayName : '###'),
       vatRegistered,
       buyerEmail: customer.invoicingEmail,
       sellerContact: organization.contact,

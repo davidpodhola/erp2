@@ -11,11 +11,11 @@ import {
   CurrencyService,
   CurrencyServiceKey,
   CustomerService,
-  CustomerServiceKey,
+  CustomerServiceKey, DocumentNumberSequence,
   OrganizationService,
   OrganizationServiceKey,
   ProductService,
-  ProductServiceKey,
+  ProductServiceKey, SalesInvoice,
   SalesInvoiceLineSaveArgsModel,
   SalesInvoiceService, SalesInvoiceServiceKey, TaxService, TaxServiceKey
 } from '@erp2/model';
@@ -122,6 +122,12 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
         ratePercent: 21,
         isStandard: true
       });
+
+      const documentNumberSequence = new DocumentNumberSequence();
+      documentNumberSequence.current = 20201014;
+      documentNumberSequence.forType = SalesInvoice.name;
+      documentNumberSequence.organization = organization;
+      await entityManager.save(documentNumberSequence);
 
       const evalue = await customerService.save(entityManager, {
         legalAddress: {

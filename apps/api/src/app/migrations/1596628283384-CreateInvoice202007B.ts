@@ -103,8 +103,8 @@ export class CreateInvoice202007B1596628283384 extends BaseMigration
       {
         lineTaxIsStandard: true,
         productSku: 'EX',
-        linePrice: 94996,
-        quantity: 108.567,
+        linePrice: 124.6375 * 7000 / 8,
+        quantity: 124.6375,
         narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
         lineOrder: 1,
       },

@@ -146,8 +146,8 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
       {
         lineTaxIsStandard: true,
         product: expertWorks,
-        linePrice: 94996,
-        quantity: 108.567,
+        linePrice: 67.1125*7000/8,
+        quantity: 67.1125,
         narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
         lineOrder: 1,
       },

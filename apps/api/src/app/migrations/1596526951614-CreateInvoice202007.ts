@@ -88,7 +88,7 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
         displayName: 'main czk',
         currency: czk
       });
-      let organization = await organizationService.save(entityManager, {
+      const organization = await organizationService.save(entityManager, {
         displayName: 'NUCZ',
         legalName: ('NašeÚkoly.CZ s.r.o.'),
         legalAddress: {

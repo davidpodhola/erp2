@@ -3,7 +3,7 @@ import { ProductModel } from './product.model';
 import { ProductSaveArgsModel } from './product.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { Injectable } from '@nestjs/common';
-import { Product, Organization } from './entity.base';
+import { Product } from './entity.base';
 
 export const ProductServiceKey = 'ProductService';
 
@@ -17,7 +17,7 @@ export class ProductService extends BaseEntityService<
   }
 
   protected getRepository(transactionalEntityManager): Repository<ProductModel>{
-    return transactionalEntityManager.getRepository(Organization);
+    return transactionalEntityManager.getRepository(Product);
   }
 
   protected async doSave(

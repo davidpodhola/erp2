@@ -8,7 +8,7 @@ import { CurrencyService, CurrencyServiceKey } from './currency.service';
 import { SalesInvoiceLineService } from './sales.invoice.line.service';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ReportsService, ReportsServiceKey } from './reports.service';
-import { LanguagesService } from './languages.service';
+import { LanguagesService, LanguagesServiceKey } from './languages.service';
 import { CurrencyRateService, CurrencyRateServiceKey } from './currency.rate.service';
 import * as _ from "lodash";
 import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
@@ -35,7 +35,7 @@ export class SalesInvoiceService extends BaseEntityService<
     @Inject(forwardRef(() => SalesInvoiceLineService)) protected readonly salesInvoiceLineService : SalesInvoiceLineService,
     @Inject(TaxServiceKey) protected readonly taxService : TaxService,
     @Inject(ReportsServiceKey) protected readonly reportsServiceModel : ReportsService,
-    @Inject(OrganizationServiceKey) protected readonly languagesService : LanguagesService,
+    @Inject(LanguagesServiceKey) protected readonly languagesService : LanguagesService,
     @Inject(CurrencyRateServiceKey) protected readonly currencyRateService: CurrencyRateService,
     @Inject(SalesInvoiceVatServiceKey) protected readonly salesInvoiceVatService: SalesInvoiceVatService,
     @Inject(ReportsServiceKey) protected readonly reportsService : ReportsService,
@@ -154,6 +154,7 @@ export class SalesInvoiceService extends BaseEntityService<
     if (!invoiceWithLines) return invoiceWithLines;
 
     const currencyRate = await this.currencyRateService.getAccountingForDateAndOrg(
+      transactionalEntityManager,
       invoiceWithLines.transactionDate,
       await invoiceWithLines.currency,
       await invoiceWithLines.organization

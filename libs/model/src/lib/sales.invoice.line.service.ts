@@ -50,6 +50,7 @@ export class SalesInvoiceLineService extends BaseEntityService<
     await invoice.customer;
     line.linePrice = args.linePrice;
     line.quantity = args.quantity;
+    line.narration = args.narration;
 
     return line;
   }

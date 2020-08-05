@@ -14,7 +14,7 @@ import { SalesInvoiceModel } from './sales.invoice.model';
 import { ProductModel } from './product.model';
 import { TaxModel } from './tax.model';
 import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
-import { LanguageModel } from './language.model';
+import { LanguageModel, languages } from './language.model';
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
 
 const euMembersISOCodes = [
@@ -186,10 +186,6 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   )
   lines: Array<SalesInvoiceLineModel>;
 
-  @Column()
-  @Field()
-  narration: string;
-
   @Column({ type: 'float8' })
   @Field()
   totalLines: number;
@@ -238,8 +234,7 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   paymentTermInDays: number;
 
   get printLanguage(): LanguageModel {
-    // TODO: return languages.find(x => x.isoCode === this.printLanguageIsoCode);
-    return null;
+    return languages.find(x => x.isoCode === this.printLanguageIsoCode);
   }
 
   set printLanguage(value: LanguageModel) {

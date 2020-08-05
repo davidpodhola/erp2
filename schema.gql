@@ -38,7 +38,6 @@ type SalesInvoice {
   isCalculated: Boolean!
   grandTotal: Float!
   lines: [SalesInvoiceLine!]
-  narration: String!
   totalLines: Float!
   totalLinesAccountingSchemeCurrency: Float!
   grandTotalAccountingSchemeCurrency: Float!

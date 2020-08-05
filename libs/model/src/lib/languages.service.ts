@@ -1,9 +1,9 @@
-import { LanguageModel } from './language.model';
+import { LanguageModel, languages } from './language.model';
 import { Injectable } from '@nestjs/common';
 
 export const LanguagesServiceKey = 'LanguagesService';
 
 @Injectable()
 export class LanguagesService {
-  getLanguages: () => Array<LanguageModel>;
+  getLanguages = () : Array<LanguageModel> => languages;
 }

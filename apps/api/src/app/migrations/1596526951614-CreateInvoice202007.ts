@@ -17,7 +17,7 @@ import {
   ProductService,
   ProductServiceKey,
   SalesInvoiceLineSaveArgsModel,
-  SalesInvoiceService, SalesInvoiceServiceKey
+  SalesInvoiceService, SalesInvoiceServiceKey, TaxService, TaxServiceKey
 } from '@erp2/model';
 import { BaseMigration } from '../migration.service';
 
@@ -54,6 +54,10 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
 
       const salesInvoiceService: SalesInvoiceService = this.moduleRef.get(
         SalesInvoiceServiceKey
+      );
+
+      const taxService : TaxService = this.moduleRef.get(
+        TaxServiceKey
       );
 
       const czechia = await countryService.save(entityManager, {
@@ -112,6 +116,12 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
           sku: 'EX',
         }
       );
+
+      const standardTax = await taxService.save(entityManager,{
+        displayName: '21%',
+        ratePercent: 21,
+        isStandard: true
+      });
 
       const evalue = await customerService.save(entityManager, {
         legalAddress: {

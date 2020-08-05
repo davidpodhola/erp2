@@ -21,11 +21,39 @@ export class CurrencyRateService extends BaseEntityService<
     super();
   }
 
-  getAccountingForDateAndOrg: (
+  getAccountingForDateAndOrg = async (
+    transactionalEntityManager: EntityManager,
     transactionDate: Date,
     from: CurrencyModel,
     org: OrganizationModel
-  ) => Promise<CurrencyRateModel>;
+  ) => {
+    const toCurrency = await (await org.accountingScheme).currency;
+    const fromP = Promise.resolve(from);
+    if (from.id === toCurrency.id)
+      return {
+        id: 0,
+        displayName: '',
+        currencyMultiplyingRate: 1,
+        from: fromP,
+        to: fromP,
+        start: transactionDate,
+        end: transactionDate
+      };
+
+    return await this
+      .getRepository(transactionalEntityManager)
+      .createQueryBuilder('currencyRate')
+      .where(
+        'currencyRate.from = :from AND currencyRate.to = :to ' +
+        ' AND currencyRate.start <= :transactionDate AND currencyRate.end >= :transactionDate',
+        {
+          from: from.id,
+          to: toCurrency.id,
+          transactionDate
+        }
+      )
+      .getOne();
+  };
 
   protected async doSave(
     transactionalEntityManager: EntityManager,

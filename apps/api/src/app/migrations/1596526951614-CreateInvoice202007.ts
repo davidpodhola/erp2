@@ -127,7 +127,7 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
     documentNumberSequence.organization = organization;
     await entityManager.save(documentNumberSequence);
 
-    const evalue = await customerService.save(entityManager, {
+    const customer = await customerService.save(entityManager, {
       legalAddress: {
         country: czechia,
         city: 'Praha 3 Žižkov',
@@ -153,7 +153,7 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
       },
     ];
     const invoice = await salesInvoiceService.save(entityManager, {
-      customer: evalue,
+      customer,
       organization,
       paymentTermInDays: 14,
       transactionDate: issuedOn,

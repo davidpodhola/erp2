@@ -46,4 +46,12 @@ export class AccountingSchemeService extends BaseEntityService<
         );
     return accountingScheme;
   }
+
+  getAccountingScheme = async (
+    transactionalEntityManager: EntityManager,
+    displayName: string
+  ) =>
+    this.getRepository(transactionalEntityManager).findOne({
+      where: { displayName },
+    });
 }

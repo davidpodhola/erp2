@@ -7,6 +7,10 @@ import { CurrencyService, CurrencyServiceKey } from './currency.service';
 import { BaseEntityService } from './base.entity.service';
 import { OrganizationModel } from './organization.model';
 import { CurrencyRate } from './entity.base';
+import {
+  OrganizationService,
+  OrganizationServiceKey,
+} from './organization.service';
 
 export const CurrencyRateServiceKey = 'CurrencyRateService';
 
@@ -17,7 +21,9 @@ export class CurrencyRateService extends BaseEntityService<
 > {
   constructor(
     @Inject(CurrencyServiceKey)
-    protected readonly currencyService: CurrencyService
+    protected readonly currencyService: CurrencyService,
+    @Inject(OrganizationServiceKey)
+    protected readonly organizationService: OrganizationService
   ) {
     super();
   }
@@ -28,15 +34,21 @@ export class CurrencyRateService extends BaseEntityService<
     from: CurrencyModel,
     org: OrganizationModel
   ) => {
-    const toCurrency = await (await org.accountingScheme).currency;
-    const fromP = Promise.resolve(from);
+    const toCurrency : CurrencyModel =
+      org?.accountingScheme?.currency ||
+      (await this.organizationService.reloadEntity(
+        transactionalEntityManager,
+        org,
+        ['accountingScheme', 'accountingScheme.currency']
+      )).accountingScheme.currency;
+
     if (from.id === toCurrency.id)
       return {
         id: 0,
         displayName: '',
         currencyMultiplyingRate: 1,
-        from: fromP,
-        to: fromP,
+        from,
+        to: from,
         start: transactionDate,
         end: transactionDate,
       };
@@ -64,18 +76,18 @@ export class CurrencyRateService extends BaseEntityService<
     entity.currencyMultiplyingRate = args.currencyMultiplyingRate;
     entity.end = args.end;
     entity.start = args.start;
-    entity.from = args.from
-      ? args.from
-      : await currencyService.getCurrency(
-          transactionalEntityManager,
-          args.fromIsoCode
-        );
-    entity.to = args.to
-      ? args.to
-      : await currencyService.getCurrency(
-          transactionalEntityManager,
-          args.toIsoCode
-        );
+    entity.from =
+      args.from ||
+      (await currencyService.getCurrency(
+        transactionalEntityManager,
+        args.fromIsoCode
+      ));
+    entity.to =
+      args.to ||
+      (await currencyService.getCurrency(
+        transactionalEntityManager,
+        args.toIsoCode
+      ));
     return entity;
   }
 

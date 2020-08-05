@@ -309,7 +309,7 @@ export class ReportsService {
       name: organization.legalName,
       road: organizationLegalAddress.line1,
       city: organizationLegalAddress.city,
-      country: (await organizationLegalAddress.country).displayName,
+      country: organizationLegalAddress.country.displayName,
       vatNumber,
       zipCode: organizationLegalAddress.zipCode,
       registration: organization.registration,
@@ -321,7 +321,7 @@ export class ReportsService {
       name: customer.legalName,
       road: customerLegalAddress.line1,
       city: customerLegalAddress.city,
-      country: (await customerLegalAddress.country).displayName,
+      country: customerLegalAddress.country.displayName,
       vatNumber: customer.vatNumber,
       zipCode: customerLegalAddress.zipCode,
       registration: customer.idNumber,
@@ -337,7 +337,7 @@ export class ReportsService {
     for (const line of data.lines) {
       const lineTaxPercent = (await line.lineTax).ratePercent;
       items.push({
-        name: (await line.product).displayName,
+        name: line.product.displayName,
         itemPrice: _.round(line.linePrice / line.quantity, 2),
         items: line.quantity,
         totalLine: line.linePrice,
@@ -365,12 +365,12 @@ export class ReportsService {
       items,
       totalLines: (+data.totalLines).toFixed(2),
       grandTotal: (+data.grandTotal).toFixed(2),
-      currency: (await data.currency).displayName,
+      currency: data.currency.displayName,
       currencyMultiplyingRateToAccountingSchemeCurrency: (+data.currencyMultiplyingRateToAccountingSchemeCurrency).toFixed(
         3
       ),
       accountingSchemeCurrency: accountingScheme
-        ? (await accountingScheme.currency).displayName
+        ? accountingScheme.currency.displayName
         : '###',
       totalLinesAccountingSchemeCurrency: (+data.totalLinesAccountingSchemeCurrency).toFixed(
         2
@@ -386,9 +386,9 @@ export class ReportsService {
         ),
       })),
       printRate:
-        (await data.currency).displayName !==
+        data.currency.displayName !==
         (accountingScheme
-          ? (await accountingScheme.currency).displayName
+          ? accountingScheme.currency.displayName
           : '###'),
       vatRegistered,
       buyerEmail: customer.invoicingEmail,

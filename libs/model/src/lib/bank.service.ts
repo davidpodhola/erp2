@@ -32,4 +32,12 @@ export class BankService extends BaseEntityService<
   typeName(): string {
     return BankServiceKey;
   }
+
+  getBank = async (
+    transactionalEntityManager: EntityManager,
+    displayName: string
+  ) =>
+    this.getRepository(transactionalEntityManager).findOne({
+      where: { displayName },
+    });
 }

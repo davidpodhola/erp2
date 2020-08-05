@@ -38,12 +38,17 @@ export class BankAccountService extends BaseEntityService<
     bankAccountModel.iban = args.iban;
     bankAccountModel.bankAccountCustomerPrintableNumber =
       args.bankAccountCustomerPrintableNumber;
-    bankAccountModel.bank = args.bank
-      ? args.bank
-      : await this.bankService.loadEntity(
-          transactionalEntityManager,
-          args.bankId
-        );
+    bankAccountModel.bank =
+      args.bank ||
+      (args.bankDisplayName
+        ? await this.bankService.getBank(
+            transactionalEntityManager,
+            args.bankDisplayName
+          )
+        : await this.bankService.loadEntity(
+            transactionalEntityManager,
+            args.bankId
+          ));
     return bankAccountModel;
   }
 

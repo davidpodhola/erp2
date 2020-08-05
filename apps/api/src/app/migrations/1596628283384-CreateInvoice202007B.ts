@@ -26,7 +26,7 @@ import {
 } from '@erp2/model';
 import { BaseMigration } from '../migration.service';
 
-export class CreateInvoice2020071596526951614 extends BaseMigration
+export class CreateInvoice202007B1596628283384 extends BaseMigration
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
@@ -61,91 +61,48 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
 
     const taxService: TaxService = this.moduleRef.get(TaxServiceKey);
 
-    const czechia = await countryService.save(entityManager, {
-      isoCode: 'CZ',
-      displayName: 'Czech Republic',
-    });
-
-    const czk = await currencyService.save(entityManager, {
-      displayName: 'Kč',
-      isoCode: 'CZK',
-    });
-
-    const eur = await currencyService.save(entityManager, {
-      displayName: 'EUR',
-      isoCode: 'EUR',
-    });
-
-    const bank = await bankService.save(entityManager, {
-      bankIdentifierCode: 'FIOBCZPPXXX',
-      displayName: 'FIO',
-    });
-
     const bankAccount = await bankAccountService.save(entityManager, {
-      bank: bank,
-      displayName: 'FIO',
-      bankAccountCustomerPrintableNumber: '2600387156/2010',
-      iban: 'CZ4820100000002600387156',
+      bankDisplayName: 'FIO',
+      displayName: 'FIO-FO',
+      bankAccountCustomerPrintableNumber: '2301288334/2010',
+      iban: 'CZ7520100000002301288334',
       swift: 'FIOBCZPPXXX',
     });
 
-    const accountingScheme = await accountingSchemeService.save(entityManager, {
-      displayName: 'main czk',
-      currency: czk,
-    });
+    const accountingScheme = await accountingSchemeService.getAccountingScheme(
+      entityManager,
+      'main czk'
+    );
     const organization = await organizationService.save(entityManager, {
-      displayName: 'NUCZ',
-      legalName: 'NašeÚkoly.CZ s.r.o.',
+      displayName: 'DP',
+      legalName: 'David Podhola',
       legalAddress: {
-        city: 'Praha 10 Vinohrady',
-        line1: 'Korunní 2569/108a',
-        zipCode: '10100',
+        city: 'Chlístovice',
+        line1: 'Chlístovice 130',
+        zipCode: '28401',
         countryIsoCode: 'CZ',
       },
       bankAccount,
       accountingScheme,
-      registration: 'Spisová značka C 186129 vedená u Městského soudu v Praze',
-      contact: 'info@naseukoly.cz',
-      idNumber: '24180149',
-      vatNumber: 'CZ24180149',
-    });
-
-    const expertWorks = await productService.save(entityManager, {
-      displayName: 'Expertní práce',
-      sku: 'EX',
-    });
-
-    const standardTax = await taxService.save(entityManager, {
-      displayName: '21%',
-      ratePercent: 21,
-      isStandard: true,
+      registration: 'Fyzická osoba zapsaná v živnostenském rejstříku.',
+      contact: 'david@podhola.net',
+      idNumber: '87408961',
+      vatNumber: 'CZ7512222586',
     });
 
     const documentNumberSequence = new DocumentNumberSequence();
-    documentNumberSequence.current = 20201014;
+    documentNumberSequence.current = 20202004;
     documentNumberSequence.forType = SalesInvoice.name;
     documentNumberSequence.organization = organization;
     await entityManager.save(documentNumberSequence);
 
-    const customer = await customerService.save(entityManager, {
-      legalAddress: {
-        country: czechia,
-        city: 'Praha 3 Žižkov',
-        line1: 'Jičínská 1616/29',
-        zipCode: '13000',
-      },
-      displayName: 'evalue',
-      legalName: 'eValue.cz s.r.o.',
-      vatNumber: 'CZ03841812',
-      invoicingEmail: 'lukas.tomasek@evalue.cz',
-      idNumber: '03841812',
-    });
+    const customer = await customerService.getCustomer(entityManager, 'evalue');
 
     const issuedOn = new Date(2020, 7 - 1, 31);
     const lines: SalesInvoiceLineSaveArgsModel[] = [
       {
         lineTaxIsStandard: true,
-        product: expertWorks,
+        productSku: 'EX',
         linePrice: 94996,
         quantity: 108.567,
         narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
@@ -158,7 +115,7 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
       paymentTermInDays: 14,
       transactionDate: issuedOn,
       issuedOn,
-      currency: czk,
+      currencyIsoCode: 'CZK',
       lines,
     });
     await salesInvoiceService.confirm(entityManager, invoice);

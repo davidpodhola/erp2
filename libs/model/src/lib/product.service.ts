@@ -35,4 +35,9 @@ export class ProductService extends BaseEntityService<
   typeName(): string {
     return ProductServiceKey;
   }
+
+  getProduct = async (transactionalEntityManager: EntityManager, sku: string) =>
+    this.getRepository(transactionalEntityManager).findOne({
+      where: { sku },
+    });
 }

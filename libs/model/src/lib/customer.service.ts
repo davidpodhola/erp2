@@ -51,9 +51,11 @@ export class CustomerService extends BaseEntityService<
 
   getCustomer = (
     transactionalEntityManager: EntityManager,
-    displayName: string
+    displayName: string,
+    relations?: string[]
   ) =>
     this.getRepository(transactionalEntityManager).findOne({
       where: { displayName },
+      relations,
     });
 }

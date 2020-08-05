@@ -345,7 +345,7 @@ export class AccountingScheme extends UniqueDisplayEntityBase
   implements AccountingSchemeModel {
   @Field(() => Currency)
   @ManyToOne(() => Currency, (currency) => currency.accountingSchemas, {
-    nullable: false,
+    nullable: false, eager: true,
   })
   currency: CurrencyModel;
 

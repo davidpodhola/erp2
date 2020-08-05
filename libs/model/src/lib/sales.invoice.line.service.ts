@@ -39,26 +39,33 @@ export class SalesInvoiceLineService extends BaseEntityService<
     args: SalesInvoiceLineSaveArgsModel,
     line: SalesInvoiceLineModel
   ): Promise<SalesInvoiceLineModel> {
-    line.lineTax = args.lineTax
-      ? args.lineTax
-      : await this.taxService.loadEntity(
-          transactionalEntityManager,
-          args.lineTaxId
-        );
-    line.product = args.product
-      ? args.product
-      : await this.productService.loadEntity(
-          transactionalEntityManager,
-          args.productId
-        );
+    line.lineTax =
+      args.lineTax ||
+      (args.lineTaxIsStandard ?
+        await this.taxService.getStandardTax(transactionalEntityManager) :
+        await this.taxService.loadEntity(
+        transactionalEntityManager,
+        args.lineTaxId
+      ));
+    line.product =
+      args.product ||
+      (args.productSku
+        ? await this.productService.getProduct(
+            transactionalEntityManager,
+            args.productSku
+          )
+        : await this.productService.loadEntity(
+            transactionalEntityManager,
+            args.productId
+          ));
     line.lineOrder = args.lineOrder;
 
-    const invoice = args.invoice
-      ? args.invoice
-      : await this.salesInvoiceService.loadEntity(
-          transactionalEntityManager,
-          args.invoiceId
-        );
+    const invoice =
+      args.invoice ||
+      (await this.salesInvoiceService.loadEntity(
+        transactionalEntityManager,
+        args.invoiceId
+      ));
     line.invoice = invoice;
     await invoice.customer;
     line.linePrice = args.linePrice;

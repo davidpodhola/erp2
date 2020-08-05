@@ -81,18 +81,22 @@ export class SalesInvoiceService extends BaseEntityService<
     args: SalesInvoiceSaveArgsModel,
     invoice: SalesInvoiceModel
   ): Promise<SalesInvoiceModel> {
-    invoice.customer = args.customer
-      ? args.customer
-      : await this.customerService.getCustomer(
-          transactionalEntityManager,
-          args.customerDisplayName
-        );
-    const organization = args.organization
-      ? args.organization
-      : await this.organizationService.getOrg(
-          transactionalEntityManager,
-          args.organizationDisplayName
-        );
+    invoice.customer =
+      (args.customer &&
+        args.customer.legalAddress &&
+        args.customer.legalAddress.country &&
+        args.customer) ||
+      (await this.customerService.getCustomer(
+        transactionalEntityManager,
+        args.customerDisplayName || args.customer.displayName,
+        ['legalAddress', 'legalAddress.country']
+      ));
+    const organization =
+      args.organization ||
+      (await this.organizationService.getOrg(
+        transactionalEntityManager,
+        args.organizationDisplayName
+      ));
     invoice.organization = organization;
     invoice.bankAccount = organization.bankAccount;
     invoice.issuedOn = moment(args.issuedOn).startOf('day').toDate();
@@ -119,9 +123,8 @@ export class SalesInvoiceService extends BaseEntityService<
     // TODO: implement also other reverse charge conditions
     // see e.g. https://europa.eu/youreurope/business/taxation/vat/cross-border-vat/index_en.htm
     // or https://www.uctovani.net/clanek.php?t=Preneseni-danove-povinnosti-neboli-reverse-charge&idc=217
-    const customerCountry = await (await (await invoice.customer).legalAddress)
-      .country;
-    const supplierCountry = await (await organization.legalAddress).country;
+    const customerCountry = invoice.customer.legalAddress.country;
+    const supplierCountry = organization.legalAddress.country;
     invoice.reverseCharge =
       customerCountry.isEUMember &&
       supplierCountry.isEUMember &&
@@ -157,10 +160,10 @@ export class SalesInvoiceService extends BaseEntityService<
         transactionalEntityManager,
         {
           ...line1,
-          product: await line1.product,
+          product: line1.product,
           lineTax:
             vatRegistered && !invoice.reverseCharge
-              ? await line1.lineTax
+              ? line1.lineTax
               : await this.taxService.getZeroTax(transactionalEntityManager),
           invoice,
           lineOrder,
@@ -197,13 +200,13 @@ export class SalesInvoiceService extends BaseEntityService<
     const currencyRate = await this.currencyRateService.getAccountingForDateAndOrg(
       transactionalEntityManager,
       invoiceWithLines.transactionDate,
-      await invoiceWithLines.currency,
-      await invoiceWithLines.organization
+      invoiceWithLines.currency,
+      invoiceWithLines.organization
     );
     if (!currencyRate)
       throw new Error(
         `No currency rate for ${
-          (await invoiceWithLines.currency).displayName
+          invoiceWithLines.currency.displayName
         } at ${invoiceWithLines.transactionDate}`
       );
     const currencyMultiplyingRateToAccountingSchemeCurrency: number =
@@ -217,10 +220,12 @@ export class SalesInvoiceService extends BaseEntityService<
     const lineCalculatedTaxes = [];
     if (lines) {
       for (const line of lines) {
+        if (vatRegistered && !line.lineTax) throw new Error('Vat registered and no line tax');
+
         // make sure we work with number, so do not use +=
         invoiceWithLines.totalLines =
           +invoiceWithLines.totalLines + line.linePrice;
-        const lineTax = await line.lineTax;
+        const lineTax = line.lineTax;
         const vatTotal = vatRegistered
           ? +line.linePrice * (+lineTax.ratePercent / 100)
           : 0;

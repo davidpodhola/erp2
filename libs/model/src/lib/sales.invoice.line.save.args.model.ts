@@ -11,7 +11,9 @@ export interface SalesInvoiceLineSaveArgsModel extends BaseSaveArgsModel {
   lineOrder: number;
   product?: ProductModel;
   productId?: number;
+  productSku?: string;
   quantity: number;
   lineTax?: TaxModel;
   lineTaxId?: number;
+  lineTaxIsStandard?: boolean;
 }

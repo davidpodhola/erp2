@@ -1,13 +1,25 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
-import { CountryService, CountryServiceKey, OrganizationService, OrganizationServiceKey } from '@erp2/model';
-import { BaseMigration } from '../migration.service';
-import { CurrencyService, CurrencyServiceKey } from '../../../../../libs/model/src/lib/currency.service';
-import { BankService, BankServiceKey } from '../../../../../libs/model/src/lib/bank.service';
-import { BankAccountService, BankAccountServiceKey } from '../../../../../libs/model/src/lib/bank.account.service';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 import {
   AccountingSchemeService,
-  AccountingSchemeServiceKey
-} from '../../../../../libs/model/src/lib/accounting.scheme.service';
+  AccountingSchemeServiceKey,
+  BankAccountService,
+  BankAccountServiceKey,
+  BankService,
+  BankServiceKey,
+  CountryService,
+  CountryServiceKey,
+  CurrencyService,
+  CurrencyServiceKey,
+  CustomerService,
+  CustomerServiceKey,
+  OrganizationService,
+  OrganizationServiceKey,
+  ProductService,
+  ProductServiceKey,
+  SalesInvoiceLineSaveArgsModel,
+  SalesInvoiceService, SalesInvoiceServiceKey
+} from '@erp2/model';
+import { BaseMigration } from '../migration.service';
 
 export class CreateInvoice2020071596526951614 extends BaseMigration implements MigrationInterface {
 
@@ -32,7 +44,19 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
         CountryServiceKey
       );
 
-      await countryService.save(entityManager, {
+      const productService: ProductService = this.moduleRef.get(
+        ProductServiceKey
+      );
+
+      const customerService: CustomerService = this.moduleRef.get(
+        CustomerServiceKey
+      );
+
+      const salesInvoiceService: SalesInvoiceService = this.moduleRef.get(
+        SalesInvoiceServiceKey
+      );
+
+      const czechia = await countryService.save(entityManager, {
         isoCode: 'CZ',
         displayName: 'Czech Republic',
       });
@@ -82,6 +106,48 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
         idNumber: ('24180149'),
         vatNumber: 'CZ24180149',
       });
+
+      const expertWorks = await productService.save(entityManager, {
+          displayName: 'Expertní práce',
+          sku: 'EX',
+        }
+      );
+
+      const evalue = await customerService.save(entityManager, {
+        legalAddress: {
+          country: czechia,
+          city: ('Praha 3 Žižkov'),
+          line1: ('Jičínská 1616/29'),
+          zipCode: ('13000')
+        },
+        displayName: ('evalue'),
+        legalName: ('eValue.cz s.r.o.'),
+        vatNumber: ('CZ03841812'),
+        invoicingEmail: ('lukas.tomasek@evalue.cz'),
+        idNumber: ('03841812')
+      });
+
+      const issuedOn = new Date(2020, 7 - 1, 31);
+      const lines: SalesInvoiceLineSaveArgsModel[] = [
+        {
+          lineTax: null,
+          product: expertWorks,
+          linePrice: 94996,
+          quantity: 108.567,
+          narration: ('Vývoj projektu TEAS (Carvago) v červenci 2020'),
+          lineOrder: 1
+        },
+      ];
+      const invoice = await salesInvoiceService.save(entityManager,{
+        customer: evalue,
+        organization,
+        paymentTermInDays: 14,
+        transactionDate: issuedOn,
+        issuedOn,
+        currency: czk,
+        lines,
+      });
+      await salesInvoiceService.confirm(entityManager, invoice);
 
     }
 

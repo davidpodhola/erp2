@@ -1,5 +1,5 @@
-import { BaseSaveArgsModel } from '@erp2/model';
 import { SalesInvoiceModel } from './sales.invoice.model';
+import { BaseSaveArgsModel } from './base.save.args.model';
 
 export interface SalesInvoiceVatSaveArgsModel extends BaseSaveArgsModel {
   vatRatePercent: number;

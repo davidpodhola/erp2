@@ -5,8 +5,8 @@ import { BaseEntityService } from './base.entity.service';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ProductService, ProductServiceKey } from './product.service';
-import { SalesInvoiceService, SalesInvoiceServiceKey } from './sales.invoice.service';
-import { SalesInvoiceLine } from '@erp2/model';
+import { SalesInvoiceService } from './sales.invoice.service';
+import { SalesInvoiceLine } from './entity.base';
 
 export const SalesInvoiceLineServiceKey = 'SalesInvoiceLineService';
 

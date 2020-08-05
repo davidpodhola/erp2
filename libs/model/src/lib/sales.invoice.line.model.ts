@@ -1,7 +1,7 @@
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { TaxModel } from './tax.model';
 import { ProductModel } from './product.model';
-import { BaseModel } from '@erp2/model';
+import { BaseModel } from './base.model';
 
 export interface SalesInvoiceLineModel extends BaseModel {
   lineOrder: number;

@@ -2,8 +2,8 @@ import { BaseEntityService } from './base.entity.service';
 import { ProductModel } from './product.model';
 import { ProductSaveArgsModel } from './product.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
-import { Organization, Product } from '@erp2/model';
 import { Injectable } from '@nestjs/common';
+import { Product, Organization } from './entity.base';
 
 export const ProductServiceKey = 'ProductService';
 

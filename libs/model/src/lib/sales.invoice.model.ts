@@ -3,9 +3,9 @@ import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
 import { CurrencyModel } from './currency.model';
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
 import { CustomerModel } from './customer.model';
-import { OrganizationModel } from '@erp2/model';
 import { BankAccountModel } from './bank.account.model';
 import { LanguageModel } from './language.model';
+import { OrganizationModel } from './organization.model';
 
 export interface SalesInvoiceModel
   extends BaseModel {

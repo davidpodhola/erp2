@@ -1,4 +1,3 @@
-import { BaseEntityService, OrganizationService, OrganizationServiceKey, SalesInvoice } from '@erp2/model';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
@@ -6,7 +5,7 @@ import { BankAccountService, BankAccountServiceKey } from './bank.account.servic
 import { CustomerService, CustomerServiceKey } from './customer.service';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
-import { SalesInvoiceLineService, SalesInvoiceLineServiceKey } from './sales.invoice.line.service';
+import { SalesInvoiceLineService } from './sales.invoice.line.service';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ReportsService, ReportsServiceKey } from './reports.service';
 import { LanguagesService } from './languages.service';
@@ -15,6 +14,10 @@ import * as _ from "lodash";
 import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
 import { SalesInvoiceVatService, SalesInvoiceVatServiceKey } from './sales.invoice.vat.service';
 import { DocumentNumberingService, DocumentNumberingServiceKey } from './document.numbering.service';
+import { BaseEntityService } from './base.entity.service';
+import { OrganizationService } from './organization.service';
+import { OrganizationServiceKey } from './organization.service';
+import { SalesInvoice } from './entity.base';
 import moment = require('moment');
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';

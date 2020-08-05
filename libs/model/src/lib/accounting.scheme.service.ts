@@ -1,9 +1,10 @@
-import { AccountingScheme, BaseEntityService } from '@erp2/model';
 import { AccountingSchemeModel } from './accounting.scheme.model';
 import { AccountingSchemeSaveArgsModel } from './accounting.scheme.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
 import { Inject, Injectable } from '@nestjs/common';
+import { BaseEntityService } from './base.entity.service';
+import { AccountingScheme } from './entity.base';
 
 export const AccountingSchemeServiceKey = 'AccountingSchemeService';
 

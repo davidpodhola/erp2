@@ -5,6 +5,8 @@ import { OrganizationSaveArgsModel } from './organization.save.args.model';
 import { EntityManager, Repository } from 'typeorm';
 import { AddressService, AddressServiceKey } from './address.service';
 import { Organization } from './entity.base';
+import { BankAccountService, BankAccountServiceKey } from './bank.account.service';
+import { AccountingSchemeService, AccountingSchemeServiceKey } from './accounting.scheme.service';
 
 export const OrganizationServiceKey = 'OrganizationService';
 
@@ -14,7 +16,9 @@ export class OrganizationService extends BaseEntityService<
   OrganizationSaveArgsModel
 > {
   constructor(
-    @Inject(AddressServiceKey) public readonly addressService: AddressService
+    @Inject(AddressServiceKey) public readonly addressService: AddressService,
+    @Inject(BankAccountServiceKey) public readonly bankAccountService: BankAccountService,
+    @Inject(AccountingSchemeServiceKey) public readonly accountingSchemeService: AccountingSchemeService
   ) {
     super();
   }
@@ -37,6 +41,11 @@ export class OrganizationService extends BaseEntityService<
       args.legalAddress
     );
     organization.idNumber = args.idNumber;
+    organization.bankAccount =
+      args.bankAccount || await this.bankAccountService.loadEntity(transactionalEntityManager, args.bankAccountId);
+    organization.accountingScheme =
+      args.accountingScheme || await this.accountingSchemeService.loadEntity(transactionalEntityManager, args.accountingSchemeId);
+    organization.vatNumber = args.vatNumber;
 
     return organization;
   }

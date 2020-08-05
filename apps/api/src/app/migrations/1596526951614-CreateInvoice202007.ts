@@ -1,5 +1,5 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
-import { OrganizationService, OrganizationServiceKey } from '@erp2/model';
+import { CountryService, CountryServiceKey, OrganizationService, OrganizationServiceKey } from '@erp2/model';
 import { BaseMigration } from '../migration.service';
 import { CurrencyService, CurrencyServiceKey } from '../../../../../libs/model/src/lib/currency.service';
 import { BankService, BankServiceKey } from '../../../../../libs/model/src/lib/bank.service';
@@ -28,6 +28,14 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
       const accountingSchemeService: AccountingSchemeService = this.moduleRef.get(
         AccountingSchemeServiceKey
       );
+      const countryService: CountryService = this.moduleRef.get(
+        CountryServiceKey
+      );
+
+      await countryService.save(entityManager, {
+        isoCode: 'CZ',
+        displayName: 'Czech Republic',
+      });
 
       const czk = await currencyService.save(entityManager, {
         displayName: 'Kč',
@@ -56,8 +64,6 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
         displayName: 'main czk',
         currency: czk
       });
-      console.log('*** accountingScheme', accountingScheme);
-
       let organization = await organizationService.save(entityManager, {
         displayName: 'NUCZ',
         legalName: ('NašeÚkoly.CZ s.r.o.'),
@@ -67,13 +73,14 @@ export class CreateInvoice2020071596526951614 extends BaseMigration implements M
           zipCode: ('10100'),
           countryIsoCode: 'CZ'
         },
-        bankAccountId: bankAccount.id,
+        bankAccount,
         accountingScheme,
         registration: (
           'Spisová značka C 186129 vedená u Městského soudu v Praze'
         ),
         contact: ('info@naseukoly.cz'),
-        idNumber: ('24180149')
+        idNumber: ('24180149'),
+        vatNumber: 'CZ24180149',
       });
 
     }

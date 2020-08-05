@@ -3,9 +3,11 @@ import { ProductModel } from './product.model';
 import { ProductSaveArgsModel } from './product.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { Organization, Product } from '@erp2/model';
+import { Injectable } from '@nestjs/common';
 
 export const ProductServiceKey = 'ProductService';
 
+@Injectable()
 export class ProductService extends BaseEntityService<
   ProductModel,
   ProductSaveArgsModel

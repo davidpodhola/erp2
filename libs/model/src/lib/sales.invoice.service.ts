@@ -4,7 +4,7 @@ import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { BankAccountService, BankAccountServiceKey } from './bank.account.service';
 import { CustomerService, CustomerServiceKey } from './customer.service';
-import { Inject } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
 import { SalesInvoiceLineService, SalesInvoiceLineServiceKey } from './sales.invoice.line.service';
 import { TaxService, TaxServiceKey } from './tax.service';
@@ -19,6 +19,7 @@ import moment = require('moment');
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
 
+@Injectable()
 export class SalesInvoiceService extends BaseEntityService<
   SalesInvoiceModel,
   SalesInvoiceSaveArgsModel
@@ -28,7 +29,7 @@ export class SalesInvoiceService extends BaseEntityService<
     @Inject(CustomerServiceKey) protected readonly customerService : CustomerService,
     @Inject(OrganizationServiceKey) protected readonly organizationService : OrganizationService,
     @Inject(CurrencyServiceKey) protected readonly currencyService : CurrencyService,
-    @Inject(SalesInvoiceLineServiceKey) protected readonly salesInvoiceLineService : SalesInvoiceLineService,
+    @Inject(forwardRef(() => SalesInvoiceLineService)) protected readonly salesInvoiceLineService : SalesInvoiceLineService,
     @Inject(TaxServiceKey) protected readonly taxService : TaxService,
     @Inject(ReportsServiceKey) protected readonly reportsServiceModel : ReportsService,
     @Inject(OrganizationServiceKey) protected readonly languagesService : LanguagesService,

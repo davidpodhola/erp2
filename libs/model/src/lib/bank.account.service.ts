@@ -3,10 +3,11 @@ import { BankAccountModel } from './bank.account.model';
 import { BankAccountSaveArgsModel } from './bank.account.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { BankService, BankServiceKey } from './bank.service';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 export const BankAccountServiceKey = 'BankAccountService';
 
+@Injectable()
 export class BankAccountService extends BaseEntityService<
   BankAccountModel,
   BankAccountSaveArgsModel

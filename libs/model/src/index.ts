@@ -14,4 +14,5 @@ export * from './lib/organization.model';
 export * from './lib/organization.save.args.model';
 export * from './lib/organization.service';
 export * from './lib/entities';
+export * from './serviceProviders';
 

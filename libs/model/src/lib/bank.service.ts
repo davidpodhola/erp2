@@ -2,9 +2,11 @@ import { Bank, BaseEntityService } from '@erp2/model';
 import { BankModel } from './bank.model';
 import { BankSaveArgsModel } from './bank.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
+import { Injectable } from '@nestjs/common';
 
 export const BankServiceKey = 'BankService';
 
+@Injectable()
 export class BankService extends BaseEntityService<
   BankModel,
   BankSaveArgsModel

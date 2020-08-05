@@ -2,9 +2,11 @@ import { TaxModel } from './tax.model';
 import { BaseEntityService, Organization, Tax } from '@erp2/model';
 import { TaxSaveArgsModel } from './tax.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
+import { Injectable } from '@nestjs/common';
 
 export const TaxServiceKey = 'TaxService';
 
+@Injectable()
 export class TaxService extends BaseEntityService<
   TaxModel,
   TaxSaveArgsModel

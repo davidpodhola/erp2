@@ -3,10 +3,11 @@ import { AccountingSchemeModel } from './accounting.scheme.model';
 import { AccountingSchemeSaveArgsModel } from './accounting.scheme.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 export const AccountingSchemeServiceKey = 'AccountingSchemeService';
 
+@Injectable()
 export class AccountingSchemeService extends BaseEntityService<
   AccountingSchemeModel,
   AccountingSchemeSaveArgsModel

@@ -2,9 +2,11 @@ import { AddressService, BaseEntityService, Customer } from '@erp2/model';
 import { CustomerModel } from './customer.model';
 import { CustomerSaveArgsModel } from './customer.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
+import { Injectable } from '@nestjs/common';
 
 export const CustomerServiceKey = 'CustomerService';
 
+@Injectable()
 export class CustomerService extends BaseEntityService<
   CustomerModel,
   CustomerSaveArgsModel

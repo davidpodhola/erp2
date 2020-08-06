@@ -91,7 +91,7 @@ export class CreateInvoice202007B1596628283384 extends BaseMigration
     });
 
     const documentNumberSequence = new DocumentNumberSequence();
-    documentNumberSequence.current = 20202004;
+    documentNumberSequence.current = 20202005;
     documentNumberSequence.forType = SalesInvoice.name;
     documentNumberSequence.organization = organization;
     await entityManager.save(documentNumberSequence);
@@ -103,8 +103,8 @@ export class CreateInvoice202007B1596628283384 extends BaseMigration
       {
         lineTaxIsStandard: true,
         productSku: 'EX',
-        linePrice: 124.6375 * 7000 / 8,
-        quantity: 124.6375,
+        linePrice: 0.6*191.75*7000/8,
+        quantity: 0.6*191.75,
         narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
         lineOrder: 1,
       },

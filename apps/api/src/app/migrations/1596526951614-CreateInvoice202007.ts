@@ -146,8 +146,8 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
       {
         lineTaxIsStandard: true,
         product: expertWorks,
-        linePrice: 0.4*191.75*7000/8,
-        quantity: 0.4*191.75,
+        linePrice: (0.4 * 191.75 * 7000) / 8,
+        quantity: 0.4 * 191.75,
         narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
         lineOrder: 1,
       },
@@ -164,5 +164,7 @@ export class CreateInvoice2020071596526951614 extends BaseMigration
     await salesInvoiceService.confirm(entityManager, invoice);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    /* intentionally empty */
+  }
 }

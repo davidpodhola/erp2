@@ -24,9 +24,7 @@ describe(' Server Time', () => {
       async () => await new Promise((resolve) => setTimeout(resolve, 0))
     ); // wait for response
     await expect(
-      getByText(
-        new Date(SERVER_TIME_MOCK_NOW).toString()
-      )
+      getByText(new Date(SERVER_TIME_MOCK_NOW).toString())
     ).toBeTruthy();
   });
 });

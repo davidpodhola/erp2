@@ -3,20 +3,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonTitle,
   IonIcon,
   IonList,
   IonSelectOption,
   IonSelect,
   IonItem,
   IonLabel,
-  IonDatetime
-} from '@ionic/react'
+  IonDatetime,
+} from '@ionic/react';
 
 /* eslint-disable-next-line */
 export interface UiMobileProps {}
@@ -32,13 +26,13 @@ export const UiMobile = (props: UiMobileProps) => {
 
       <IonList lines="none">
         <IonItem>
-          <IonIcon name="calendar" slot="start"></IonIcon>
+          <IonIcon name="calendar" slot="start" />
           <IonLabel>Date Picker</IonLabel>
-          <IonDatetime displayFormat="MMM DD, YYYY" max="2056" value={null}></IonDatetime>
+          <IonDatetime displayFormat="MMM DD, YYYY" max="2056" value={null} />
         </IonItem>
 
         <IonItem>
-          <IonIcon name="pin" slot="start"></IonIcon>
+          <IonIcon name="pin" slot="start" />
           <IonLabel>Selector</IonLabel>
           <IonSelect>
             <IonSelectOption value="madison">Madison, WI</IonSelectOption>

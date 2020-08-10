@@ -1,17 +1,27 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { AddressService, AddressServiceKey, CountryService, CountryServiceKey } from '@erp2/model';
+import {
+  AddressService,
+  AddressServiceKey,
+  CountryService,
+  CountryServiceKey,
+} from '@erp2/model';
 import { BaseMigration } from '../migration.service';
 
-export class CreateAnAddress1595508635328 extends BaseMigration implements MigrationInterface {
+export class CreateAnAddress1595508635328 extends BaseMigration
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
-    const countryService: CountryService = this.moduleRef.get(CountryServiceKey);
+    const countryService: CountryService = this.moduleRef.get(
+      CountryServiceKey
+    );
     await countryService.save(entityManager, {
       isoCode: 'ABC',
       displayName: 'A Country',
     });
 
-    const addressService: AddressService = this.moduleRef.get(AddressServiceKey);
+    const addressService: AddressService = this.moduleRef.get(
+      AddressServiceKey
+    );
     const address = addressService.createEntity();
     address.city = 'City';
     address.zipCode = 'ABC 123';

@@ -10,6 +10,7 @@ import { serviceProviders } from './serviceProviders';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolvers } from './resolvers';
+import { ModelModule } from '@erp2/model';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -49,6 +50,7 @@ import { resolvers } from './resolvers';
         };
       },
     }),
+    ModelModule,
   ],
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],

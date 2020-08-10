@@ -18,9 +18,13 @@ export abstract class BaseEntityService<
 
   loadEntity = async (
     transactionalEntityManager: EntityManager,
-    id: number
+    id: number,
+    relations?: string[]
   ): Promise<T> =>
-    await this.getRepository(transactionalEntityManager).findOne(id);
+    await this.getRepository(transactionalEntityManager).findOne({
+      where: { id },
+      relations,
+    });
   loadEntities = async (
     transactionalEntityManager: EntityManager
   ): Promise<Array<T>> =>
@@ -43,4 +47,15 @@ export abstract class BaseEntityService<
   ): Promise<void> => {
     await this.getRepository(transactionalEntityManager).remove(t);
   };
+  reloadEntity = async (
+    transactionalEntityManager: EntityManager,
+    entity: T,
+    relations?: string[]
+  ): Promise<T> => ({
+    ...entity,
+    ...(await this.getRepository(transactionalEntityManager).findOne({
+      where: { id: entity.id },
+      relations,
+    })),
+  });
 }

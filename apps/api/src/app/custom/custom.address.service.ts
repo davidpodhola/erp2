@@ -1,4 +1,8 @@
-import { AddressModel, AddressSaveArgsModel, AddressService } from '@erp2/model';
+import {
+  AddressModel,
+  AddressSaveArgsModel,
+  AddressService,
+} from '@erp2/model';
 import { Injectable } from '@nestjs/common';
 import { CustomAddress, HasNote } from './custom.address';
 import { EntityManager, Repository } from 'typeorm';

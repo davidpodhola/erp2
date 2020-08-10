@@ -3,12 +3,11 @@ import { SalesInvoiceLineService } from './sales.invoice.line.service';
 import { ProductModel } from './product.model';
 import { CustomerModel } from './customer.model';
 import { SalesInvoiceModel } from './sales.invoice.model';
-
-/*const mockAuthService = {};
-export const mockAuthServiceProvider = {
-  provide: Auth0Service,
-  useValue: mockAuthService
-};*/
+import {
+  ProductServiceKey,
+  SalesInvoiceServiceKey,
+  TaxServiceKey,
+} from '@erp2/model';
 
 const customer: CustomerModel = {
   invoicingEmail: '',
@@ -52,27 +51,54 @@ const product: ProductModel = {
 const PRODUCT_PRICE = 123;
 const QUANTITY = 10;
 
+const mockTaxService = {};
+export const mockTaxServiceProvider = {
+  provide: TaxServiceKey,
+  useValue: mockTaxService,
+};
+const mockProductService = {};
+export const mockProductServiceProvider = {
+  provide: ProductServiceKey,
+  useValue: mockProductService,
+};
+const mockSalesInvoiceService = {};
+export const mockSalesInvoiceServiceProvider = {
+  provide: SalesInvoiceServiceKey,
+  useValue: mockSalesInvoiceService,
+};
+
+const mockEntityManager = {
+  getRepository: () => ({
+    save: (x) => x,
+  }),
+} as any;
+
 describe('SalesInvoiceLineService', () => {
   let service: SalesInvoiceLineService;
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [SalesInvoiceLineService],
+      providers: [
+        SalesInvoiceLineService,
+        mockTaxServiceProvider,
+        mockProductServiceProvider,
+        mockSalesInvoiceServiceProvider,
+      ],
     }).compile();
 
     service = app.get<SalesInvoiceLineService>(SalesInvoiceLineService);
   });
 
-  it('line price is correctly calculated', async () => {
-    const line = await service.save(null, {
+  it('line price is taken from the linePrice field (no calculation yet)', async () => {
+    const line = await service.save(mockEntityManager, {
       narration: '',
-      linePrice: 0,
+      linePrice: 2 * QUANTITY,
       invoice,
       lineOrder: 0,
       quantity: QUANTITY,
       lineTax: {} as any,
       product,
     });
-    expect(line.linePrice).toBe(QUANTITY * PRODUCT_PRICE);
+    expect(line.linePrice).toBe(2 * QUANTITY);
   });
 });

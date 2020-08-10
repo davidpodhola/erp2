@@ -1,108 +1,172 @@
 import { Test } from '@nestjs/testing';
+import {
+  BankAccountServiceKey,
+  CurrencyModel,
+  CurrencyRateServiceKey,
+  CurrencyServiceKey,
+  CustomerServiceKey,
+  DocumentNumberingServiceKey,
+  LanguagesServiceKey,
+  OrganizationModel,
+  OrganizationServiceKey,
+  ProductServiceKey,
+  ReportsServiceKey,
+  SalesInvoice,
+  SalesInvoiceLineModel,
+  SalesInvoiceLineServiceKey,
+  SalesInvoiceService,
+  SalesInvoiceVatServiceKey,
+  TaxModel,
+  TaxServiceKey,
+} from '@erp2/model';
+import * as _ from 'lodash';
+import { EntityManager } from 'typeorm/index';
 
-class TestInvoice implements SalesInvoiceModel {
-  paymentTermInDays: number;
-  content: string;
-  printDate: Date;
-  printError: string;
-  printed: boolean;
-  isCalculated: boolean;
-  documentNo?: string;
-  isDraft: boolean;
-  currencyMultiplyingRateToAccountingSchemeCurrency: number;
-  grandTotalAccountingSchemeCurrency: number;
-  totalLinesAccountingSchemeCurrency: number;
-  vatReport: Promise<Array<SalesInvoiceVatModel>>;
-  bankAccount: Promise<BankAccountModel>;
-  currency: Promise<CurrencyModel>;
-  customer: Promise<CustomerModel>;
-  displayName: string;
-  dueDate: Date;
-  grandTotal: number;
-  id: any;
-  issuedOn: Date;
-  lines: Promise<Array<ProductQuantityPriceTaxModel>>;
-  narration: string;
-  organization = Promise.resolve({ vatRegistrations: [{}] } as any);
-  totalLines: number;
-  transactionDate: Date;
-  printLanguage: LanguageModel = {} as any;
-  reverseCharge: boolean;
-}
+const mockTaxService = {};
+export const mockTaxServiceProvider = {
+  provide: TaxServiceKey,
+  useValue: mockTaxService,
+};
+const mockProductService = {};
+export const mockProductServiceProvider = {
+  provide: ProductServiceKey,
+  useValue: mockProductService,
+};
+const mockSalesInvoiceLineService = {};
+export const mockSalesInvoiceLineServiceProvider = {
+  provide: SalesInvoiceLineServiceKey,
+  useValue: mockSalesInvoiceLineService,
+};
+const mockBankAccountService = {};
+export const mockBankAccountServiceProvider = {
+  provide: BankAccountServiceKey,
+  useValue: mockBankAccountService,
+};
+const mockCustomerService = {};
+export const mockCustomerServiceProvider = {
+  provide: CustomerServiceKey,
+  useValue: mockCustomerService,
+};
+const mockOrganizationService = {};
+export const mockOrganizationServiceProvider = {
+  provide: OrganizationServiceKey,
+  useValue: mockOrganizationService,
+};
+const mockCurrencyService = {};
+export const mockCurrencyServiceProvider = {
+  provide: CurrencyServiceKey,
+  useValue: mockCurrencyService,
+};
+const mockReportsService = {};
+export const mockReportsServiceProvider = {
+  provide: ReportsServiceKey,
+  useValue: mockReportsService,
+};
+const mockLanguagesService = {};
+export const mockLanguagesServiceProvider = {
+  provide: LanguagesServiceKey,
+  useValue: mockLanguagesService,
+};
+const mockCurrencyRateService = {
+  rate: 1,
+  getAccountingForDateAndOrg: (
+    transactionalEntityManager: EntityManager,
+    transactionDate: Date,
+    from: CurrencyModel,
+    org: OrganizationModel
+  ) => ({
+    id: 0,
+    displayName: '',
+    currencyMultiplyingRate: mockCurrencyRateService.rate,
+    from,
+    to: from,
+    start: transactionDate,
+    end: transactionDate,
+  }),
+};
+export const mockCurrencyRateServiceProvider = {
+  provide: CurrencyRateServiceKey,
+  useValue: mockCurrencyRateService,
+};
+const mockSalesInvoiceVatService = {
+  save: (transactionalEntityManager, entity) => entity,
+};
+export const mockSalesInvoiceVatServiceProvider = {
+  provide: SalesInvoiceVatServiceKey,
+  useValue: mockSalesInvoiceVatService,
+};
+const mockDocumentNumberingService = {};
+export const mockDocumentNumberingServiceProvider = {
+  provide: DocumentNumberingServiceKey,
+  useValue: mockDocumentNumberingService,
+};
 
-class TestInvoiceServiceImpl extends SalesInvoiceService {
-  rate = 1;
-
-  constructor() {
-    super();
-    const injector = ({} as any) as Injector;
-    injector.currencyRateService = new CurrencyRateService();
-    injector.currencyRateService.getAccountingForDateAndOrg = async (
-      transactionDate: Date,
-      from: CurrencyModel,
-      org: OrganizationModel
-    ) => ({
-      id: 0,
-      displayName: '',
-      currencyMultiplyingRate: this.rate,
-      from: Promise.resolve(from),
-      to: Promise.resolve(from),
-      start: transactionDate,
-      end: transactionDate,
-    });
-
-    injector.salesInvoiceVatService = new SalesInvoiceVatService();
-    injector.salesInvoiceVatService.createEntity = () =>
-      Promise.resolve({} as any);
-
-    this.getInjector = () => injector;
-  }
-}
+const mockEntityManager = {
+  getRepository: () => ({
+    save: (x) => x,
+  }),
+} as any;
 
 describe('SalesInvoiceService', () => {
-  let service: TestInvoiceServiceImpl;
+  let service: SalesInvoiceService;
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [TestInvoiceServiceImpl],
+      providers: [
+        SalesInvoiceService,
+        mockTaxServiceProvider,
+        mockProductServiceProvider,
+        mockSalesInvoiceLineServiceProvider,
+        mockBankAccountServiceProvider,
+        mockCustomerServiceProvider,
+        mockOrganizationServiceProvider,
+        mockCurrencyServiceProvider,
+        mockReportsServiceProvider,
+        mockLanguagesServiceProvider,
+        mockCurrencyRateServiceProvider,
+        mockSalesInvoiceVatServiceProvider,
+        mockDocumentNumberingServiceProvider,
+      ],
     }).compile();
 
-    service = app.get<TestInvoiceServiceImpl>(TestInvoiceServiceImpl);
+    service = app.get<SalesInvoiceService>(SalesInvoiceService);
   });
 
-  const tax1: Promise<TaxModel> = Promise.resolve({
+  const tax1: TaxModel = {
     id: 0,
     displayName: null,
     ratePercent: 10,
     isStandard: false,
-  });
-  const tax2 = Promise.resolve({
+  };
+  const tax2 = {
     id: 0,
     displayName: null,
     ratePercent: 18.5,
     isStandard: false,
-  });
-  const tax3 = Promise.resolve({
+  };
+  const tax3 = {
     id: 0,
     displayName: null,
     ratePercent: 21,
     isStandard: false,
-  });
+  };
 
   describe('SalesInvoiceService', () => {
     it('calculatePrices nothing returns null', async () => {
-      service.rate = 1;
-      const result = await service.calculatePrices(null);
+      const result = await service.calculatePrices(null, null);
       expect(result).toBeNull();
     });
     it('calculatePrices somelines return correct', async () => {
-      const lines: Array<ProductQuantityPriceTaxModel> = [
+      const lines: Array<SalesInvoiceLineModel> = [
         {
           linePrice: 1000,
           lineTax: tax1,
           product: null,
           quantity: 0,
           narration: null,
+          id: 1,
+          lineOrder: 1,
+          invoice: null,
         },
         {
           linePrice: 10,
@@ -110,29 +174,34 @@ describe('SalesInvoiceService', () => {
           product: null,
           quantity: 0,
           narration: null,
+          id: 2,
+          lineOrder: 2,
+          invoice: null,
         },
       ];
-      const invoice = new TestInvoice();
-      invoice.lines = Promise.resolve(lines);
-      service.rate = 1;
-      const result = await service.calculatePrices(invoice);
+      const invoice = new SalesInvoice();
+      invoice.lines = lines;
+      invoice.organization = { vatNumber: 'ABC' } as any;
+      invoice.lines.forEach((x) => (x.invoice = invoice));
+      mockCurrencyRateService.rate = 1;
+      const result = await service.calculatePrices(null, invoice);
       expect(result).not.toBeUndefined();
       expect(result).not.toBeNull();
-      const resultLines = await result.lines;
+      const resultLines = result.lines;
       expect(resultLines).not.toBeNull();
       expect(resultLines.length).toBe(lines.length);
       expect(result.grandTotal).toBe(1111.85);
       expect(result.totalLines).toBe(1010);
-      const vatReport = await result.vatReport;
+      const vatReport = result.vatReport;
       expect(vatReport).not.toBeUndefined();
       expect(vatReport).not.toBeNull();
       expect(vatReport.length).toBe(2);
       expect(
-        roundNumber(
-          sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
+        _.round(
+          _.sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
           2
         )
-      ).toBe(roundNumber(1111.85 - 1010, 2));
+      ).toBe(_.round(1111.85 - 1010, 2));
     });
     it('calculatePrices should round correctly', async () => {
       const lines = [
@@ -142,6 +211,9 @@ describe('SalesInvoiceService', () => {
           product: null,
           quantity: 0,
           narration: null,
+          lineOrder: 1,
+          id: 1,
+          invoice: null,
         },
         {
           linePrice: 0.1,
@@ -149,27 +221,32 @@ describe('SalesInvoiceService', () => {
           product: null,
           quantity: 0,
           narration: null,
+          lineOrder: 2,
+          id: 2,
+          invoice: null,
         },
       ];
-      const invoice = new TestInvoice();
-      invoice.lines = Promise.resolve(lines);
-      service.rate = 1;
-      const result = await service.calculatePrices(invoice);
+      const invoice = new SalesInvoice();
+      invoice.lines = lines;
+      invoice.organization = { vatNumber: 'ABC' } as any;
+      invoice.lines.forEach((x) => (x.invoice = invoice));
+      mockCurrencyRateService.rate = 1;
+      const result = await service.calculatePrices(null, invoice);
       expect(result).not.toBeUndefined();
       expect(result).not.toBeNull();
-      const resultLines = await result.lines;
+      const resultLines = result.lines;
       expect(resultLines).not.toBeNull();
       expect(resultLines.length).toBe(lines.length);
       expect(result.grandTotal).toBe(0.67);
       expect(result.totalLines).toBe(0.6);
-      const vatReport = await result.vatReport;
+      const vatReport = result.vatReport;
       expect(vatReport.length).toBe(2);
       expect(
-        roundNumber(
-          sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
+        _.round(
+          _.sum(vatReport.map((x) => x.vatTotalAccountingSchemeCurrency)),
           2
         )
-      ).toBe(roundNumber(0.67 - 0.6, 2));
+      ).toBe(_.round(0.67 - 0.6, 2));
     });
     it('calculatePrices should work with the currency rate correctly', async () => {
       const lines = [
@@ -179,20 +256,25 @@ describe('SalesInvoiceService', () => {
           product: null,
           quantity: 0,
           narration: null,
+          lineOrder: 1,
+          id: 1,
+          invoice: null,
         },
       ];
-      const invoice = new TestInvoice();
-      invoice.lines = Promise.resolve(lines);
-      service.rate = 24.29;
-      const result = await service.calculatePrices(invoice);
+      const invoice = new SalesInvoice();
+      invoice.lines = lines;
+      invoice.organization = { vatNumber: 'ABC' } as any;
+      invoice.lines.forEach((x) => (x.invoice = invoice));
+      mockCurrencyRateService.rate = 24.29;
+      const result = await service.calculatePrices(null, invoice);
       expect(result).not.toBeUndefined();
       expect(result).not.toBeNull();
-      const resultLines = await result.lines;
+      const resultLines = result.lines;
       expect(resultLines).not.toBeNull();
       expect(resultLines.length).toBe(lines.length);
       expect(result.grandTotal).toBe(54.45);
       expect(result.totalLines).toBe(45);
-      const vatReport = await result.vatReport;
+      const vatReport = result.vatReport;
       expect(vatReport.length).toBe(1);
       expect(vatReport[0].vatRatePercent).toBe((await tax3).ratePercent);
       expect(vatReport[0].vatTotalAccountingSchemeCurrency).toBe(229.54);

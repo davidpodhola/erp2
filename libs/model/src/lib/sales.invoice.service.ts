@@ -209,7 +209,7 @@ export class SalesInvoiceService extends BaseEntityService<
       );
     const currencyMultiplyingRateToAccountingSchemeCurrency: number =
       currencyRate.currencyMultiplyingRate;
-    const lines = await invoiceWithLines.lines;
+    const lines = invoiceWithLines.lines;
 
     invoiceWithLines.totalLines = 0;
     invoiceWithLines.grandTotal = 0;

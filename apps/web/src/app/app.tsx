@@ -1,9 +1,13 @@
 import React from 'react';
 
 import { Ui, ServerTime } from '@erp2/ui';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const App = () => {
-  return (
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  // if (!isAuthenticated) loginWithRedirect();
+
+  return /*(isLoading || !isAuthenticated ) ? (<div>Loading...</div>) :*/ (
     <div className="main-container">
       <div className="alert alert-app-level">Alert</div>
       <header className="header header-6">Header</header>
@@ -12,6 +16,9 @@ export const App = () => {
         <div className="content-area">
           <Ui />
           <ServerTime />
+          <div
+            onClick={() => loginWithRedirect()}
+          >Login...</div>
         </div>
         <nav className="sidenav">sidenav</nav>
       </div>

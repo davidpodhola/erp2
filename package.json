@@ -30,6 +30,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.0.2",
+    "@auth0/auth0-react": "^1.0.0",
     "@capacitor/core": "^2.2.1",
     "@clr/core": "^4.0.0-rc.1",
     "@clr/react": "^4.0.0-rc.1",

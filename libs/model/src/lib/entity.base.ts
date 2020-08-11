@@ -1,15 +1,12 @@
+/**
+ * Please keep all the entities in this file to avoid circular dependencies see https://github.com/typeorm/typeorm/issues/4526
+ */
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UpdateDateColumn } from 'typeorm';
 import { AccountingSchemeModel } from './accounting.scheme.model';
 import { CurrencyModel } from './currency.model';
-import {
-  Column,
-  Entity,
-  Index,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm/index';
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm/index';
 import { AddressModel } from './address.model';
 import { CountryModel } from './country.model';
 import { OrganizationModel } from './organization.model';
@@ -23,6 +20,9 @@ import { TaxModel } from './tax.model';
 import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
 import { LanguageModel, languages } from './language.model';
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
+import { UserIdentityModel } from './user.identity.model';
+import { UserModel } from './user.model';
+import { UserToOrganizationModel } from './user.to.organization.model';
 
 const euMembersISOCodes = [
   'BE',
@@ -280,13 +280,69 @@ export class Currency extends UniqueDisplayEntityBase implements CurrencyModel {
 
 @Entity()
 @ObjectType()
+export class User extends EntityBase implements UserModel {
+  @Index({ unique: true })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  email?: string;
+
+  @Index({ unique: true })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  username?: string;
+
+  @Index({ unique: true })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  name?: string;
+
+  @Field(type => [UserIdentity], { nullable: true })
+  @OneToMany(
+    type => UserIdentity,
+    userIdentity => userIdentity.user
+  )
+  identities: Array<UserIdentity>;
+
+  @Field(type => [UserToOrganization], { nullable: true })
+  @OneToMany(
+    type => UserToOrganization,
+    userToOrganization => userToOrganization.user
+  )
+  organizations: Array<UserToOrganizationModel>;
+}
+
+@Entity()
+@ObjectType()
+export class UserToOrganization extends EntityBase
+  implements UserToOrganizationModel {
+  @Field(() => Organization)
+  @ManyToOne(
+    () => Organization,
+    organization => organization.users,
+    { nullable: false }
+  )
+  organization: OrganizationModel;
+
+  @Field(() => User)
+  @ManyToOne(
+    () => User,
+    appUser => appUser.organizations,
+    { nullable: false }
+  )
+  user: UserModel;
+
+  displayName: '';
+}
+
+@Entity()
+@ObjectType()
 export class Organization extends UniqueDisplayEntityBase
   implements OrganizationModel {
   @Column()
   @Field()
   contact: string;
 
-  @Field((type) => Address)
+  @Field(() => Address)
   @ManyToOne(
     () => Address,
     (address) => address.organizationRegisteredAddresses,
@@ -337,6 +393,13 @@ export class Organization extends UniqueDisplayEntityBase
     (documentNumberSequence) => documentNumberSequence.organization
   )
   documentNumberSequences: Array<DocumentNumberSequence>;
+
+  @Field(type => [UserToOrganization], { nullable: true })
+  @OneToMany(
+    type => UserToOrganization,
+    userToOrganization => userToOrganization.organization
+  )
+  users: Promise<Array<UserToOrganization>>;
 }
 
 @Entity()
@@ -602,4 +665,26 @@ export class Product extends UniqueDisplayEntityBase implements ProductModel {
   @Field()
   @Index({ unique: true })
   sku: string;
+}
+
+@Entity()
+@ObjectType()
+export class UserIdentity extends EntityBase implements UserIdentityModel {
+  @Index({ unique: true })
+  @Column()
+  @Field()
+  externalUser: string;
+
+  @Index()
+  @Column()
+  @Field()
+  provider: string;
+
+  @Field(() => User)
+  @ManyToOne(
+    () => User,
+    user => user.identities,
+    { nullable: false }
+  )
+  user: UserModel;
 }

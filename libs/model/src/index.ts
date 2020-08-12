@@ -25,6 +25,7 @@ export * from './lib/currency.service';
 export * from './lib/customer.model';
 export * from './lib/customer.save.args.model';
 export * from './lib/customer.service';
+export * from './lib/date.service';
 export * from './lib/document.numbering.service';
 export * from './lib/entities';
 export * from './lib/entity.base';
@@ -53,5 +54,6 @@ export * from './lib/tax.model';
 export * from './lib/tax.save.args.model';
 export * from './lib/tax.service';
 export * from './lib/translation.service';
+export * from './lib/user.model';
 
 export * from './serviceProviders';

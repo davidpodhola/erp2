@@ -1,23 +1,15 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { InjectConnection } from '@nestjs/typeorm';
-import { ModuleRef } from '@nestjs/core';
-
-let _moduleRef: ModuleRef = null;
-
-export class BaseMigration {
-  get moduleRef(): ModuleRef {
-    return _moduleRef;
-  }
-}
+import { ModuleReferenceService } from './module.reference.service';
 
 @Injectable()
 export class MigrationService implements OnModuleInit {
   constructor(
     @InjectConnection() readonly connection: Connection,
-    moduleRef: ModuleRef
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Inject() moduleReferenceService: ModuleReferenceService,
   ) {
-    _moduleRef = moduleRef;
   }
 
   async onModuleInit(): Promise<void> {

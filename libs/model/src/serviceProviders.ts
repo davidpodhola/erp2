@@ -43,6 +43,7 @@ import {
   TranslationService,
   TranslationServiceKey,
 } from './lib/translation.service';
+import { DateService, DateServiceKey } from './lib/date.service';
 
 const accountingSchemeServiceProvider = {
   provide: AccountingSchemeServiceKey,
@@ -134,6 +135,11 @@ const translationServiceProvider = {
   useClass: TranslationService,
 };
 
+const dateServiceProvider = {
+  provide: DateServiceKey,
+  useClass: DateService,
+};
+
 export const serviceProviders = [
   accountingSchemeServiceProvider,
   addressServiceProvider,
@@ -153,4 +159,5 @@ export const serviceProviders = [
   salesInvoiceVatServiceProvider,
   taxServiceProvider,
   translationServiceProvider,
+  dateServiceProvider,
 ];

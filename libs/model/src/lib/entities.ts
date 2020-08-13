@@ -13,7 +13,7 @@ import {
   DocumentNumberSequence,
   Tax,
   SalesInvoiceLine,
-  Product,
+  Product, User, UserToOrganization, UserIdentity
 } from './entity.base';
 
 export const entities = [
@@ -32,4 +32,7 @@ export const entities = [
   Tax,
   SalesInvoiceLine,
   Product,
+  User,
+  UserToOrganization,
+  UserIdentity,
 ];

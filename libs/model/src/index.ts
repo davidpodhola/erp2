@@ -1,3 +1,7 @@
+/**
+ * generate this part by running `ls -1 ./lib/*';`
+ */
+
 export * from './lib/accounting.scheme.model';
 export * from './lib/accounting.scheme.save.args.model';
 export * from './lib/accounting.scheme.service';
@@ -54,6 +58,14 @@ export * from './lib/tax.model';
 export * from './lib/tax.save.args.model';
 export * from './lib/tax.service';
 export * from './lib/translation.service';
+export * from './lib/user.identity.model';
 export * from './lib/user.model';
+export * from './lib/user.profile.model.identity';
+export * from './lib/user.profile.model';
+export * from './lib/user.save.args.model';
+export * from './lib/user.service';
+export * from './lib/user.to.organization.model';
+export * from './lib/user.to.organization.save.args.model';
+export * from './lib/user.to.organization.service';
 
 export * from './serviceProviders';

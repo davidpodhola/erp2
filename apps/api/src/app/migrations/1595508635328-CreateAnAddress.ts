@@ -5,13 +5,13 @@ import {
   CountryService,
   CountryServiceKey,
 } from '@erp2/model';
-import { BaseMigration } from '../migration.service';
+import { getService } from '../module.reference.service';
 
-export class CreateAnAddress1595508635328 extends BaseMigration
+export class CreateAnAddress1595508635328
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
-    const countryService: CountryService = this.moduleRef.get(
+    const countryService: CountryService = getService(
       CountryServiceKey
     );
     await countryService.save(entityManager, {
@@ -19,7 +19,7 @@ export class CreateAnAddress1595508635328 extends BaseMigration
       displayName: 'A Country',
     });
 
-    const addressService: AddressService = this.moduleRef.get(
+    const addressService: AddressService = getService(
       AddressServiceKey
     );
     const address = addressService.createEntity();
@@ -35,6 +35,6 @@ export class CreateAnAddress1595508635328 extends BaseMigration
   }
 
   public async down(): Promise<void> {
-    /* not supported */
+    /* intentionally empty */
   }
 }

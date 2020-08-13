@@ -1,12 +1,11 @@
 import { Test } from '@nestjs/testing';
-import { SalesInvoiceLineService } from './sales.invoice.line.service';
 import { ProductModel } from './product.model';
 import { CustomerModel } from './customer.model';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import {
-  ProductServiceKey,
+  ProductServiceKey, SalesInvoiceLineService,
   SalesInvoiceServiceKey,
-  TaxServiceKey,
+  TaxServiceKey
 } from '@erp2/model';
 
 const customer: CustomerModel = {

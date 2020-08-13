@@ -5,7 +5,7 @@ import {
   CountryService,
   CountryServiceKey,
 } from '@erp2/model';
-import { getService } from '../module.reference.service';
+import { getService } from '../../../../../libs/model/src/lib/module.reference.service';
 
 export class CreateAnAddress1595508635328
   implements MigrationInterface {

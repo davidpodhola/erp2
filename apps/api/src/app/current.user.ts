@@ -2,7 +2,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ManagementClient } from 'auth0';
 import { UserServiceKey } from '../../../../libs/model/src/lib/user.service';
-import { getService } from './module.reference.service';
+import { getService } from '../../../../libs/model/src/lib/module.reference.service';
 
 let authZero = null;
 

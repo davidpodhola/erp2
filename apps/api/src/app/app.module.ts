@@ -11,6 +11,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolvers } from './resolvers';
 import { ModelModule } from '@erp2/model';
+import { ModuleReferenceService } from '@erp2/model';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -47,12 +48,13 @@ import { ModelModule } from '@erp2/model';
           autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
           debug: true,
           context: ({ req }) => ({ req }),
+          sortSchema: true,
         };
       },
     }),
     ModelModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],
+  providers: [AppService, ModuleReferenceService, MigrationService, ...serviceProviders, ...resolvers],
 })
 export class AppModule {}

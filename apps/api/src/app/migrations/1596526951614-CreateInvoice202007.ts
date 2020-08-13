@@ -24,7 +24,7 @@ import {
   TaxService,
   TaxServiceKey,
 } from '@erp2/model';
-import { getService } from '../module.reference.service';
+import { getService } from '../../../../../libs/model/src/lib/module.reference.service';
 
 export class CreateInvoice2020071596526951614
   implements MigrationInterface {

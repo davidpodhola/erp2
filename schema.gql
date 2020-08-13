@@ -64,6 +64,29 @@ type Currency {
   currencyRatesTo: [CurrencyRate!]
 }
 
+type User {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  email: String
+  username: String
+  name: String
+  identities: [UserIdentity!]
+  organizations: [UserToOrganization!]
+}
+
+type UserToOrganization {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  organization: Organization!
+  user: User!
+}
+
 type Organization {
   id: Float!
   updtTs: DateTime!
@@ -81,6 +104,7 @@ type Organization {
   vatNumber: String
   accountingScheme: AccountingScheme!
   documentNumberSequences: [DocumentNumberSequence!]
+  users: [UserToOrganization!]
 }
 
 type AccountingScheme {
@@ -218,6 +242,17 @@ type Product {
   displayName: String!
   salesInvoiceLine: [SalesInvoiceLine!]
   sku: String!
+}
+
+type UserIdentity {
+  id: Float!
+  updtTs: DateTime!
+  updtOpId: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  externalUser: String!
+  provider: String!
+  user: User!
 }
 
 type Query {

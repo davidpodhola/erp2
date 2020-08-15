@@ -34,7 +34,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-          
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -66,4 +66,4 @@ jobs:
           # The default PostgreSQL port
           NX_POSTGRES_PORT: 5432
           NX_POSTGRES_PASSWORD: postgres
-      - run: pkill node
+      - run: sleep 60 && pkill node

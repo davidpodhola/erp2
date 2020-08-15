@@ -15,17 +15,16 @@ import { ModuleReferenceService } from '@erp2/model';
 import { ModuleRef } from '@nestjs/core';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
 
-      host: 'localhost',
-      database: 'gt2',
-      port: 5432,
-      username: 'postgres',
-      password: 'Coggel86',
+      host: process.env.NX_POSTGRES_HOST,
+      database: process.env.NX_POSTGRES_DATABASE,
+      port: +process.env.NX_POSTGRES_PORT,
+      username: process.env.NX_POSTGRES_USER,
+      password: process.env.NX_POSTGRES_PASSWORD,
       ssl: false,
 
       synchronize: true,

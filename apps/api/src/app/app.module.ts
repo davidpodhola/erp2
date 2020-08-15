@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,6 +11,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolvers } from './resolvers';
 import { ModelModule } from '@erp2/model';
+import { ModuleReferenceService } from '@erp2/model';
+import { ModuleRef } from '@nestjs/core';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -47,6 +49,7 @@ import { ModelModule } from '@erp2/model';
           autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
           debug: true,
           context: ({ req }) => ({ req }),
+          sortSchema: true,
         };
       },
     }),
@@ -55,4 +58,8 @@ import { ModelModule } from '@erp2/model';
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private moduleRef: ModuleRef) {
+    new ModuleReferenceService(moduleRef);
+  }
+}

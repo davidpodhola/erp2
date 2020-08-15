@@ -8,7 +8,6 @@ import {
 import { CustomerService, CustomerServiceKey } from './customer.service';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
-import { SalesInvoiceLineService } from './sales.invoice.line.service';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ReportsService, ReportsServiceKey } from './reports.service';
 import { LanguagesService, LanguagesServiceKey } from './languages.service';
@@ -27,18 +26,99 @@ import {
   DocumentNumberingServiceKey,
 } from './document.numbering.service';
 import { BaseEntityService } from './base.entity.service';
-import { OrganizationService } from './organization.service';
-import { OrganizationServiceKey } from './organization.service';
-import { SalesInvoice } from './entity.base';
+import {
+  OrganizationService,
+  OrganizationServiceKey,
+} from './organization.service';
+import { SalesInvoice, SalesInvoiceLine } from './entity.base';
+import { getService } from './module.reference.service';
+import { SalesInvoiceLineModel } from './sales.invoice.line.model';
+import { SalesInvoiceLineSaveArgsModel } from './sales.invoice.line.save.args.model';
+import { ProductService, ProductServiceKey } from './product.service';
 import moment = require('moment');
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
+
+export const SalesInvoiceLineServiceKey = 'SalesInvoiceLineService';
+
+@Injectable()
+export class SalesInvoiceLineService extends BaseEntityService<
+  SalesInvoiceLineModel,
+  SalesInvoiceLineSaveArgsModel
+> {
+  salesInvoiceService: SalesInvoiceService;
+
+  createEntity(): SalesInvoiceLineModel {
+    return new SalesInvoiceLine();
+  }
+
+  protected getRepository(
+    transactionalEntityManager
+  ): Repository<SalesInvoiceLineModel> {
+    return transactionalEntityManager.getRepository(SalesInvoiceLine);
+  }
+
+  constructor(
+    @Inject(TaxServiceKey) public readonly taxService: TaxService,
+    @Inject(ProductServiceKey) public readonly productService: ProductService
+  ) {
+    super();
+    this.salesInvoiceService = getService(SalesInvoiceServiceKey);
+  }
+
+  protected async doSave(
+    transactionalEntityManager: EntityManager,
+    args: SalesInvoiceLineSaveArgsModel,
+    line: SalesInvoiceLineModel
+  ): Promise<SalesInvoiceLineModel> {
+    line.lineTax =
+      args.lineTax ||
+      (args.lineTaxIsStandard
+        ? await this.taxService.getStandardTax(transactionalEntityManager)
+        : await this.taxService.loadEntity(
+            transactionalEntityManager,
+            args.lineTaxId
+          ));
+    line.product =
+      args.product ||
+      (args.productSku
+        ? await this.productService.getProduct(
+            transactionalEntityManager,
+            args.productSku
+          )
+        : await this.productService.loadEntity(
+            transactionalEntityManager,
+            args.productId
+          ));
+    line.lineOrder = args.lineOrder;
+
+    const invoice =
+      args.invoice ||
+      (await this.salesInvoiceService.loadEntity(
+        transactionalEntityManager,
+        args.invoiceId
+      ));
+    line.invoice = invoice;
+    await invoice.customer;
+    line.linePrice = args.linePrice;
+    line.quantity = args.quantity;
+    line.narration = args.narration;
+
+    return line;
+  }
+
+  typeName(): string {
+    return SalesInvoiceLineServiceKey;
+  }
+}
 
 @Injectable()
 export class SalesInvoiceService extends BaseEntityService<
   SalesInvoiceModel,
   SalesInvoiceSaveArgsModel
 > {
+  salesInvoiceLineService: SalesInvoiceLineService;
+
   constructor(
     @Inject(BankAccountServiceKey)
     protected readonly bankAccountService: BankAccountService,
@@ -48,8 +128,6 @@ export class SalesInvoiceService extends BaseEntityService<
     protected readonly organizationService: OrganizationService,
     @Inject(CurrencyServiceKey)
     protected readonly currencyService: CurrencyService,
-    @Inject(forwardRef(() => SalesInvoiceLineService))
-    protected readonly salesInvoiceLineService: SalesInvoiceLineService,
     @Inject(TaxServiceKey) protected readonly taxService: TaxService,
     @Inject(ReportsServiceKey)
     protected readonly reportsServiceModel: ReportsService,
@@ -65,6 +143,7 @@ export class SalesInvoiceService extends BaseEntityService<
     protected readonly documentNumberingServiceModel: DocumentNumberingService
   ) {
     super();
+    this.salesInvoiceLineService = getService(SalesInvoiceLineServiceKey);
   }
 
   createEntity(): SalesInvoiceModel {

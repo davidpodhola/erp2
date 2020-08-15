@@ -5,23 +5,18 @@ import {
   CountryService,
   CountryServiceKey,
 } from '@erp2/model';
-import { BaseMigration } from '../migration.service';
+import { getService } from '@erp2/model';
 
-export class CreateAnAddress1595508635328 extends BaseMigration
-  implements MigrationInterface {
+export class CreateAnAddress1595508635328 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
-    const countryService: CountryService = this.moduleRef.get(
-      CountryServiceKey
-    );
+    const countryService: CountryService = getService(CountryServiceKey);
     await countryService.save(entityManager, {
       isoCode: 'ABC',
       displayName: 'A Country',
     });
 
-    const addressService: AddressService = this.moduleRef.get(
-      AddressServiceKey
-    );
+    const addressService: AddressService = getService(AddressServiceKey);
     const address = addressService.createEntity();
     address.city = 'City';
     address.zipCode = 'ABC 123';
@@ -35,6 +30,6 @@ export class CreateAnAddress1595508635328 extends BaseMigration
   }
 
   public async down(): Promise<void> {
-    /* not supported */
+    /* intentionally empty */
   }
 }

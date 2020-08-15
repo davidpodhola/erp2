@@ -24,42 +24,33 @@ import {
   TaxService,
   TaxServiceKey,
 } from '@erp2/model';
-import { BaseMigration } from '../migration.service';
+import { getService } from '../../../../../libs/model/src/lib/module.reference.service';
 
-export class CreateInvoice202007B1596628283384 extends BaseMigration
-  implements MigrationInterface {
+export class CreateInvoice202007B1596628283384 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
-    const organizationService: OrganizationService = this.moduleRef.get(
+    const organizationService: OrganizationService = getService(
       OrganizationServiceKey
     );
-    const currencyService: CurrencyService = this.moduleRef.get(
-      CurrencyServiceKey
-    );
-    const bankService: BankService = this.moduleRef.get(BankServiceKey);
-    const bankAccountService: BankAccountService = this.moduleRef.get(
+    const currencyService: CurrencyService = getService(CurrencyServiceKey);
+    const bankService: BankService = getService(BankServiceKey);
+    const bankAccountService: BankAccountService = getService(
       BankAccountServiceKey
     );
-    const accountingSchemeService: AccountingSchemeService = this.moduleRef.get(
+    const accountingSchemeService: AccountingSchemeService = getService(
       AccountingSchemeServiceKey
     );
-    const countryService: CountryService = this.moduleRef.get(
-      CountryServiceKey
-    );
+    const countryService: CountryService = getService(CountryServiceKey);
 
-    const productService: ProductService = this.moduleRef.get(
-      ProductServiceKey
-    );
+    const productService: ProductService = getService(ProductServiceKey);
 
-    const customerService: CustomerService = this.moduleRef.get(
-      CustomerServiceKey
-    );
+    const customerService: CustomerService = getService(CustomerServiceKey);
 
-    const salesInvoiceService: SalesInvoiceService = this.moduleRef.get(
+    const salesInvoiceService: SalesInvoiceService = getService(
       SalesInvoiceServiceKey
     );
 
-    const taxService: TaxService = this.moduleRef.get(TaxServiceKey);
+    const taxService: TaxService = getService(TaxServiceKey);
 
     const bankAccount = await bankAccountService.save(entityManager, {
       bankDisplayName: 'FIO',

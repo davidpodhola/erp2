@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolvers } from './resolvers';
 import { ModelModule } from '@erp2/model';
 import { ModuleReferenceService } from '@erp2/model';
+import { ModuleRef } from '@nestjs/core';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 
@@ -55,6 +56,10 @@ import { ModuleReferenceService } from '@erp2/model';
     ModelModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ModuleReferenceService, MigrationService, ...serviceProviders, ...resolvers],
+  providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private moduleRef: ModuleRef) {
+    new ModuleReferenceService(moduleRef);
+  }
+}

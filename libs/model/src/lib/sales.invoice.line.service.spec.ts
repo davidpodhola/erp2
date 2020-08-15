@@ -3,9 +3,10 @@ import { ProductModel } from './product.model';
 import { CustomerModel } from './customer.model';
 import { SalesInvoiceModel } from './sales.invoice.model';
 import {
-  ProductServiceKey, SalesInvoiceLineService,
+  ProductServiceKey,
+  SalesInvoiceLineService,
   SalesInvoiceServiceKey,
-  TaxServiceKey
+  TaxServiceKey,
 } from '@erp2/model';
 
 const customer: CustomerModel = {

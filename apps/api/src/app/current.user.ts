@@ -13,7 +13,7 @@ async function setUser(user) {
       domain: process.env.NX_AUTH0_DOMAIN,
       clientId: process.env.NX_SERVER_CLIENTID,
       clientSecret: process.env.NX_SERVER_CLIENT_SECRET,
-      scope: 'read:users update:users'
+      scope: 'read:users update:users',
     });
   }
 

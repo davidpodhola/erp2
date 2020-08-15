@@ -2,18 +2,66 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type SalesInvoiceVat {
+type AccountingScheme {
+  currency: Currency!
+  displayName: String!
+}
+
+type Address {
+  city: String!
+  country: Country!
+  customerRegistratedAddresses: [Customer!]
+  line1: String!
+  organizationRegisteredAddresses: [Organization!]
+  zipCode: String!
+}
+
+type Bank {
+  bankAccounts: [BankAccount!]
+  bankIdentifierCode: String!
+  displayName: String!
+}
+
+type BankAccount {
+  bank: Bank!
+  bankAccountCustomerPrintableNumber: String!
+  displayName: String!
+  iban: String!
+  organizations: [Organization!]
+  salesInvoices: [SalesInvoice!]
+  swift: String!
+}
+
+type Country {
+  addresses: [Address!]
+  displayName: String!
+  isoCode: String!
+}
+
+type Currency {
+  currencyRatesFrom: [CurrencyRate!]
+  currencyRatesTo: [CurrencyRate!]
+  displayName: String!
+  isoCode: String!
+}
+
+type CurrencyRate {
+  currencyMultiplyingRate: Float!
+  end: DateTime!
+  from: Currency!
   id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  invoice: SalesInvoice!
-  vatRatePercent: Float!
-  vatTotalAccountingSchemeCurrencyRaw: Float!
-  vatTotalRaw: Float!
-  vatTotalAccountingSchemeCurrency: Float!
-  vatTotal: Float!
+  start: DateTime!
+  to: Currency!
+}
+
+type Customer {
+  displayName: String!
+  idNumber: String!
+  invoicingEmail: String!
+  legalAddress: Address!
+  legalName: String!
+  salesInvoices: [SalesInvoice!]
+  vatNumber: String
 }
 
 """
@@ -21,246 +69,109 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type SalesInvoice {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  bankAccount: BankAccount!
-  dueDate: DateTime!
-  issuedOn: DateTime!
+type DocumentNumberSequence {
+  current: Float!
+  forType: String!
   organization: Organization!
-  currency: Currency!
-  customer: Customer!
-  documentNo: String
-  isDraft: Boolean!
-  isCalculated: Boolean!
-  grandTotal: Float!
-  lines: [SalesInvoiceLine!]
-  totalLines: Float!
-  totalLinesAccountingSchemeCurrency: Float!
-  grandTotalAccountingSchemeCurrency: Float!
-  currencyMultiplyingRateToAccountingSchemeCurrency: Float!
-  transactionDate: DateTime!
-  vatReport: [SalesInvoiceVat!]
-  printDate: DateTime
-  printed: Boolean!
-  printError: String
-  content: String
-  paymentTermInDays: Float!
-  reverseCharge: Boolean!
 }
 
-type Currency {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  isoCode: String!
-  currencyRatesFrom: [CurrencyRate!]
-  currencyRatesTo: [CurrencyRate!]
-}
-
-type User {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  email: String
-  username: String
-  name: String
-  identities: [UserIdentity!]
-  organizations: [UserToOrganization!]
-}
-
-type UserToOrganization {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  organization: Organization!
-  user: User!
+type Mutation {
+  keepAlive(clientId: String!): UniversalDateTime!
 }
 
 type Organization {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
+  accountingScheme: AccountingScheme!
+  bankAccount: BankAccount!
   contact: String!
+  displayName: String!
+  documentNumberSequences: [DocumentNumberSequence!]
+  idNumber: String!
   legalAddress: Address!
   legalName: String!
   registration: String!
-  idNumber: String!
-  bankAccount: BankAccount!
   salesInvoices: [SalesInvoice!]
-  vatNumber: String
-  accountingScheme: AccountingScheme!
-  documentNumberSequences: [DocumentNumberSequence!]
   users: [UserToOrganization!]
-}
-
-type AccountingScheme {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  currency: Currency!
-}
-
-type Country {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  isoCode: String!
-  addresses: [Address!]
-}
-
-type Customer {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  legalAddress: Address!
-  legalName: String!
   vatNumber: String
-  salesInvoices: [SalesInvoice!]
-  invoicingEmail: String!
-  idNumber: String!
-}
-
-type Address {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  country: Country!
-  line1: String!
-  city: String!
-  zipCode: String!
-  organizationRegisteredAddresses: [Organization!]
-  customerRegistratedAddresses: [Customer!]
-}
-
-type Bank {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  bankIdentifierCode: String!
-  bankAccounts: [BankAccount!]
-}
-
-type BankAccount {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  iban: String!
-  swift: String!
-  bank: Bank!
-  bankAccountCustomerPrintableNumber: String!
-  salesInvoices: [SalesInvoice!]
-  organizations: [Organization!]
-}
-
-type CurrencyRate {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  currencyMultiplyingRate: Float!
-  end: DateTime!
-  from: Currency!
-  start: DateTime!
-  to: Currency!
-}
-
-type DocumentNumberSequence {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  forType: String!
-  current: Float!
-  organization: Organization!
-}
-
-type Tax {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  displayName: String!
-  ratePercent: Float!
-  isStandard: Boolean!
-}
-
-type SalesInvoiceLine {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  lineOrder: Float!
-  lineTax: Tax!
-  linePrice: Float!
-  product: Product!
-  quantity: Float!
-  invoice: SalesInvoice!
-  narration: String!
 }
 
 type Product {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
   displayName: String!
   salesInvoiceLine: [SalesInvoiceLine!]
   sku: String!
-}
-
-type UserIdentity {
-  id: Float!
-  updtTs: DateTime!
-  updtOpId: Float!
-  isActive: Boolean!
-  isCurrent: Boolean!
-  externalUser: String!
-  provider: String!
-  user: User!
 }
 
 type Query {
   now: UniversalDateTime!
 }
 
+type SalesInvoice {
+  bankAccount: BankAccount!
+  content: String
+  currency: Currency!
+  currencyMultiplyingRateToAccountingSchemeCurrency: Float!
+  customer: Customer!
+  documentNo: String
+  dueDate: DateTime!
+  grandTotal: Float!
+  grandTotalAccountingSchemeCurrency: Float!
+  isCalculated: Boolean!
+  isDraft: Boolean!
+  issuedOn: DateTime!
+  lines: [SalesInvoiceLine!]
+  organization: Organization!
+  paymentTermInDays: Float!
+  printDate: DateTime
+  printed: Boolean!
+  printError: String
+  reverseCharge: Boolean!
+  totalLines: Float!
+  totalLinesAccountingSchemeCurrency: Float!
+  transactionDate: DateTime!
+  vatReport: [SalesInvoiceVat!]
+}
+
+type SalesInvoiceLine {
+  invoice: SalesInvoice!
+  lineOrder: Float!
+  linePrice: Float!
+  lineTax: Tax!
+  narration: String!
+  product: Product!
+  quantity: Float!
+}
+
+type SalesInvoiceVat {
+  invoice: SalesInvoice!
+  vatRatePercent: Float!
+  vatTotal: Float!
+  vatTotalAccountingSchemeCurrency: Float!
+  vatTotalAccountingSchemeCurrencyRaw: Float!
+  vatTotalRaw: Float!
+}
+
+type Tax {
+  displayName: String!
+  isStandard: Boolean!
+  ratePercent: Float!
+}
+
 scalar UniversalDateTime
 
-type Mutation {
-  keepAlive(clientId: String!): UniversalDateTime!
+type User {
+  email: String
+  identities: [UserIdentity!]
+  name: String
+  organizations: [UserToOrganization!]
+  username: String
+}
+
+type UserIdentity {
+  externalUser: String!
+  provider: String!
+  user: User!
+}
+
+type UserToOrganization {
+  organization: Organization!
+  user: User!
 }

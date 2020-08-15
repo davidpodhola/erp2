@@ -1,20 +1,35 @@
 import { SalesInvoiceModel } from './sales.invoice.model';
 import { SalesInvoiceSaveArgsModel } from './sales.invoice.save.args.model';
 import { EntityManager, Repository } from 'typeorm/index';
-import { BankAccountService, BankAccountServiceKey } from './bank.account.service';
+import {
+  BankAccountService,
+  BankAccountServiceKey,
+} from './bank.account.service';
 import { CustomerService, CustomerServiceKey } from './customer.service';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CurrencyService, CurrencyServiceKey } from './currency.service';
 import { TaxService, TaxServiceKey } from './tax.service';
 import { ReportsService, ReportsServiceKey } from './reports.service';
 import { LanguagesService, LanguagesServiceKey } from './languages.service';
-import { CurrencyRateService, CurrencyRateServiceKey } from './currency.rate.service';
+import {
+  CurrencyRateService,
+  CurrencyRateServiceKey,
+} from './currency.rate.service';
 import * as _ from 'lodash';
 import { SalesInvoiceVatModel } from './sales.invoice.vat.model';
-import { SalesInvoiceVatService, SalesInvoiceVatServiceKey } from './sales.invoice.vat.service';
-import { DocumentNumberingService, DocumentNumberingServiceKey } from './document.numbering.service';
+import {
+  SalesInvoiceVatService,
+  SalesInvoiceVatServiceKey,
+} from './sales.invoice.vat.service';
+import {
+  DocumentNumberingService,
+  DocumentNumberingServiceKey,
+} from './document.numbering.service';
 import { BaseEntityService } from './base.entity.service';
-import { OrganizationService, OrganizationServiceKey } from './organization.service';
+import {
+  OrganizationService,
+  OrganizationServiceKey,
+} from './organization.service';
 import { SalesInvoice, SalesInvoiceLine } from './entity.base';
 import { getService } from './module.reference.service';
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
@@ -27,9 +42,10 @@ export const SalesInvoiceServiceKey = 'SalesInvoiceService';
 export const SalesInvoiceLineServiceKey = 'SalesInvoiceLineService';
 
 @Injectable()
-export class SalesInvoiceLineService extends BaseEntityService<SalesInvoiceLineModel,
-  SalesInvoiceLineSaveArgsModel> {
-
+export class SalesInvoiceLineService extends BaseEntityService<
+  SalesInvoiceLineModel,
+  SalesInvoiceLineSaveArgsModel
+> {
   salesInvoiceService: SalesInvoiceService;
 
   createEntity(): SalesInvoiceLineModel {
@@ -44,7 +60,7 @@ export class SalesInvoiceLineService extends BaseEntityService<SalesInvoiceLineM
 
   constructor(
     @Inject(TaxServiceKey) public readonly taxService: TaxService,
-    @Inject(ProductServiceKey) public readonly productService: ProductService,
+    @Inject(ProductServiceKey) public readonly productService: ProductService
   ) {
     super();
     this.salesInvoiceService = getService(SalesInvoiceServiceKey);
@@ -60,20 +76,20 @@ export class SalesInvoiceLineService extends BaseEntityService<SalesInvoiceLineM
       (args.lineTaxIsStandard
         ? await this.taxService.getStandardTax(transactionalEntityManager)
         : await this.taxService.loadEntity(
-          transactionalEntityManager,
-          args.lineTaxId
-        ));
+            transactionalEntityManager,
+            args.lineTaxId
+          ));
     line.product =
       args.product ||
       (args.productSku
         ? await this.productService.getProduct(
-          transactionalEntityManager,
-          args.productSku
-        )
+            transactionalEntityManager,
+            args.productSku
+          )
         : await this.productService.loadEntity(
-          transactionalEntityManager,
-          args.productId
-        ));
+            transactionalEntityManager,
+            args.productId
+          ));
     line.lineOrder = args.lineOrder;
 
     const invoice =
@@ -127,7 +143,7 @@ export class SalesInvoiceService extends BaseEntityService<
     protected readonly documentNumberingServiceModel: DocumentNumberingService
   ) {
     super();
-    this.salesInvoiceLineService = getService(SalesInvoiceLineServiceKey)
+    this.salesInvoiceLineService = getService(SalesInvoiceLineServiceKey);
   }
 
   createEntity(): SalesInvoiceModel {

@@ -5,5 +5,5 @@ export const DateServiceKey = 'DateService';
 
 @Injectable()
 export class DateService {
-  now = (user: UserModel) : Date => new Date()
+  now = (user: UserModel): Date => new Date();
 }

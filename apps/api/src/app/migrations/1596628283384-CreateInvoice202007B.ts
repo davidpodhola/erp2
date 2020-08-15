@@ -26,16 +26,13 @@ import {
 } from '@erp2/model';
 import { getService } from '../../../../../libs/model/src/lib/module.reference.service';
 
-export class CreateInvoice202007B1596628283384
-  implements MigrationInterface {
+export class CreateInvoice202007B1596628283384 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
     const organizationService: OrganizationService = getService(
       OrganizationServiceKey
     );
-    const currencyService: CurrencyService = getService(
-      CurrencyServiceKey
-    );
+    const currencyService: CurrencyService = getService(CurrencyServiceKey);
     const bankService: BankService = getService(BankServiceKey);
     const bankAccountService: BankAccountService = getService(
       BankAccountServiceKey
@@ -43,17 +40,11 @@ export class CreateInvoice202007B1596628283384
     const accountingSchemeService: AccountingSchemeService = getService(
       AccountingSchemeServiceKey
     );
-    const countryService: CountryService = getService(
-      CountryServiceKey
-    );
+    const countryService: CountryService = getService(CountryServiceKey);
 
-    const productService: ProductService = getService(
-      ProductServiceKey
-    );
+    const productService: ProductService = getService(ProductServiceKey);
 
-    const customerService: CustomerService = getService(
-      CustomerServiceKey
-    );
+    const customerService: CustomerService = getService(CustomerServiceKey);
 
     const salesInvoiceService: SalesInvoiceService = getService(
       SalesInvoiceServiceKey

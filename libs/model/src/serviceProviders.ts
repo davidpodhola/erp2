@@ -27,9 +27,10 @@ import {
 import { ProductService, ProductServiceKey } from './lib/product.service';
 import { ReportsService, ReportsServiceKey } from './lib/reports.service';
 import {
-  SalesInvoiceLineService, SalesInvoiceLineServiceKey,
+  SalesInvoiceLineService,
+  SalesInvoiceLineServiceKey,
   SalesInvoiceService,
-  SalesInvoiceServiceKey
+  SalesInvoiceServiceKey,
 } from './lib/sales.invoice.service';
 import {
   SalesInvoiceVatService,

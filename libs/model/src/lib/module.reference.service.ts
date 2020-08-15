@@ -1,20 +1,17 @@
-import { Injectable, Type } from '@nestjs/common';
+import { Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 
-let _moduleRef: ModuleRef = null;
-
-export function getService<TInput = any, TResult = TInput>(typeOrToken: Type<TInput> | string | symbol, options?: {
-  strict: boolean;
-}): TResult {
-  return _moduleRef.get(typeOrToken);
+export function getService<TInput = any, TResult = TInput>(
+  typeOrToken: Type<TInput> | string | symbol,
+  options?: {
+    strict: boolean;
+  }
+): TResult {
+  return (global as any).moduleRef.get(typeOrToken);
 }
 
-@Injectable()
 export class ModuleReferenceService {
-  constructor(
-    moduleRef: ModuleRef
-  ) {
-    _moduleRef = moduleRef;
+  constructor(moduleRef: ModuleRef) {
+    (global as any).moduleRef = moduleRef;
   }
-
 }

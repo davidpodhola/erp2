@@ -6,7 +6,14 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { UpdateDateColumn } from 'typeorm';
 import { AccountingSchemeModel } from './accounting.scheme.model';
 import { CurrencyModel } from './currency.model';
-import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm/index';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm/index';
 import { AddressModel } from './address.model';
 import { CountryModel } from './country.model';
 import { OrganizationModel } from './organization.model';
@@ -295,17 +302,14 @@ export class User extends EntityBase implements UserModel {
   @Column({ nullable: true })
   name?: string;
 
-  @Field(type => [UserIdentity], { nullable: true })
-  @OneToMany(
-    type => UserIdentity,
-    userIdentity => userIdentity.user
-  )
+  @Field((type) => [UserIdentity], { nullable: true })
+  @OneToMany((type) => UserIdentity, (userIdentity) => userIdentity.user)
   identities: Array<UserIdentity>;
 
-  @Field(type => [UserToOrganization], { nullable: true })
+  @Field((type) => [UserToOrganization], { nullable: true })
   @OneToMany(
-    type => UserToOrganization,
-    userToOrganization => userToOrganization.user
+    (type) => UserToOrganization,
+    (userToOrganization) => userToOrganization.user
   )
   organizations: Array<UserToOrganizationModel>;
 }
@@ -315,19 +319,15 @@ export class User extends EntityBase implements UserModel {
 export class UserToOrganization extends EntityBase
   implements UserToOrganizationModel {
   @Field(() => Organization)
-  @ManyToOne(
-    () => Organization,
-    organization => organization.users,
-    { nullable: false }
-  )
+  @ManyToOne(() => Organization, (organization) => organization.users, {
+    nullable: false,
+  })
   organization: OrganizationModel;
 
   @Field(() => User)
-  @ManyToOne(
-    () => User,
-    appUser => appUser.organizations,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (appUser) => appUser.organizations, {
+    nullable: false,
+  })
   user: UserModel;
 
   displayName: '';
@@ -393,10 +393,10 @@ export class Organization extends UniqueDisplayEntityBase
   )
   documentNumberSequences: Array<DocumentNumberSequence>;
 
-  @Field(type => [UserToOrganization], { nullable: true })
+  @Field((type) => [UserToOrganization], { nullable: true })
   @OneToMany(
-    type => UserToOrganization,
-    userToOrganization => userToOrganization.organization
+    (type) => UserToOrganization,
+    (userToOrganization) => userToOrganization.organization
   )
   users: Promise<Array<UserToOrganization>>;
 }
@@ -680,10 +680,6 @@ export class UserIdentity extends EntityBase implements UserIdentityModel {
   provider: string;
 
   @Field(() => User)
-  @ManyToOne(
-    () => User,
-    user => user.identities,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (user) => user.identities, { nullable: false })
   user: UserModel;
 }

@@ -4,10 +4,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 
 @Injectable()
 export class MigrationService implements OnModuleInit {
-  constructor(
-    @InjectConnection() readonly connection: Connection
-  ) {
-  }
+  constructor(@InjectConnection() readonly connection: Connection) {}
 
   async onModuleInit(): Promise<void> {
     console.log('Running migrations...');

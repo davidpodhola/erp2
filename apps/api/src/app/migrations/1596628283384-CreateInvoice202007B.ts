@@ -24,7 +24,7 @@ import {
   TaxService,
   TaxServiceKey,
 } from '@erp2/model';
-import { getService } from '../../../../../libs/model/src/lib/module.reference.service';
+import { getService } from '@erp2/model';
 
 export class CreateInvoice202007B1596628283384 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

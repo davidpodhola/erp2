@@ -66,4 +66,3 @@ jobs:
           # The default PostgreSQL port
           NX_POSTGRES_PORT: 5432
           NX_POSTGRES_PASSWORD: postgres
-      - run: sleep 60 && pkill node

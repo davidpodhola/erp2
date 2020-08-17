@@ -1,8 +1,7 @@
-import { Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 
-export function getService<TInput = any, TResult = TInput>(
-  typeOrToken: Type<TInput> | string | symbol,
+export function getService<TResult>(
+  typeOrToken: string,
   options?: {
     strict: boolean;
   }

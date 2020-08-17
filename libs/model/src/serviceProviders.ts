@@ -42,6 +42,7 @@ import {
   TranslationServiceKey,
 } from './lib/translation.service';
 import { DateService, DateServiceKey } from './lib/date.service';
+import { UserService, UserServiceKey } from './lib/user.service';
 
 const accountingSchemeServiceProvider = {
   provide: AccountingSchemeServiceKey,
@@ -138,6 +139,11 @@ const dateServiceProvider = {
   useClass: DateService,
 };
 
+const userServiceProvider = {
+  provide: UserServiceKey,
+  useClass: UserService,
+};
+
 export const serviceProviders = [
   accountingSchemeServiceProvider,
   addressServiceProvider,
@@ -158,4 +164,5 @@ export const serviceProviders = [
   taxServiceProvider,
   translationServiceProvider,
   dateServiceProvider,
+  userServiceProvider,
 ];

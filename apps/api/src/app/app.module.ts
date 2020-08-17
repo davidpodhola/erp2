@@ -13,6 +13,7 @@ import { resolvers } from './resolvers';
 import { ModelModule } from '@erp2/model';
 import { ModuleReferenceService } from '@erp2/model';
 import { ModuleRef } from '@nestjs/core';
+import { AuthModule } from '@erp2/auth';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
 @Module({
@@ -53,6 +54,7 @@ import { ModuleRef } from '@nestjs/core';
       },
     }),
     ModelModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],

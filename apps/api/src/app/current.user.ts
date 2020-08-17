@@ -1,8 +1,9 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ManagementClient } from 'auth0';
-import { UserServiceKey } from '@erp2/model';
+import { UserService, UserServiceKey } from '@erp2/model';
 import { getService } from '@erp2/model';
+import { getManager } from 'typeorm';
 
 let authZero = null;
 
@@ -18,8 +19,8 @@ async function setUser(user) {
   }
 
   const profile = await authZero.getUser({ id: (user as any).sub });
-  const userService = getService(UserServiceKey);
-  return await userService.handleLogin(profile);
+  const userService = getService<UserService>(UserServiceKey);
+  return await userService.handleLogin(getManager(), profile);
 }
 
 export const CurrentUser = createParamDecorator(

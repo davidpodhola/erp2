@@ -63,7 +63,9 @@ export class SalesInvoiceLineService extends BaseEntityService<
     @Inject(ProductServiceKey) public readonly productService: ProductService
   ) {
     super();
-    this.salesInvoiceService = getService<SalesInvoiceService>(SalesInvoiceServiceKey);
+    this.salesInvoiceService = getService<SalesInvoiceService>(
+      SalesInvoiceServiceKey
+    );
   }
 
   protected async doSave(
@@ -143,7 +145,9 @@ export class SalesInvoiceService extends BaseEntityService<
     protected readonly documentNumberingServiceModel: DocumentNumberingService
   ) {
     super();
-    this.salesInvoiceLineService = getService<SalesInvoiceLineService>(SalesInvoiceLineServiceKey);
+    this.salesInvoiceLineService = getService<SalesInvoiceLineService>(
+      SalesInvoiceLineServiceKey
+    );
   }
 
   createEntity(): SalesInvoiceModel {

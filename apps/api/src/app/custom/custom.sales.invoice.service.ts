@@ -15,7 +15,7 @@ export class CustomSalesInvoiceService extends SalesInvoiceService {
       transactionalEntityManager,
       args
     );
-    if (organization.displayName === 'NUCZ') {
+    if (organization.displayName === 'DP') {
       const invoices = await this.getRepository(transactionalEntityManager)
         .createQueryBuilder('invoice')
         .where(
@@ -23,11 +23,13 @@ export class CustomSalesInvoiceService extends SalesInvoiceService {
           {
             organizationId: organization.id,
           }
-        ).getMany();
-      const total = _.sum(invoices.map((x) => x.totalLinesAccountingSchemeCurrency));
-      console.log('*** total', total);
+        )
+        .getMany();
+      const total =
+        _.sum(invoices.map((x) => x.totalLinesAccountingSchemeCurrency)) +
+        (623222.6 - 58831.41 - 121809.19 + (121809.19 + 58831.41) / 1.21);
 
-      console.log('*** invoices', invoices);
+      if (total > 1000000) throw new Error('Cannot invoice more than 1M CZK');
     }
   }
 }

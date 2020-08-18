@@ -72,8 +72,13 @@ export class OrganizationService extends BaseEntityService<
     return transactionalEntityManager.getRepository(Organization);
   }
 
-  getOrg = (transactionalEntityManager: EntityManager, displayName: string) =>
+  getOrg = (
+    transactionalEntityManager: EntityManager,
+    displayName: string,
+    relations?: string[]
+  ) =>
     this.getRepository(transactionalEntityManager).findOne({
       where: { displayName },
+      relations,
     });
 }

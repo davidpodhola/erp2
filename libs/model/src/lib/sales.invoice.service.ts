@@ -175,10 +175,21 @@ export class SalesInvoiceService extends BaseEntityService<
         ['legalAddress', 'legalAddress.country']
       ));
     const organization =
-      args.organization ||
+      (args.organization &&
+        args.organization.legalAddress &&
+        args.organization.legalAddress.country &&
+        args.organization.bankAccount &&
+        args.organization) ||
       (await this.organizationService.getOrg(
         transactionalEntityManager,
-        args.organizationDisplayName
+        args.organizationDisplayName || args.organization.displayName,
+        [
+          'legalAddress',
+          'legalAddress.country',
+          'bankAccount',
+          'accountingScheme',
+          'accountingScheme.currency',
+        ]
       ));
     invoice.organization = organization;
     invoice.bankAccount = organization.bankAccount;

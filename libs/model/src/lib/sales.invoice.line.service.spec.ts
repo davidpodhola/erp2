@@ -6,6 +6,8 @@ import {
   ProductServiceKey,
   SalesInvoiceLineService,
   SalesInvoiceServiceKey,
+  SaveArgsValidationService,
+  SaveArgsValidationServiceKey,
   TaxServiceKey,
 } from '@erp2/model';
 
@@ -74,7 +76,15 @@ const mockEntityManager = {
 } as any;
 
 (global as any).moduleRef = {
-  get: () => mockSalesInvoiceService,
+  get: (token) =>
+    token === SalesInvoiceServiceKey
+      ? mockSalesInvoiceService
+      : new SaveArgsValidationService(),
+};
+
+const saveArgsValidationServiceProvider = {
+  provide: SaveArgsValidationServiceKey,
+  useClass: SaveArgsValidationService,
 };
 
 describe('SalesInvoiceLineService', () => {
@@ -87,6 +97,7 @@ describe('SalesInvoiceLineService', () => {
         mockTaxServiceProvider,
         mockProductServiceProvider,
         mockSalesInvoiceServiceProvider,
+        saveArgsValidationServiceProvider,
       ],
     }).compile();
 

@@ -16,6 +16,8 @@ import {
   SalesInvoiceLineServiceKey,
   SalesInvoiceService,
   SalesInvoiceVatServiceKey,
+  SaveArgsValidationService,
+  SaveArgsValidationServiceKey,
   TaxModel,
   TaxServiceKey,
 } from '@erp2/model';
@@ -100,6 +102,10 @@ export const mockDocumentNumberingServiceProvider = {
   provide: DocumentNumberingServiceKey,
   useValue: mockDocumentNumberingService,
 };
+const saveArgsValidationServiceProvider = {
+  provide: SaveArgsValidationServiceKey,
+  useClass: SaveArgsValidationService,
+};
 
 const mockEntityManager = {
   getRepository: () => ({
@@ -130,6 +136,7 @@ describe('SalesInvoiceService', () => {
         mockCurrencyRateServiceProvider,
         mockSalesInvoiceVatServiceProvider,
         mockDocumentNumberingServiceProvider,
+        saveArgsValidationServiceProvider,
       ],
     }).compile();
 

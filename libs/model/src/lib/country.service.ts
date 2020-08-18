@@ -39,4 +39,8 @@ export class CountryService extends BaseEntityService<
     this.getRepository(transactionalEntityManager).findOne({
       where: { isoCode },
     });
+
+  typeName(): string {
+    return CountryServiceKey;
+  }
 }

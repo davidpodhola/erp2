@@ -21,6 +21,9 @@ export class OrganizationService extends BaseEntityService<
   OrganizationModel,
   OrganizationSaveArgsModel
 > {
+  typeName(): string {
+    return OrganizationServiceKey;
+  }
   constructor(
     @Inject(AddressServiceKey) public readonly addressService: AddressService,
     @Inject(BankAccountServiceKey)

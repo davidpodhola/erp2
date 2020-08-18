@@ -66,4 +66,8 @@ export class AddressService extends BaseEntityService<
   ): Repository<AddressModel> {
     return transactionalEntityManager.getRepository(Address);
   }
+
+  typeName(): string {
+    return AddressServiceKey;
+  }
 }

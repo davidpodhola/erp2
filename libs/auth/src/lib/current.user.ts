@@ -1,6 +1,9 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ManagementClient } from 'auth0';
+// we need to import the UserService here
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import { UserService, UserServiceKey } from '@erp2/model';
 import { getService } from '@erp2/model';
 import { getManager } from 'typeorm';

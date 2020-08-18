@@ -43,6 +43,10 @@ import {
 } from './lib/translation.service';
 import { DateService, DateServiceKey } from './lib/date.service';
 import { UserService, UserServiceKey } from './lib/user.service';
+import {
+  SaveArgsValidationService,
+  SaveArgsValidationServiceKey,
+} from './lib/save.args.validation.service';
 
 const accountingSchemeServiceProvider = {
   provide: AccountingSchemeServiceKey,
@@ -144,6 +148,11 @@ const userServiceProvider = {
   useClass: UserService,
 };
 
+const saveArgsValidationServiceProvider = {
+  provide: SaveArgsValidationServiceKey,
+  useClass: SaveArgsValidationService,
+};
+
 export const serviceProviders = [
   accountingSchemeServiceProvider,
   addressServiceProvider,
@@ -165,4 +174,5 @@ export const serviceProviders = [
   translationServiceProvider,
   dateServiceProvider,
   userServiceProvider,
+  saveArgsValidationServiceProvider,
 ];

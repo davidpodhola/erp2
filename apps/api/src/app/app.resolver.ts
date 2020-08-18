@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { DateTimeScalarType } from './support/date.scalar';
 import { Inject, UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@erp2/auth';
-import { CurrentUser } from './current.user';
+import { CurrentUser } from '@erp2/auth';
 import { DateService, DateServiceKey, UserModel } from '@erp2/model';
 
 @Resolver()

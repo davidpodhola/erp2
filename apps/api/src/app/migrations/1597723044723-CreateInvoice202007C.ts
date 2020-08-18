@@ -122,5 +122,7 @@ export class CreateInvoice202007C1597723044723 implements MigrationInterface {
     await salesInvoiceService.confirm(entityManager, invoice);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    /* intentionally empty */
+  }
 }

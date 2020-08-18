@@ -54,6 +54,7 @@ export * from './lib/sales.invoice.service';
 export * from './lib/sales.invoice.vat.model';
 export * from './lib/sales.invoice.vat.save.args.model';
 export * from './lib/sales.invoice.vat.service';
+export * from './lib/save.args.validation.service';
 export * from './lib/tax.model';
 export * from './lib/tax.save.args.model';
 export * from './lib/tax.service';

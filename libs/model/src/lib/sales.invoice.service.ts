@@ -35,6 +35,7 @@ import { getService } from './module.reference.service';
 import { SalesInvoiceLineModel } from './sales.invoice.line.model';
 import { SalesInvoiceLineSaveArgsModel } from './sales.invoice.line.save.args.model';
 import { ProductService, ProductServiceKey } from './product.service';
+import { OrganizationModel } from './organization.model';
 import moment = require('moment');
 
 export const SalesInvoiceServiceKey = 'SalesInvoiceService';
@@ -154,6 +155,30 @@ export class SalesInvoiceService extends BaseEntityService<
     return new SalesInvoice();
   }
 
+  protected async getOrganization(
+    transactionalEntityManager: EntityManager,
+    args: SalesInvoiceSaveArgsModel
+  ): Promise<OrganizationModel> {
+    return (
+      (args.organization &&
+        args.organization.legalAddress &&
+        args.organization.legalAddress.country &&
+        args.organization.bankAccount &&
+        args.organization) ||
+      (await this.organizationService.getOrg(
+        transactionalEntityManager,
+        args.organizationDisplayName || args.organization.displayName,
+        [
+          'legalAddress',
+          'legalAddress.country',
+          'bankAccount',
+          'accountingScheme',
+          'accountingScheme.currency',
+        ]
+      ))
+    );
+  }
+
   protected getRepository(
     transactionalEntityManager
   ): Repository<SalesInvoiceModel> {
@@ -174,23 +199,10 @@ export class SalesInvoiceService extends BaseEntityService<
         args.customerDisplayName || args.customer.displayName,
         ['legalAddress', 'legalAddress.country']
       ));
-    const organization =
-      (args.organization &&
-        args.organization.legalAddress &&
-        args.organization.legalAddress.country &&
-        args.organization.bankAccount &&
-        args.organization) ||
-      (await this.organizationService.getOrg(
-        transactionalEntityManager,
-        args.organizationDisplayName || args.organization.displayName,
-        [
-          'legalAddress',
-          'legalAddress.country',
-          'bankAccount',
-          'accountingScheme',
-          'accountingScheme.currency',
-        ]
-      ));
+    const organization = await this.getOrganization(
+      transactionalEntityManager,
+      args
+    );
     invoice.organization = organization;
     invoice.bankAccount = organization.bankAccount;
     invoice.issuedOn = moment(args.issuedOn).startOf('day').toDate();

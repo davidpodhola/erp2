@@ -1,6 +1,11 @@
 import { BaseModel } from './base.model';
 import { BaseSaveArgsModel } from './base.save.args.model';
 import { EntityManager, Repository } from 'typeorm';
+import { getService } from './module.reference.service';
+import {
+  SaveArgsValidationService,
+  SaveArgsValidationServiceKey,
+} from './save.args.validation.service';
 
 export abstract class BaseEntityService<
   T extends BaseModel,
@@ -16,6 +21,8 @@ export abstract class BaseEntityService<
     entity: T
   ): Promise<T>;
 
+  abstract typeName(): string;
+
   loadEntity = async (
     transactionalEntityManager: EntityManager,
     id: number,
@@ -30,6 +37,15 @@ export abstract class BaseEntityService<
   ): Promise<Array<T>> =>
     await this.getRepository(transactionalEntityManager).find();
   async save(transactionalEntityManager: EntityManager, args: S): Promise<T> {
+    const saveArgsValidationService: SaveArgsValidationService = getService(
+      SaveArgsValidationServiceKey
+    );
+    await saveArgsValidationService.checkIsSaveArgValid(
+      transactionalEntityManager,
+      this.typeName(),
+      args
+    );
+
     const entity = args.id
       ? await this.loadEntity(transactionalEntityManager, args.id)
       : await this.createEntity();

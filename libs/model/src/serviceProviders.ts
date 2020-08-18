@@ -29,8 +29,6 @@ import { ReportsService, ReportsServiceKey } from './lib/reports.service';
 import {
   SalesInvoiceLineService,
   SalesInvoiceLineServiceKey,
-} from './lib/sales.invoice.line.service';
-import {
   SalesInvoiceService,
   SalesInvoiceServiceKey,
 } from './lib/sales.invoice.service';
@@ -43,6 +41,8 @@ import {
   TranslationService,
   TranslationServiceKey,
 } from './lib/translation.service';
+import { DateService, DateServiceKey } from './lib/date.service';
+import { UserService, UserServiceKey } from './lib/user.service';
 
 const accountingSchemeServiceProvider = {
   provide: AccountingSchemeServiceKey,
@@ -134,6 +134,16 @@ const translationServiceProvider = {
   useClass: TranslationService,
 };
 
+const dateServiceProvider = {
+  provide: DateServiceKey,
+  useClass: DateService,
+};
+
+const userServiceProvider = {
+  provide: UserServiceKey,
+  useClass: UserService,
+};
+
 export const serviceProviders = [
   accountingSchemeServiceProvider,
   addressServiceProvider,
@@ -153,4 +163,6 @@ export const serviceProviders = [
   salesInvoiceVatServiceProvider,
   taxServiceProvider,
   translationServiceProvider,
+  dateServiceProvider,
+  userServiceProvider,
 ];

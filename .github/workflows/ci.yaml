@@ -7,13 +7,33 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [12.x]
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v2
@@ -34,3 +54,15 @@ jobs:
       - run: yarn affected:test --base=origin/master
         env:
           CI: true
+      - run: yarn affected:e2e --base=origin/master
+        env:
+          CI: true
+      - run: yarn start api &
+        env:
+          CI: true
+          # The hostname used to communicate with the PostgreSQL service container
+          NX_POSTGRES_USER: postgres
+          NX_POSTGRES_HOST: postgres
+          # The default PostgreSQL port
+          NX_POSTGRES_PORT: 5432
+          NX_POSTGRES_PASSWORD: postgres

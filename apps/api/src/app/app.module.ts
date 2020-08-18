@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,19 +11,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolvers } from './resolvers';
 import { ModelModule } from '@erp2/model';
+import { ModuleReferenceService } from '@erp2/model';
+import { ModuleRef } from '@nestjs/core';
+import { AuthModule } from '@erp2/auth';
 
 // typeOrm + list of entities from THIS application + try to enhance e.g. Organization
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
 
-      host: 'localhost',
-      database: 'gt2',
-      port: 5432,
-      username: 'postgres',
-      password: 'Coggel86',
+      host: process.env.NX_POSTGRES_HOST,
+      database: process.env.NX_POSTGRES_DATABASE,
+      port: +process.env.NX_POSTGRES_PORT,
+      username: process.env.NX_POSTGRES_USER,
+      password: process.env.NX_POSTGRES_PASSWORD,
       ssl: false,
 
       synchronize: true,
@@ -47,12 +49,18 @@ import { ModelModule } from '@erp2/model';
           autoSchemaFile: aws ? '/tmp/schema.gql' : 'schema.gql',
           debug: true,
           context: ({ req }) => ({ req }),
+          sortSchema: true,
         };
       },
     }),
     ModelModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, MigrationService, ...serviceProviders, ...resolvers],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private moduleRef: ModuleRef) {
+    new ModuleReferenceService(moduleRef);
+  }
+}

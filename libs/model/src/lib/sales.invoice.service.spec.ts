@@ -107,6 +107,10 @@ const mockEntityManager = {
   }),
 } as any;
 
+(global as any).moduleRef = {
+  get: () => mockSalesInvoiceLineService,
+};
+
 describe('SalesInvoiceService', () => {
   let service: SalesInvoiceService;
 

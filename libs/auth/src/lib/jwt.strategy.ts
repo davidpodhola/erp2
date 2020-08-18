@@ -14,13 +14,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: `https://${configService.get<string>(
-          'AUTH0_DOMAIN'
+          'NX_AUTH0_DOMAIN'
         )}/.well-known/jwks.json`,
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // 1
       audience: '@erpjs',
-      issuer: `https://${configService.get<string>('AUTH0_DOMAIN')}/`,
+      issuer: `https://${configService.get<string>('NX_AUTH0_DOMAIN')}/`,
     });
   }
 

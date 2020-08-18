@@ -8,11 +8,14 @@ import {
   BankServiceKey,
   CountryService,
   CountryServiceKey,
+  CurrencyRateService,
+  CurrencyRateServiceKey,
   CurrencyService,
   CurrencyServiceKey,
   CustomerService,
   CustomerServiceKey,
   DocumentNumberSequence,
+  getService,
   OrganizationService,
   OrganizationServiceKey,
   ProductService,
@@ -24,9 +27,9 @@ import {
   TaxService,
   TaxServiceKey,
 } from '@erp2/model';
-import { getService } from '@erp2/model';
+import * as moment from 'moment';
 
-export class CreateInvoice202007B1596628283384 implements MigrationInterface {
+export class CreateInvoice202007C1597723044723 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
     const organizationService: OrganizationService = getService(
@@ -52,61 +55,68 @@ export class CreateInvoice202007B1596628283384 implements MigrationInterface {
 
     const taxService: TaxService = getService(TaxServiceKey);
 
-    const bankAccount = await bankAccountService.save(entityManager, {
-      bankDisplayName: 'FIO',
-      displayName: 'FIO-FO',
-      bankAccountCustomerPrintableNumber: '2301288334/2010',
-      iban: 'CZ7520100000002301288334',
-      swift: 'FIOBCZPPXXX',
-    });
-
-    const accountingScheme = await accountingSchemeService.getAccountingScheme(
-      entityManager,
-      'main czk'
+    const currencyRateService: CurrencyRateService = getService(
+      CurrencyRateServiceKey
     );
-    const organization = await organizationService.save(entityManager, {
-      displayName: 'DP',
-      legalName: 'David Podhola',
-      legalAddress: {
-        city: 'Chlístovice',
-        line1: 'Chlístovice 130',
-        zipCode: '28401',
-        countryIsoCode: 'CZ',
-      },
-      bankAccount,
-      accountingScheme,
-      registration: 'Fyzická osoba zapsaná v živnostenském rejstříku.',
-      contact: 'david@podhola.net',
-      idNumber: '87408961',
-      vatNumber: 'CZ7512222586',
+
+    const czechia = await countryService.getCountry(entityManager, 'CZ');
+
+    const czk = await currencyService.getCurrency(entityManager, 'CZK');
+
+    const eur = await currencyService.getCurrency(entityManager, 'EUR');
+
+    const organization = await organizationService.getOrg(
+      entityManager,
+      'NUCZ'
+    );
+
+    const expertWorks = await productService.save(entityManager, {
+      displayName: 'O365 Business Prem',
+      sku: 'MS.O365.BP.M',
     });
 
-    const documentNumberSequence = new DocumentNumberSequence();
-    documentNumberSequence.current = 20202005;
-    documentNumberSequence.forType = SalesInvoice.name;
-    documentNumberSequence.organization = organization;
-    await entityManager.save(documentNumberSequence);
-
-    const customer = await customerService.getCustomer(entityManager, 'evalue');
+    const customer = await customerService.save(entityManager, {
+      legalAddress: {
+        country: czechia,
+        city: 'Praha',
+        line1: 'Svornosti 985/8',
+        zipCode: '15000',
+      },
+      displayName: 'RealityzaPrahou',
+      legalName: 'RealityzaPrahou s.r.o.',
+      vatNumber: 'CZ27125319',
+      invoicingEmail: 'dumrealit_progres@dumrealit.cz',
+      idNumber: '27125319',
+    });
 
     const issuedOn = new Date(2020, 7 - 1, 31);
+    const start = moment(issuedOn).startOf('day').toDate();
+    const end = moment(issuedOn).endOf('day').toDate();
+    await currencyRateService.save(entityManager, {
+      start,
+      end,
+      currencyMultiplyingRate: 26.175,
+      fromIsoCode: 'EUR',
+      toIsoCode: 'CZK',
+    });
     const lines: SalesInvoiceLineSaveArgsModel[] = [
       {
         lineTaxIsStandard: true,
-        productSku: 'EX',
-        linePrice: (0.6 * 191.75 * 7000) / 8,
-        quantity: 0.6 * 191.75,
-        narration: 'Vývoj projektu TEAS (Carvago) v červenci 2020',
+        product: expertWorks,
+        linePrice: 4 * 12.7,
+        quantity: 4,
+        narration:
+          'Licence Office 365 Business Premium na období 23.8.2020 do 22.9.2021',
         lineOrder: 1,
       },
     ];
     const invoice = await salesInvoiceService.save(entityManager, {
       customer,
       organization,
-      paymentTermInDays: 14,
+      paymentTermInDays: 23,
       transactionDate: issuedOn,
       issuedOn,
-      currencyIsoCode: 'CZK',
+      currency: eur,
       lines,
     });
     await salesInvoiceService.confirm(entityManager, invoice);

@@ -6,7 +6,14 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { UpdateDateColumn } from 'typeorm';
 import { AccountingSchemeModel } from './accounting.scheme.model';
 import { CurrencyModel } from './currency.model';
-import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm/index';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm/index';
 import { AddressModel } from './address.model';
 import { CountryModel } from './country.model';
 import { OrganizationModel } from './organization.model';
@@ -55,7 +62,6 @@ const euMembersISOCodes = [
   'UK',
 ];
 
-@ObjectType()
 export abstract class EntityBase {
   @Field()
   @PrimaryGeneratedColumn()
@@ -85,39 +91,6 @@ export abstract class EntityBase {
     default: true,
   })
   isCurrent: boolean; // if set to false, entity shall not be visible to a client, i.e. it is "deleted"
-}
-
-@Entity()
-@ObjectType()
-export class SalesInvoiceVat extends EntityBase
-  implements SalesInvoiceVatModel {
-  @Field(() => SalesInvoice)
-  @ManyToOne(() => SalesInvoice, (salesInvoice) => salesInvoice.vatReport, {
-    nullable: false,
-  })
-  invoice: SalesInvoiceModel;
-
-  @Column({ type: 'numeric', scale: 2, precision: 12 })
-  @Field()
-  vatRatePercent: number;
-
-  @Column({ type: 'float8' })
-  @Field()
-  vatTotalAccountingSchemeCurrencyRaw: number;
-
-  @Column({ type: 'float8' })
-  @Field()
-  vatTotalRaw: number;
-
-  @Column({ type: 'numeric', scale: 2, precision: 12 })
-  @Field()
-  vatTotalAccountingSchemeCurrency: number;
-
-  @Column({ type: 'numeric', scale: 2, precision: 12 })
-  @Field()
-  vatTotal: number;
-
-  displayName = '';
 }
 
 @Entity()
@@ -245,6 +218,39 @@ export class SalesInvoice extends EntityBase implements SalesInvoiceModel {
   reverseCharge: boolean;
 }
 
+@Entity()
+@ObjectType()
+export class SalesInvoiceVat extends EntityBase
+  implements SalesInvoiceVatModel {
+  @Field(() => SalesInvoice)
+  @ManyToOne(() => SalesInvoice, (salesInvoice) => salesInvoice.vatReport, {
+    nullable: false,
+  })
+  invoice: SalesInvoiceModel;
+
+  @Column({ type: 'numeric', scale: 2, precision: 12 })
+  @Field()
+  vatRatePercent: number;
+
+  @Column({ type: 'float8' })
+  @Field()
+  vatTotalAccountingSchemeCurrencyRaw: number;
+
+  @Column({ type: 'float8' })
+  @Field()
+  vatTotalRaw: number;
+
+  @Column({ type: 'numeric', scale: 2, precision: 12 })
+  @Field()
+  vatTotalAccountingSchemeCurrency: number;
+
+  @Column({ type: 'numeric', scale: 2, precision: 12 })
+  @Field()
+  vatTotal: number;
+
+  displayName = '';
+}
+
 @ObjectType()
 export abstract class UniqueDisplayEntityBase extends EntityBase {
   @Column()
@@ -296,17 +302,14 @@ export class User extends EntityBase implements UserModel {
   @Column({ nullable: true })
   name?: string;
 
-  @Field(type => [UserIdentity], { nullable: true })
-  @OneToMany(
-    type => UserIdentity,
-    userIdentity => userIdentity.user
-  )
+  @Field((type) => [UserIdentity], { nullable: true })
+  @OneToMany((type) => UserIdentity, (userIdentity) => userIdentity.user)
   identities: Array<UserIdentity>;
 
-  @Field(type => [UserToOrganization], { nullable: true })
+  @Field((type) => [UserToOrganization], { nullable: true })
   @OneToMany(
-    type => UserToOrganization,
-    userToOrganization => userToOrganization.user
+    (type) => UserToOrganization,
+    (userToOrganization) => userToOrganization.user
   )
   organizations: Array<UserToOrganizationModel>;
 }
@@ -316,19 +319,15 @@ export class User extends EntityBase implements UserModel {
 export class UserToOrganization extends EntityBase
   implements UserToOrganizationModel {
   @Field(() => Organization)
-  @ManyToOne(
-    () => Organization,
-    organization => organization.users,
-    { nullable: false }
-  )
+  @ManyToOne(() => Organization, (organization) => organization.users, {
+    nullable: false,
+  })
   organization: OrganizationModel;
 
   @Field(() => User)
-  @ManyToOne(
-    () => User,
-    appUser => appUser.organizations,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (appUser) => appUser.organizations, {
+    nullable: false,
+  })
   user: UserModel;
 
   displayName: '';
@@ -372,7 +371,7 @@ export class Organization extends UniqueDisplayEntityBase
 
   @Field(() => [SalesInvoice], { nullable: true })
   @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.organization)
-  salesInvoices: Array<SalesInvoice>;
+  salesInvoices: Array<SalesInvoiceModel>;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -394,10 +393,10 @@ export class Organization extends UniqueDisplayEntityBase
   )
   documentNumberSequences: Array<DocumentNumberSequence>;
 
-  @Field(type => [UserToOrganization], { nullable: true })
+  @Field((type) => [UserToOrganization], { nullable: true })
   @OneToMany(
-    type => UserToOrganization,
-    userToOrganization => userToOrganization.organization
+    (type) => UserToOrganization,
+    (userToOrganization) => userToOrganization.organization
   )
   users: Promise<Array<UserToOrganization>>;
 }
@@ -536,7 +535,7 @@ export class BankAccount extends UniqueDisplayEntityBase
 
   @Field(() => [SalesInvoice], { nullable: true })
   @OneToMany(() => SalesInvoice, (salesInvoice) => salesInvoice.bankAccount)
-  salesInvoices: Array<SalesInvoice>;
+  salesInvoices: Array<SalesInvoiceModel>;
 
   @Field(() => [Organization], { nullable: true })
   @OneToMany(() => Organization, (organization) => organization.bankAccount)
@@ -659,7 +658,7 @@ export class Product extends UniqueDisplayEntityBase implements ProductModel {
     () => SalesInvoiceLine,
     (salesInvoiceLine) => salesInvoiceLine.product
   )
-  salesInvoiceLine: Promise<Array<SalesInvoiceLine>>;
+  salesInvoiceLine: Array<SalesInvoiceLineModel>;
 
   @Column()
   @Field()
@@ -681,10 +680,6 @@ export class UserIdentity extends EntityBase implements UserIdentityModel {
   provider: string;
 
   @Field(() => User)
-  @ManyToOne(
-    () => User,
-    user => user.identities,
-    { nullable: false }
-  )
+  @ManyToOne(() => User, (user) => user.identities, { nullable: false })
   user: UserModel;
 }

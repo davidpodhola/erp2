@@ -1,3 +1,7 @@
+/**
+ * generate this part by running `ls -1 ./lib/*';`
+ */
+
 export * from './lib/accounting.scheme.model';
 export * from './lib/accounting.scheme.save.args.model';
 export * from './lib/accounting.scheme.service';
@@ -25,6 +29,7 @@ export * from './lib/currency.service';
 export * from './lib/customer.model';
 export * from './lib/customer.save.args.model';
 export * from './lib/customer.service';
+export * from './lib/date.service';
 export * from './lib/document.numbering.service';
 export * from './lib/entities';
 export * from './lib/entity.base';
@@ -32,6 +37,7 @@ export * from './lib/language.model';
 export * from './lib/languages.service';
 export * from './lib/localized.messages';
 export * from './lib/model.module';
+export * from './lib/module.reference.service';
 export * from './lib/organization.model';
 export * from './lib/organization.save.args.model';
 export * from './lib/organization.service';
@@ -42,7 +48,6 @@ export * from './lib/product.service';
 export * from './lib/reports.service';
 export * from './lib/sales.invoice.line.model';
 export * from './lib/sales.invoice.line.save.args.model';
-export * from './lib/sales.invoice.line.service';
 export * from './lib/sales.invoice.model';
 export * from './lib/sales.invoice.save.args.model';
 export * from './lib/sales.invoice.service';
@@ -53,5 +58,14 @@ export * from './lib/tax.model';
 export * from './lib/tax.save.args.model';
 export * from './lib/tax.service';
 export * from './lib/translation.service';
+export * from './lib/user.identity.model';
+export * from './lib/user.model';
+export * from './lib/user.profile.model.identity';
+export * from './lib/user.profile.model';
+export * from './lib/user.save.args.model';
+export * from './lib/user.service';
+export * from './lib/user.to.organization.model';
+export * from './lib/user.to.organization.save.args.model';
+export * from './lib/user.to.organization.service';
 
 export * from './serviceProviders';

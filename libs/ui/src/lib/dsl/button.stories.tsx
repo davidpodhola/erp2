@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from './button';
+import { Button, ButtonProps } from './button';
+import { action } from '@storybook/addon-actions';
 import { ClrLoadingState } from '@clr/core/button';
 
 export default {
@@ -7,10 +8,15 @@ export default {
   title: 'Button',
 };
 
-export const solidPrimaryMd = () => {
-  return <Button action={'solid'} status={'primary'} block={false} loadingState={ClrLoadingState.DEFAULT} size={'md'} title={'solid primary md'} />;
-};
+export const button = (args: ButtonProps) =>
+  <Button
+    {...args}
+    onclick={action('clicked')}
+  />
 
-export const outlineDangerSm = () => {
-  return <Button action={'outline'} status={'danger'} block={false} loadingState={ClrLoadingState.DEFAULT} size={'sm'} title={'outline danger sm'} />;
-};
+
+export const primarySolidMdButton = (args: ButtonProps) =>
+  <Button
+    action={'solid'} status={'primary'} block={false} loadingState={ClrLoadingState.DEFAULT} size={'md'} title={'solid primary md'} {...args}
+    onclick={action('clicked')}
+  />

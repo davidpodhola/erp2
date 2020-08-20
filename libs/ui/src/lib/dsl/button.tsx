@@ -35,8 +35,10 @@ export type ButtonProps = {
    * title
    */
   title: string;
-}
 
-export const Button = (props:ButtonProps) => (
+  onclick?: (ev: Event) => void | null;
+};
+
+export const Button = (props: ButtonProps) => (
   <CdsButton {...props}>{props.title}</CdsButton>
-)
+);

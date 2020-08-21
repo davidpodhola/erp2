@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { CdsButton } from '@clr/react/button';
 import { ClrLoadingState } from '@clr/core/button';
 
@@ -39,6 +39,6 @@ export type ButtonProps = {
   onclick?: (ev: Event) => void | null;
 };
 
-export const Button = (props: ButtonProps) => (
+export const Button: FC<ButtonProps> = (props: ButtonProps) => (
   <CdsButton {...props}>{props.title}</CdsButton>
 );

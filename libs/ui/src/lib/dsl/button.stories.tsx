@@ -8,15 +8,19 @@ export default {
   title: 'Button',
 };
 
-export const button = (args: ButtonProps) =>
+export const button = (args: ButtonProps) => (
+  <Button {...args} onclick={action('clicked')} />
+);
+
+export const primarySolidMdButton = (args: ButtonProps) => (
   <Button
+    action={'solid'}
+    status={'primary'}
+    block={false}
+    loadingState={ClrLoadingState.DEFAULT}
+    size={'md'}
+    title={'solid primary md'}
     {...args}
     onclick={action('clicked')}
   />
-
-
-export const primarySolidMdButton = (args: ButtonProps) =>
-  <Button
-    action={'solid'} status={'primary'} block={false} loadingState={ClrLoadingState.DEFAULT} size={'md'} title={'solid primary md'} {...args}
-    onclick={action('clicked')}
-  />
+);

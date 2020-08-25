@@ -29,4 +29,6 @@ const IonWrapper = ({ children }) => {
 };
 
 addDecorator((storyFn) => <IonWrapper>{storyFn()}</IonWrapper>);
-configure(require.context('../src/lib', true, /\.stories\.(j|t)sx?$/), module);
+export const parameters = {
+  actions: { argTypesRegex: '^on[A-Z].*' },
+};

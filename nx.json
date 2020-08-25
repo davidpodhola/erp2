@@ -67,6 +67,9 @@
     "ui-mobile-e2e": {
       "tags": [],
       "implicitDependencies": ["ui-mobile"]
+    },
+    "ui-shared": {
+      "tags": []
     }
   }
 }

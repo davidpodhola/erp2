@@ -32,6 +32,9 @@ export const card = (args: CardProps) => (
     ]}
   >
     <CardBlock title={'sample card block 1'}>Sample card 1 content</CardBlock>
-    <CardBlock title={'sample card block 2'}>Sample card 2 content</CardBlock>
+    <CardBlock title={'sample card block 2'}>
+      <p>Sample card 2 content</p>
+      <Button action={'solid'} status={'danger'} size={'md'} block={false} loadingState={ClrLoadingState.DEFAULT} title={'Test button'} />
+    </CardBlock>
   </Card>
 );

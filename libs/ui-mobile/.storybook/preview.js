@@ -17,6 +17,9 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
+import theme from '../../ui-shared/src/lib/theme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const IonWrapper = ({ children }) => {
   return (
@@ -28,7 +31,11 @@ const IonWrapper = ({ children }) => {
   );
 };
 
-addDecorator((storyFn) => <IonWrapper>{storyFn()}</IonWrapper>);
+addDecorator((storyFn) =>
+  <>    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <ThemeProvider theme={theme}> <CssBaseline /><IonWrapper>{storyFn()}</IonWrapper></ThemeProvider></>);
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
 };

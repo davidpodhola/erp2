@@ -1,1 +1,1 @@
-export * from './lib/props';
+export * from './lib/theme';

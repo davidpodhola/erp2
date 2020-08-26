@@ -1,41 +1,33 @@
 import React from 'react';
-import { Button} from './button';
 import { action } from '@storybook/addon-actions';
-import { ButtonProps } from '@erp2/ui-shared';
+import { Button  } from '@material-ui/core';
 
 export default {
   component: Button,
-  title: 'Button',
+  title: 'Material-UI/Button',
   argTypes: {
     title: { control: 'text' },
-    action: {
+    color: {
       control: {
         type: 'inline-radio',
-        options: ['solid' , 'outline' , 'flat'],
+        options: ['default' , 'inherit' , 'primary', 'secondary'],
       },
     },
-    status: {
+    size: {
       control: {
         type: 'inline-radio',
-        options: ['primary' , 'success' , 'danger' , 'inverse'],
+        options: ['large' , 'medium' , 'small'],
+      },
+    },
+    variant: {
+      control: {
+        type: 'inline-radio',
+        options: ['contained' , 'outlined' , 'text'],
       },
     }
   },
 };
 
-export const button = (args: ButtonProps) => (
-  <Button {...args} onclick={action('clicked')} />
-);
-
-export const primarySolidMdButton = (args: ButtonProps) => (
-  <Button
-    action={'solid'}
-    status={'primary'}
-    block={false}
-    loadingState={'default'}
-    size={'md'}
-    title={'solid primary md'}
-    {...args}
-    onclick={action('clicked')}
-  />
+export const button = (args) => (
+  <Button {...args} onclick={action('clicked')}>{args.title}</Button>
 );

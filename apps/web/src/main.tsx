@@ -6,6 +6,9 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './client';
 import { GlobalStyles } from '@erp2/ui';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import theme from '../../../libs/ui-shared/src/lib/theme';
 
 ReactDOM.render(
   <ApolloProvider client={client}>
@@ -16,7 +19,10 @@ ReactDOM.render(
         audience={process.env.NX_AUTH0_AUDIENCE}
         redirectUri={'http://localhost:4200'}
       >
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
         <App />
+        </ThemeProvider>
       </Auth0Provider>
       <GlobalStyles />
     </React.StrictMode>

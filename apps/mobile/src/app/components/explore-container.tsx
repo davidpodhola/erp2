@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 import { UiMobile } from '@erp2/ui-mobile';
+import { Button } from '@material-ui/core';
 
 const StyledExploreContainer = styled.div`
   .container {
@@ -45,6 +46,7 @@ export const ExploreContainer = () => {
             UI Components
           </a>
         </p>
+        <Button color={'primary'} variant={'contained'} size={'large'} >Login...</Button>
         <UiMobile />
       </div>
     </StyledExploreContainer>

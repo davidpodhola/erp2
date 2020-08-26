@@ -10,21 +10,32 @@ const authorizationEndpoint = "https://erpjs.eu.auth0.com/authorize";
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
+interface Auth0Decoded {
+  "aud": string| string[];
+  "azp": string,
+  "exp": number,
+  "iat": number,
+  "iss": string,
+  "scope": string,
+  "sub": string,
+}
+
+
 export default function App() {
-  const [name, setName] = React.useState(null);
+  const [name, setName] = React.useState<string>();
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
       redirectUri,
       clientId: auth0ClientId,
       // id_token will return a JWT token
-      responseType: "id_token",
+      responseType: "token",
       // retrieve the user's profile
       scopes: ["openid", "profile"],
       extraParams: {
         // ideally, this will be a random value
         nonce: "nonce",
-        audience: '@erpjs',
+        audience: "@erpjs",
       },
     },
     { authorizationEndpoint }
@@ -45,12 +56,13 @@ export default function App() {
       }
       if (result.type === "success") {
         // Retrieve the JWT token and decode it
-        const jwtToken = result.params.id_token;
-        const decoded = jwtDecode(jwtToken);
+        console.log('*** result.params', result.params);
+        const jwtToken = result.params.access_token;
+        const decoded : Auth0Decoded = jwtDecode(jwtToken);
         console.log('*** decoded', decoded);
 
-        /* const { name } = decoded;
-        setName(name); */
+        const { sub } = decoded;
+        setName(sub);
       }
     }
   }, [result]);

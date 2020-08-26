@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom';
 
 import App from './app/app';
 import { ApolloProvider } from '@apollo/client';
-import { client } from './client';
+import { client, theme } from '@erp2/ui-shared';
 import { GlobalStyles } from '@erp2/ui';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../../../libs/ui-shared/src/lib/theme';
 
 ReactDOM.render(
   <ApolloProvider client={client}>

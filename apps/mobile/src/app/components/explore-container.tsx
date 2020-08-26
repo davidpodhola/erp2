@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { UiMobile } from '@erp2/ui-mobile';
 import { Button } from '@material-ui/core';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const StyledExploreContainer = styled.div`
   .container {
@@ -32,6 +33,13 @@ const StyledExploreContainer = styled.div`
 `;
 
 export const ExploreContainer = () => {
+  const {
+    loginWithRedirect,
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently,
+  } = useAuth0();
+
   return (
     <StyledExploreContainer>
       <div className="container">
@@ -46,7 +54,7 @@ export const ExploreContainer = () => {
             UI Components
           </a>
         </p>
-        <Button color={'primary'} variant={'contained'} size={'large'} >Login...</Button>
+        <Button color={'primary'} variant={'contained'} size={'large'} onClick={() => loginWithRedirect()}>Login...</Button>
         <UiMobile />
       </div>
     </StyledExploreContainer>

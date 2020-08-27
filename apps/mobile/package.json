@@ -8,21 +8,23 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "~38.0.8",
-    "expo-auth-session": "~1.4.1",
-    "expo-status-bar": "^1.0.2",
-    "jwt-decode": "2.2.0",
-    "react": "~16.11.0",
-    "react-dom": "~16.11.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-    "react-native-web": "~0.11.7"
+    "@apollo/client": "../../node_modules/@apollo/client",
+    "expo": "../../node_modules/expo",
+    "expo-auth-session": "../../node_modules/expo-auth-session",
+    "expo-status-bar": "../../node_modules/expo-status-bar",
+    "jwt-decode": "../../node_modules/jwt-decode",
+    "react": "../../node_modules/react",
+    "react-dom": "../../node_modules/react-dom",
+    "react-native": "../../node_modules/react-native",
+    "react-native-web": "../../node_modules/react-native-web",
+    "styled-components": "../../node_modules/styled-components"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
-    "@types/react": "~16.9.41",
-    "@types/react-native": "~0.62.13",
-    "@types/jwt-decode": "^2.2.1",
-    "typescript": "~3.9.5"
+    "@babel/core": "../../node_modules/@babel/core",
+    "@types/react": "../../node_modules/@types/react",
+    "@types/react-native": "../../node_modules/@types/react-native",
+    "@types/jwt-decode": "../../node_modules/@types/jwt-decode",
+    "typescript": "../../node_modules/typescript"
   },
   "private": true
 }

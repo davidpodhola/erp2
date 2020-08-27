@@ -3,6 +3,9 @@ import React from 'react';
 import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { ApolloProvider } from '@apollo/client';
+import { ServerTime } from './src/server.time';
+import { client, auth } from './src/client';
 
 const auth0ClientId = "0SNCzIORB4AU2PH9yrgL4EGruu0ZTEny";
 const authorizationEndpoint = "https://erpjs.eu.auth0.com/authorize";
@@ -58,6 +61,7 @@ export default function App() {
         // Retrieve the JWT token and decode it
         console.log('*** result.params', result.params);
         const jwtToken = result.params.access_token;
+        auth.token = jwtToken;
         const decoded : Auth0Decoded = jwtDecode(jwtToken);
         console.log('*** decoded', decoded);
 
@@ -68,21 +72,25 @@ export default function App() {
   }, [result]);
 
   return (
-    <View style={styles.container}>
-      <Text>The mobile application</Text>
+    <ApolloProvider client={client}>
+      <View style={styles.container}>
+        <Text>The mobile application</Text>
 
-      {name ? (
-        <Text style={styles.title}>You are logged in, {name}!</Text>
-      ) : (
-        <Button
-          disabled={!request}
-          title="Log in with Auth0"
-          onPress={() => promptAsync({ useProxy })}
-        />
-      )}
+        { name ? <ServerTime /> : <Text>Log in first</Text> }
 
-      <StatusBar style="auto" />
-    </View>
+        {name ? (
+          <Text style={styles.title}>You are logged in, {name}!</Text>
+        ) : (
+          <Button
+            disabled={!request}
+            title="Log in with Auth0"
+            onPress={() => promptAsync({ useProxy })}
+          />
+        )}
+
+        <StatusBar style="auto" />
+      </View>
+    </ApolloProvider>
   );
 }
 

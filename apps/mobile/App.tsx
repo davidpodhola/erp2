@@ -6,6 +6,7 @@ import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
 import { ApolloProvider } from '@apollo/client';
 import { ServerTime } from './src/server.time';
 import { client, auth } from './src/client';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const auth0ClientId = "0SNCzIORB4AU2PH9yrgL4EGruu0ZTEny";
 const authorizationEndpoint = "https://erpjs.eu.auth0.com/authorize";
@@ -72,6 +73,7 @@ export default function App() {
   }, [result]);
 
   return (
+    <PaperProvider>
     <ApolloProvider client={client}>
       <View style={styles.container}>
         <Text>The mobile application</Text>
@@ -91,6 +93,7 @@ export default function App() {
         <StatusBar style="auto" />
       </View>
     </ApolloProvider>
+      </PaperProvider>
   );
 }
 

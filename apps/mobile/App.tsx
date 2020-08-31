@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, StyleSheet, Text, View } from "react-native";
+import { Button } from 'react-native-paper';
 import { ApolloProvider } from '@apollo/client';
 import { ServerTime } from './src/server.time';
 import { client, auth } from './src/client';
@@ -85,9 +86,9 @@ export default function App() {
         ) : (
           <Button
             disabled={!request}
-            title="Log in with Auth0"
+            mode={`contained`}
             onPress={() => promptAsync({ useProxy })}
-          />
+          >Log in with Auth0</Button>
         )}
 
         <StatusBar style="auto" />

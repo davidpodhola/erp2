@@ -9,8 +9,8 @@ import { ServerTime } from './src/server.time';
 import { client, auth } from './src/client';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-const auth0ClientId = "0SNCzIORB4AU2PH9yrgL4EGruu0ZTEny";
-const authorizationEndpoint = "https://erpjs.eu.auth0.com/authorize";
+const auth0ClientId = `${process.env.EXPO_AUTH0_CLIENTID}`;
+const authorizationEndpoint = `https://${process.env.EXPO_AUTH0_DOMAIN}/authorize`;
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });

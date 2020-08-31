@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.13.193:3333/graphql',
+  uri: process.env.EXPO_API_ADDRESS,
 });
 
 interface Auth {

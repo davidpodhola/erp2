@@ -1,1 +1,1 @@
-export * from './lib/ui-mobile';
+export * from '../../../apps/mobile/src/server.time';

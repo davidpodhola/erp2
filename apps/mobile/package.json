@@ -1,0 +1,44 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@apollo/client": "../../node_modules/@apollo/client",
+    "cross-fetch": "../../node_modules/cross-fetch",
+    "expo": "../../node_modules/expo",
+    "expo-auth-session": "../../node_modules/expo-auth-session",
+    "expo-status-bar": "../../node_modules/expo-status-bar",
+    "jwt-decode": "../../node_modules/jwt-decode",
+    "react": "../../node_modules/react",
+    "react-dom": "../../node_modules/react-dom",
+    "react-native": "../../node_modules/react-native",
+    "react-native-paper": "../../node_modules/react-native-paper",
+    "react-native-web": "../../node_modules/react-native-web",
+    "styled-components": "../../node_modules/styled-components"
+  },
+  "devDependencies": {
+    "@babel/core": "../../node_modules/@babel/core",
+    "@types/react": "../../node_modules/@types/react",
+    "@types/react-native": "../../node_modules/@types/react-native",
+    "@types/jest": "../../node_modules/@types/jest",
+    "@types/jwt-decode": "../../node_modules/@types/jwt-decode",
+    "@types/react-test-renderer": "../../node_modules/@types/react-test-renderer",
+    "babel-plugin-transform-inline-environment-variables": "../../node_modules/babel-plugin-transform-inline-environment-variables",
+    "jest-expo": "../../node_modules/jest-expo",
+    "react-test-renderer": "../../node_modules/react-test-renderer",
+    "typescript": "../../node_modules/typescript"
+  },
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*|expo-status-bar)"
+    ]
+  }
+}

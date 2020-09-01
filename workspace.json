@@ -277,7 +277,8 @@
             "tsConfig": "libs/model/tsconfig.lib.json",
             "packageJson": "libs/model/package.json",
             "main": "libs/model/src/index.ts",
-            "assets": ["libs/model/*.md"]
+            "assets": ["libs/model/*.md"],
+            "srcRootForCompilationRoot": "libs/model/src"
           }
         }
       }
@@ -305,136 +306,6 @@
             "tsConfig": "libs/auth/tsconfig.spec.json",
             "passWithNoTests": true
           }
-        }
-      }
-    },
-    "mobile": {
-      "root": "apps/mobile",
-      "sourceRoot": "apps/mobile/src",
-      "projectType": "application",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/web:build",
-          "options": {
-            "outputPath": "dist/apps/mobile",
-            "index": "apps/mobile/src/index.html",
-            "main": "apps/mobile/src/main.tsx",
-            "polyfills": "apps/mobile/src/polyfills.ts",
-            "tsConfig": "apps/mobile/tsconfig.app.json",
-            "assets": [
-              "apps/mobile/src/assets",
-              "apps/mobile/src/manifest.json"
-            ],
-            "styles": [],
-            "scripts": [],
-            "webpackConfig": "@nxtend/ionic-react/plugins/webpack"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/mobile/src/environments/environment.ts",
-                  "with": "apps/mobile/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "mobile:build"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "mobile:build:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/mobile/tsconfig.app.json",
-              "apps/mobile/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/mobile/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/mobile/jest.config.js",
-            "tsConfig": "apps/mobile/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "apps/mobile/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "mobile-e2e": {
-      "root": "apps/mobile-e2e",
-      "sourceRoot": "apps/mobile-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/mobile-e2e/cypress.json",
-            "tsConfig": "apps/mobile-e2e/tsconfig.e2e.json",
-            "devServerTarget": "mobile:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "mobile:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": ["apps/mobile-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/mobile-e2e/**/*"]
-          }
-        }
-      }
-    },
-    "mobile-cap": {
-      "projectType": "application",
-      "root": "apps/mobile-cap",
-      "sourceRoot": "apps/mobile-cap/src",
-      "architect": {
-        "add": {
-          "builder": "@nxtend/capacitor:add"
-        },
-        "copy": {
-          "builder": "@nxtend/capacitor:copy"
-        },
-        "open": {
-          "builder": "@nxtend/capacitor:open"
-        },
-        "sync": {
-          "builder": "@nxtend/capacitor:sync"
-        },
-        "update": {
-          "builder": "@nxtend/capacitor:update"
         }
       }
     },
@@ -491,34 +362,6 @@
             "ci": {
               "quiet": true
             }
-          }
-        }
-      }
-    },
-    "ui-mobile-e2e": {
-      "root": "apps/ui-mobile-e2e",
-      "sourceRoot": "apps/ui-mobile-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/ui-mobile-e2e/cypress.json",
-            "tsConfig": "apps/ui-mobile-e2e/tsconfig.e2e.json",
-            "devServerTarget": "ui-mobile:storybook"
-          },
-          "configurations": {
-            "ci": {
-              "devServerTarget": "ui-mobile:storybook:ci"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": ["apps/ui-mobile-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/ui-mobile-e2e/**/*"]
           }
         }
       }
@@ -588,19 +431,6 @@
         "linter": "eslint"
       },
       "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nxtend/ionic-react": {
-      "application": {
-        "style": "styled-components",
-        "linter": "eslint"
-      },
-      "component": {
-        "style": "styled-components"
-      },
-      "library": {
-        "style": "styled-components",
         "linter": "eslint"
       }
     }

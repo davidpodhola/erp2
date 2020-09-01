@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GlobalStyles } from '../src/styles';
-import theme from '../../ui-shared/src/lib/theme';
+import theme from '../src/styles/theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 

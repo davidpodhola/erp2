@@ -364,33 +364,6 @@
           }
         }
       }
-    },
-    "ui-shared": {
-      "root": "libs/ui-shared",
-      "sourceRoot": "libs/ui-shared/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/ui-shared/tsconfig.lib.json",
-              "libs/ui-shared/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/ui-shared/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/ui-shared/jest.config.js",
-            "tsConfig": "libs/ui-shared/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        }
-      }
     }
   },
   "cli": {
@@ -457,19 +430,6 @@
         "linter": "eslint"
       },
       "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nxtend/ionic-react": {
-      "application": {
-        "style": "styled-components",
-        "linter": "eslint"
-      },
-      "component": {
-        "style": "styled-components"
-      },
-      "library": {
-        "style": "styled-components",
         "linter": "eslint"
       }
     }

@@ -1,9 +1,14 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
+const uri = process.env.EXPO_API_ADDRESS || process.env.NX_API_ADDRESS;
+
 const httpLink = createHttpLink({
-  uri: process.env.EXPO_API_ADDRESS,
+  uri,
 });
+
+console.log(process.env);
+console.log(`*** httpLink uri`, uri);
 
 interface Auth {
   token: string;

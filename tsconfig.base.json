@@ -19,8 +19,7 @@
       "@erp2/ui": ["libs/ui/src/index.ts"],
       "@erp2/model": ["libs/model/src/index.ts"],
       "@erp2/auth": ["libs/auth/src/index.ts"],
-      "@erp2/ui-mobile": ["libs/ui-mobile/src/index.ts"],
-      "@erp2/ui-shared": ["libs/ui-shared/src/index.ts"]
+      "@erp2/ui-mobile": ["libs/ui-mobile/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

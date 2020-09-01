@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Ui, ServerTime } from '@erp2/ui';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Box, Typography, Button } from '@material-ui/core';
+import { auth } from '../../../../libs/ui-shared/src';
 
 export const App = () => {
   const {
@@ -15,7 +16,11 @@ export const App = () => {
   const [token, setToken] = useState<string>(null);
   useEffect(() => {
     const setTokenIfAuthenticated = async () => {
-      if (isAuthenticated) setToken(await getAccessTokenSilently());
+      if (isAuthenticated) {
+        const token = await getAccessTokenSilently();
+        setToken(token);
+        auth.token = token;
+      }
     };
 
     setTokenIfAuthenticated().then();
@@ -30,9 +35,11 @@ export const App = () => {
 
         <div>
           <Ui />
-          <ServerTime />
           {token ? (
-            <span>Token: ${token}</span>
+            <div>
+              <span>Token: ${token}</span>
+              <ServerTime />
+            </div>
           ) : (
             <Button color={'primary'} variant={'contained'} size={'large'} onClick={() => loginWithRedirect()}>Login...</Button>
           )}

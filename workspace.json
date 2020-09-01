@@ -277,7 +277,8 @@
             "tsConfig": "libs/model/tsconfig.lib.json",
             "packageJson": "libs/model/package.json",
             "main": "libs/model/src/index.ts",
-            "assets": ["libs/model/*.md"]
+            "assets": ["libs/model/*.md"],
+            "srcRootForCompilationRoot": "libs/model/src"
           }
         }
       }

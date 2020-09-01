@@ -57,6 +57,9 @@ jobs:
       - run: yarn affected:e2e --base=origin/master
         env:
           CI: true
+      - run: (cd mobile && yarn test)
+        env:
+          CI: true
       - run: yarn start api &
         env:
           CI: true

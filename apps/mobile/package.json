@@ -29,7 +29,7 @@
     "@types/jwt-decode": "../../node_modules/@types/jwt-decode",
     "@types/react-test-renderer": "../../node_modules/@types/react-test-renderer",
     "babel-plugin-transform-inline-environment-variables": "../../node_modules/babel-plugin-transform-inline-environment-variables",
-    "jest-expo" : "../../node_modules/jest-expo",
+    "jest-expo": "../../node_modules/jest-expo",
     "react-test-renderer": "../../node_modules/react-test-renderer",
     "typescript": "../../node_modules/typescript"
   },

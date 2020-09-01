@@ -31,10 +31,24 @@ const IonWrapper = ({ children }) => {
   );
 };
 
-addDecorator((storyFn) =>
-  <>    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <ThemeProvider theme={theme}> <CssBaseline /><IonWrapper>{storyFn()}</IonWrapper></ThemeProvider></>);
+addDecorator((storyFn) => (
+  <>
+    {' '}
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <ThemeProvider theme={theme}>
+      {' '}
+      <CssBaseline />
+      <IonWrapper>{storyFn()}</IonWrapper>
+    </ThemeProvider>
+  </>
+));
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

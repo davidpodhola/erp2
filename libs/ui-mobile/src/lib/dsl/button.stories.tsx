@@ -1,6 +1,6 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { Button  } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 export default {
   component: Button,
@@ -10,24 +10,26 @@ export default {
     color: {
       control: {
         type: 'inline-radio',
-        options: ['default' , 'inherit' , 'primary', 'secondary'],
+        options: ['default', 'inherit', 'primary', 'secondary'],
       },
     },
     size: {
       control: {
         type: 'inline-radio',
-        options: ['large' , 'medium' , 'small'],
+        options: ['large', 'medium', 'small'],
       },
     },
     variant: {
       control: {
         type: 'inline-radio',
-        options: ['contained' , 'outlined' , 'text'],
+        options: ['contained', 'outlined', 'text'],
       },
-    }
+    },
   },
 };
 
 export const button = (args) => (
-  <Button {...args} onclick={action('clicked')}>{args.title}</Button>
+  <Button {...args} onclick={action('clicked')}>
+    {args.title}
+  </Button>
 );

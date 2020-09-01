@@ -21,7 +21,7 @@ ReactDOM.render(
       >
         <ThemeProvider theme={theme}>
           <CssBaseline />
-        <App />
+          <App />
         </ThemeProvider>
       </Auth0Provider>
       <GlobalStyles />

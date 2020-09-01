@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import * as AuthSession from "expo-auth-session";
-import jwtDecode from "jwt-decode";
-import { Alert, Platform, StyleSheet, Text, View } from "react-native";
+import * as AuthSession from 'expo-auth-session';
+import jwtDecode from 'jwt-decode';
+import { Alert, Platform, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { ApolloProvider } from '@apollo/client';
 import { ServerTime } from './src/server.time';
@@ -16,15 +16,14 @@ const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 interface Auth0Decoded {
-  "aud": string| string[];
-  "azp": string,
-  "exp": number,
-  "iat": number,
-  "iss": string,
-  "scope": string,
-  "sub": string,
+  aud: string | string[];
+  azp: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  scope: string;
+  sub: string;
 }
-
 
 export default function App() {
   const [name, setName] = React.useState<string>();
@@ -34,13 +33,13 @@ export default function App() {
       redirectUri,
       clientId: auth0ClientId,
       // id_token will return a JWT token
-      responseType: "token",
+      responseType: 'token',
       // retrieve the user's profile
-      scopes: ["openid", "profile"],
+      scopes: ['openid', 'profile'],
       extraParams: {
         // ideally, this will be a random value
-        nonce: "nonce",
-        audience: "@erpjs",
+        nonce: 'nonce',
+        audience: '@erpjs',
       },
     },
     { authorizationEndpoint }
@@ -54,17 +53,17 @@ export default function App() {
     if (result) {
       if (result.type === 'error' && result.error) {
         Alert.alert(
-          "Authentication error",
-          result.params.error_description || "something went wrong"
+          'Authentication error',
+          result.params.error_description || 'something went wrong'
         );
         return;
       }
-      if (result.type === "success") {
+      if (result.type === 'success') {
         // Retrieve the JWT token and decode it
         console.log('*** result.params', result.params);
         const jwtToken = result.params.access_token;
         auth.token = jwtToken;
-        const decoded : Auth0Decoded = jwtDecode(jwtToken);
+        const decoded: Auth0Decoded = jwtDecode(jwtToken);
         console.log('*** decoded', decoded);
 
         const { sub } = decoded;
@@ -75,26 +74,28 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <ApolloProvider client={client}>
-      <View style={styles.container}>
-        <Text>The mobile application</Text>
+      <ApolloProvider client={client}>
+        <View style={styles.container}>
+          <Text>The mobile application</Text>
 
-        { name ? <ServerTime /> : <Text>Log in first</Text> }
+          {name ? <ServerTime /> : <Text>Log in first</Text>}
 
-        {name ? (
-          <Text style={styles.title}>You are logged in, {name}!</Text>
-        ) : (
-          <Button
-            disabled={!request}
-            mode={`contained`}
-            onPress={() => promptAsync({ useProxy })}
-          >Log in with Auth0</Button>
-        )}
+          {name ? (
+            <Text style={styles.title}>You are logged in, {name}!</Text>
+          ) : (
+            <Button
+              disabled={!request}
+              mode={`contained`}
+              onPress={() => promptAsync({ useProxy })}
+            >
+              Log in with Auth0
+            </Button>
+          )}
 
-        <StatusBar style="auto" />
-      </View>
-    </ApolloProvider>
-      </PaperProvider>
+          <StatusBar style="auto" />
+        </View>
+      </ApolloProvider>
+    </PaperProvider>
   );
 }
 
@@ -107,8 +108,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 40,
   },
-
 });

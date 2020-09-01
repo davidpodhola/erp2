@@ -9,7 +9,7 @@ export interface HasNote {
 @Entity({ name: 'address' })
 @ObjectType('address')
 export class CustomAddress extends Address implements HasNote {
-  @Column({nullable: true})
-  @Field({nullable: true})
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   note: string;
 }

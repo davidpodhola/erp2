@@ -41,11 +41,16 @@ export const App = () => {
               <ServerTime />
             </div>
           ) : (
-            <Button color={'primary'} variant={'contained'} size={'large'} onClick={() => loginWithRedirect()}>Login...</Button>
+            <Button
+              color={'primary'}
+              variant={'contained'}
+              size={'large'}
+              onClick={() => loginWithRedirect()}
+            >
+              Login...
+            </Button>
           )}
-
         </div>
-
       </Box>
     </Container>
   );

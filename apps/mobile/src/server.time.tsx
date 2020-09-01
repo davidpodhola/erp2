@@ -1,8 +1,7 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import styled from 'styled-components';
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
-
+import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 
 export const SERVER_TIME = gql`
   query {
@@ -18,8 +17,5 @@ export const ServerTime = () => {
     console.log('*** error', error);
     return <Text>Error</Text>;
   }
-  return (
-        <Text>{new Date(data.now).toString()}</Text>
-  );
+  return <Text>{new Date(data.now).toString()}</Text>;
 };
-

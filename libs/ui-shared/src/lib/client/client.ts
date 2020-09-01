@@ -14,7 +14,7 @@ interface Auth {
   token: string;
 }
 
-export const auth : Auth = {} as any;
+export const auth: Auth = {} as any;
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -23,12 +23,12 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    }
-  }
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
 });
 
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });

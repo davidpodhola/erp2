@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 import {
   AccountingSchemeService,
   AccountingSchemeServiceKey,
@@ -7,7 +7,9 @@ import {
   BankService,
   BankServiceKey,
   CountryService,
-  CountryServiceKey, CurrencyRateService, CurrencyRateServiceKey,
+  CountryServiceKey,
+  CurrencyRateService,
+  CurrencyRateServiceKey,
   CurrencyService,
   CurrencyServiceKey,
   CustomerService,
@@ -16,17 +18,17 @@ import {
   OrganizationService,
   OrganizationServiceKey,
   ProductService,
-  ProductServiceKey, SalesInvoiceLineSaveArgsModel,
+  ProductServiceKey,
+  SalesInvoiceLineSaveArgsModel,
   SalesInvoiceService,
   SalesInvoiceServiceKey,
   TaxService,
-  TaxServiceKey
+  TaxServiceKey,
 } from '@erp2/model';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
 export class Invoices2020081598520059145 implements MigrationInterface {
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
     const organizationService: OrganizationService = getService(
@@ -96,7 +98,7 @@ export class Invoices2020081598520059145 implements MigrationInterface {
     await currencyRateService.save(entityManager, {
       start,
       end,
-      currencyMultiplyingRate: 26.260,
+      currencyMultiplyingRate: 26.26,
       fromIsoCode: 'EUR',
       toIsoCode: 'CZK',
     });
@@ -104,7 +106,7 @@ export class Invoices2020081598520059145 implements MigrationInterface {
       {
         lineTaxIsStandard: true,
         product: o365businessBasic,
-        linePrice: _.round((7 * 50.40 - 8.40)  * 26.260, 2),
+        linePrice: _.round((7 * 50.4 - 8.4) * 26.26, 2),
         quantity: 7,
         narration:
           'Licence Microsoft 365 Business Basic na období 21.8.2020-20.8.2021',
@@ -113,7 +115,7 @@ export class Invoices2020081598520059145 implements MigrationInterface {
       {
         lineTaxIsStandard: true,
         product: o365businessStandard,
-        linePrice: _.round(2 * 126 * 26.260, 2),
+        linePrice: _.round(2 * 126 * 26.26, 2),
         quantity: 2,
         narration:
           'Licence Microsoft 365 Business Standard na období 21.8.2020-20.8.2021',
@@ -132,7 +134,7 @@ export class Invoices2020081598520059145 implements MigrationInterface {
     await salesInvoiceService.confirm(entityManager, invoice);
   }
 
-    public async down(): Promise<void> {
-      /* intentionally left blank */
-    }
+  public async down(): Promise<void> {
+    /* intentionally left blank */
+  }
 }

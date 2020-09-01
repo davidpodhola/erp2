@@ -22,7 +22,6 @@
     "format:check": "nx format:check",
     "mobile": "(set -a && source .env && cd apps/mobile && expo start && set +a)",
     "storybook": "nx run ui:storybook",
-    "storybook-mobile": "nx run ui-mobile:storybook -p 4401",
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",

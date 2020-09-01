@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -5,6 +6,7 @@ const uri = process.env.EXPO_API_ADDRESS || process.env.NX_API_ADDRESS;
 
 const httpLink = createHttpLink({
   uri,
+  fetch,
 });
 
 console.log(process.env);

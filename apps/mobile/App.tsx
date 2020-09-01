@@ -6,7 +6,7 @@ import { Alert, Platform, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { ApolloProvider } from '@apollo/client';
 import { ServerTime } from './src/server.time';
-import { client, auth } from '../../libs/ui-shared/src';
+import { client, auth } from '../../shared/ui-shared/src';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 const auth0ClientId = `${process.env.EXPO_AUTH0_CLIENTID}`;

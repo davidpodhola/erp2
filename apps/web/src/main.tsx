@@ -8,7 +8,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from '@erp2/ui';
-import { client } from '../../../libs/ui-shared/src';
+import { client } from '../../../shared/ui-shared/src';
 
 ReactDOM.render(
   <ApolloProvider client={client}>

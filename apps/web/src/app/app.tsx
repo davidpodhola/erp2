@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Ui, ServerTime } from '@erp2/ui';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Box, Typography, Button } from '@material-ui/core';
-import { auth } from '../../../../shared/ui-shared/src';
+import { auth } from '../../../mobile/src/client';
 
 export const App = () => {
   const {

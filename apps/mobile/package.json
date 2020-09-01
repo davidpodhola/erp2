@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "../../node_modules/@apollo/client",
+    "cross-fetch": "../../node_modules/cross-fetch",
     "expo": "../../node_modules/expo",
     "expo-auth-session": "../../node_modules/expo-auth-session",
     "expo-status-bar": "../../node_modules/expo-status-bar",

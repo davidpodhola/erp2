@@ -1,3 +1,9 @@
+/**
+ * unfortunately this file needs to reside under the mobile client
+ * as the react-native packager (metro) is not able to work with
+ * files outside of the mobile root
+ */
+
 import fetch from 'cross-fetch';
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';

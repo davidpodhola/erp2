@@ -308,63 +308,6 @@
           }
         }
       }
-    },
-    "ui-mobile": {
-      "root": "libs/ui-mobile",
-      "sourceRoot": "libs/ui-mobile/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/ui-mobile/tsconfig.lib.json",
-              "libs/ui-mobile/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/ui-mobile/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/ui-mobile/jest.config.js",
-            "tsConfig": "libs/ui-mobile/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        },
-        "storybook": {
-          "builder": "@nrwl/storybook:storybook",
-          "options": {
-            "uiFramework": "@storybook/react",
-            "port": 4400,
-            "config": {
-              "configFolder": "libs/ui-mobile/.storybook"
-            }
-          },
-          "configurations": {
-            "ci": {
-              "quiet": true
-            }
-          }
-        },
-        "build-storybook": {
-          "builder": "@nrwl/storybook:build",
-          "options": {
-            "uiFramework": "@storybook/react",
-            "outputPath": "dist/storybook/ui-mobile",
-            "config": {
-              "configFolder": "libs/ui-mobile/.storybook"
-            }
-          },
-          "configurations": {
-            "ci": {
-              "quiet": true
-            }
-          }
-        }
-      }
     }
   },
   "cli": {

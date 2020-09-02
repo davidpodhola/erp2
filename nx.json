@@ -50,9 +50,6 @@
     },
     "auth": {
       "tags": []
-    },
-    "ui-mobile": {
-      "tags": []
     }
   }
 }

@@ -1,11 +1,13 @@
 import { BaseModel } from './base.model';
 import { BaseSaveArgsModel } from './base.save.args.model';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 import { getService } from './module.reference.service';
 import {
   SaveArgsValidationService,
   SaveArgsValidationServiceKey,
 } from './save.args.validation.service';
+import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
+import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 export abstract class BaseEntityService<
   T extends BaseModel,
@@ -23,7 +25,7 @@ export abstract class BaseEntityService<
 
   abstract typeName(): string;
 
-  loadEntity = async (
+  loadEntityById = async (
     transactionalEntityManager: EntityManager,
     id: number,
     relations?: string[]
@@ -32,10 +34,27 @@ export abstract class BaseEntityService<
       where: { id },
       relations,
     });
+
+  loadEntity = async (
+    transactionalEntityManager: EntityManager,
+    options: FindOneOptions<T>,
+  ): Promise<T> =>
+    await this.getRepository(transactionalEntityManager).findOne(
+      options,
+    );
+
+  createQueryBuilder = (
+    transactionalEntityManager: EntityManager,
+    alias: string,
+  ) : SelectQueryBuilder<T> =>
+    this.getRepository(transactionalEntityManager).createQueryBuilder(alias);
+
   loadEntities = async (
-    transactionalEntityManager: EntityManager
+    transactionalEntityManager: EntityManager,
+    options?: FindManyOptions<T>
   ): Promise<Array<T>> =>
-    await this.getRepository(transactionalEntityManager).find();
+    await this.getRepository(transactionalEntityManager).find(options);
+
   async save(transactionalEntityManager: EntityManager, args: S): Promise<T> {
     const saveArgsValidationService: SaveArgsValidationService = getService(
       SaveArgsValidationServiceKey
@@ -47,7 +66,7 @@ export abstract class BaseEntityService<
     );
 
     const entity = args.id
-      ? await this.loadEntity(transactionalEntityManager, args.id)
+      ? await this.loadEntityById(transactionalEntityManager, args.id)
       : await this.createEntity();
     return await this.getRepository(transactionalEntityManager).save(
       await this.doSave(transactionalEntityManager, args, entity)

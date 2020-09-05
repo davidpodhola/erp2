@@ -45,7 +45,7 @@ export class BankAccountService extends BaseEntityService<
             transactionalEntityManager,
             args.bankDisplayName
           )
-        : await this.bankService.loadEntity(
+        : await this.bankService.loadEntityById(
             transactionalEntityManager,
             args.bankId
           ));

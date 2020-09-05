@@ -29,7 +29,7 @@ export class AddressService extends BaseEntityService<
     newAddress: AddressSaveArgsModel
   ): Promise<AddressModel> {
     const oldAddress = newAddress.id
-      ? await this.loadEntity(transactionalEntityManager, newAddress.id)
+      ? await this.loadEntityById(transactionalEntityManager, newAddress.id)
       : null;
 
     const oldAddressSimple: AddressSaveArgsModel = {

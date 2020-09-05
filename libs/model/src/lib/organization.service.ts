@@ -54,13 +54,13 @@ export class OrganizationService extends BaseEntityService<
     organization.idNumber = args.idNumber;
     organization.bankAccount =
       args.bankAccount ||
-      (await this.bankAccountService.loadEntity(
+      (await this.bankAccountService.loadEntityById(
         transactionalEntityManager,
         args.bankAccountId
       ));
     organization.accountingScheme =
       args.accountingScheme ||
-      (await this.accountingSchemeService.loadEntity(
+      (await this.accountingSchemeService.loadEntityById(
         transactionalEntityManager,
         args.accountingSchemeId
       ));

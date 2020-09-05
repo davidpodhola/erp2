@@ -62,6 +62,7 @@ const euMembersISOCodes = [
   'UK',
 ];
 
+@ObjectType()
 export abstract class EntityBase {
   @Field()
   @PrimaryGeneratedColumn()

@@ -5,14 +5,24 @@
 type AccountingScheme {
   currency: Currency!
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Address {
   city: String!
   country: Country!
   customerRegistratedAddresses: [Customer!]
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   line1: String!
   organizationRegisteredAddresses: [Organization!]
+  updtOpId: Float!
+  updtTs: DateTime!
   zipCode: String!
 }
 
@@ -20,6 +30,11 @@ type Bank {
   bankAccounts: [BankAccount!]
   bankIdentifierCode: String!
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type BankAccount {
@@ -27,22 +42,37 @@ type BankAccount {
   bankAccountCustomerPrintableNumber: String!
   displayName: String!
   iban: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   organizations: [Organization!]
   salesInvoices: [SalesInvoice!]
   swift: String!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Country {
   addresses: [Address!]
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   isoCode: String!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Currency {
   currencyRatesFrom: [CurrencyRate!]
   currencyRatesTo: [CurrencyRate!]
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   isoCode: String!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type CurrencyRate {
@@ -50,17 +80,26 @@ type CurrencyRate {
   end: DateTime!
   from: Currency!
   id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   start: DateTime!
   to: Currency!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Customer {
   displayName: String!
+  id: Float!
   idNumber: String!
   invoicingEmail: String!
+  isActive: Boolean!
+  isCurrent: Boolean!
   legalAddress: Address!
   legalName: String!
   salesInvoices: [SalesInvoice!]
+  updtOpId: Float!
+  updtTs: DateTime!
   vatNumber: String
 }
 
@@ -72,7 +111,12 @@ scalar DateTime
 type DocumentNumberSequence {
   current: Float!
   forType: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   organization: Organization!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Mutation {
@@ -85,22 +129,34 @@ type Organization {
   contact: String!
   displayName: String!
   documentNumberSequences: [DocumentNumberSequence!]
+  id: Float!
   idNumber: String!
+  isActive: Boolean!
+  isCurrent: Boolean!
   legalAddress: Address!
   legalName: String!
   registration: String!
   salesInvoices: [SalesInvoice!]
+  updtOpId: Float!
+  updtTs: DateTime!
   users: [UserToOrganization!]
   vatNumber: String
 }
 
 type Product {
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   salesInvoiceLine: [SalesInvoiceLine!]
   sku: String!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type Query {
+  author(id: Int!): Customer!
+  customers: [Customer!]!
   now: UniversalDateTime!
 }
 
@@ -114,7 +170,10 @@ type SalesInvoice {
   dueDate: DateTime!
   grandTotal: Float!
   grandTotalAccountingSchemeCurrency: Float!
+  id: Float!
+  isActive: Boolean!
   isCalculated: Boolean!
+  isCurrent: Boolean!
   isDraft: Boolean!
   issuedOn: DateTime!
   lines: [SalesInvoiceLine!]
@@ -127,21 +186,33 @@ type SalesInvoice {
   totalLines: Float!
   totalLinesAccountingSchemeCurrency: Float!
   transactionDate: DateTime!
+  updtOpId: Float!
+  updtTs: DateTime!
   vatReport: [SalesInvoiceVat!]
 }
 
 type SalesInvoiceLine {
+  id: Float!
   invoice: SalesInvoice!
+  isActive: Boolean!
+  isCurrent: Boolean!
   lineOrder: Float!
   linePrice: Float!
   lineTax: Tax!
   narration: String!
   product: Product!
   quantity: Float!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 type SalesInvoiceVat {
+  id: Float!
   invoice: SalesInvoice!
+  isActive: Boolean!
+  isCurrent: Boolean!
+  updtOpId: Float!
+  updtTs: DateTime!
   vatRatePercent: Float!
   vatTotal: Float!
   vatTotalAccountingSchemeCurrency: Float!
@@ -151,27 +222,47 @@ type SalesInvoiceVat {
 
 type Tax {
   displayName: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   isStandard: Boolean!
   ratePercent: Float!
+  updtOpId: Float!
+  updtTs: DateTime!
 }
 
 scalar UniversalDateTime
 
 type User {
   email: String
+  id: Float!
   identities: [UserIdentity!]
+  isActive: Boolean!
+  isCurrent: Boolean!
   name: String
   organizations: [UserToOrganization!]
+  updtOpId: Float!
+  updtTs: DateTime!
   username: String
 }
 
 type UserIdentity {
   externalUser: String!
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   provider: String!
+  updtOpId: Float!
+  updtTs: DateTime!
   user: User!
 }
 
 type UserToOrganization {
+  id: Float!
+  isActive: Boolean!
+  isCurrent: Boolean!
   organization: Organization!
+  updtOpId: Float!
+  updtTs: DateTime!
   user: User!
 }

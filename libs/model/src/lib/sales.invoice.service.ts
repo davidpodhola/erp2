@@ -78,7 +78,7 @@ export class SalesInvoiceLineService extends BaseEntityService<
       args.lineTax ||
       (args.lineTaxIsStandard
         ? await this.taxService.getStandardTax(transactionalEntityManager)
-        : await this.taxService.loadEntity(
+        : await this.taxService.loadEntityById(
             transactionalEntityManager,
             args.lineTaxId
           ));
@@ -89,7 +89,7 @@ export class SalesInvoiceLineService extends BaseEntityService<
             transactionalEntityManager,
             args.productSku
           )
-        : await this.productService.loadEntity(
+        : await this.productService.loadEntityById(
             transactionalEntityManager,
             args.productId
           ));
@@ -97,7 +97,7 @@ export class SalesInvoiceLineService extends BaseEntityService<
 
     const invoice =
       args.invoice ||
-      (await this.salesInvoiceService.loadEntity(
+      (await this.salesInvoiceService.loadEntityById(
         transactionalEntityManager,
         args.invoiceId
       ));

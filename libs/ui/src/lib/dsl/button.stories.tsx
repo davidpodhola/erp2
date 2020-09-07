@@ -28,7 +28,7 @@ export default {
   },
 };
 
-export const button = (args) => (
+export const ButtonStory = (args) => (
   <Button {...args} onclick={action('clicked')}>
     {args.title}
   </Button>

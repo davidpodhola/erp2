@@ -155,7 +155,7 @@ type Product {
 }
 
 type Query {
-  author(id: Int!): Customer!
+  customer(id: Int!): Customer!
   customers: [Customer!]!
   now: UniversalDateTime!
 }

@@ -1,38 +1,13 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-export default {
-  component: Table,
-  title: 'Material-UI/Table',
-  argTypes: {
-    title: { control: 'text' },
-    color: {
-      control: {
-        type: 'inline-radio',
-        options: ['default', 'inherit', 'primary', 'secondary'],
-      },
-    },
-    size: {
-      control: {
-        type: 'inline-radio',
-        options: ['large', 'medium', 'small'],
-      },
-    },
-    variant: {
-      control: {
-        type: 'inline-radio',
-        options: ['contained', 'outlined', 'text'],
-      },
-    },
-  },
-};
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
+import React from 'react';
+import { gql, useQuery } from '@apollo/client';
 
 const useStyles = makeStyles({
   table: {
@@ -52,8 +27,17 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export const TableStory = (args) => {
+const GET_DOGS = gql`
+  query { customers { id idNumber legalName legalAddress {id} } }
+`;
+
+export const CustomersList = (args) => {
   const classes = useStyles();
+
+  const { loading, error, data } = useQuery(GET_DOGS);
+
+  if (loading) return (<span>Loading...</span>);
+  if (error) return (<span>`Error! ${error.message}`</span>);
 
   return (
     <TableContainer component={Paper}>

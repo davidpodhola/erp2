@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import { Ui, ServerTime } from '@erp2/ui';
+import { CustomersPage, HomePage, ServerTime, Ui } from '@erp2/ui';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Container, Box, Typography, Button } from '@material-ui/core';
+import { Box, Button, Container, Typography } from '@material-ui/core';
 import { auth } from '../../../mobile/src/client';
+import { Header } from '../../../../libs/ui/src/components/Header';
 
 export const App = () => {
   const {
@@ -32,7 +34,13 @@ export const App = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Web App
         </Typography>
-
+        <div>
+          <Header></Header>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/customers" component={CustomersPage} />
+          </Switch>
+        </div>
         <div>
           <Ui />
           {token ? (

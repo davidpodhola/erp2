@@ -5,7 +5,7 @@ import { CustomersPage, HomePage, ServerTime, Ui } from '@erp2/ui';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { auth } from '../../../mobile/src/client';
-import { Header } from '../../../../libs/ui/src/components/Header';
+import { Header } from '@erp2/ui';
 
 export const App = () => {
   const {

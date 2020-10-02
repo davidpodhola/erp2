@@ -9,8 +9,10 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from '@erp2/ui';
 import { client } from '../../mobile/src/client';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
+  <BrowserRouter>
   <ApolloProvider client={client}>
     <React.StrictMode>
       <Auth0Provider
@@ -26,6 +28,7 @@ ReactDOM.render(
       </Auth0Provider>
       <GlobalStyles />
     </React.StrictMode>
-  </ApolloProvider>,
+  </ApolloProvider>
+    </BrowserRouter>,
   document.getElementById('root')
 );

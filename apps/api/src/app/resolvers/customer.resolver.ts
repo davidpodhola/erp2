@@ -19,7 +19,7 @@ export class CustomerResolver {
   }
 
   @Query(() => Customer)
-  async author(@Args('id', { type: () => Int }) id: number) {
+  async customer(@Args('id', { type: () => Int }) id: number) {
     return await this.customerService.loadEntityById(getManager(), id);
   }
 
@@ -27,6 +27,7 @@ export class CustomerResolver {
   async legalAddress(@Parent() customer: Customer) {
     const entityManager = getManager();
     const { id } = customer;
+    // eslint-disable-next-line @typescript-eslint/camelcase
     const { customer_legalAddressId } =
       await this.customerService.createQueryBuilder(entityManager, `customer`).where(`customer.id=:id`, {id} ).getRawOne();
     return this.addressService.loadEntityById(entityManager, customer_legalAddressId);

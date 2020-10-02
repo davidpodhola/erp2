@@ -8,6 +8,10 @@ import { ApolloProvider } from '@apollo/client';
 import { ServerTime } from './src/server.time';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { auth, client } from './src/client';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { CustomersScreen } from './src/screens/CustomersScreen';
 
 const auth0ClientId = `${process.env.EXPO_AUTH0_CLIENTID}`;
 const authorizationEndpoint = `https://${process.env.EXPO_AUTH0_DOMAIN}/authorize`;
@@ -72,6 +76,8 @@ export default function App() {
     }
   }, [result]);
 
+  const Stack = createStackNavigator<RootStackParamList>();
+
   return (
     <PaperProvider>
       <ApolloProvider client={client}>
@@ -91,6 +97,14 @@ export default function App() {
               Log in with Auth0
             </Button>
           )}
+
+
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Customers" component={CustomersScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
 
           <StatusBar style="auto" />
         </View>

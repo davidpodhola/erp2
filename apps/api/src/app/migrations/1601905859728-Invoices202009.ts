@@ -76,7 +76,7 @@ export class Invoices2020091601905859728 implements MigrationInterface {
     await currencyRateService.save(entityManager, {
       start,
       end,
-      currencyMultiplyingRate: 27.095,
+      currencyMultiplyingRate: 27.210,
       fromIsoCode: 'EUR',
       toIsoCode: 'CZK',
     });

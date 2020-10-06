@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "cross-env expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "cross-env": "../../node_modules/cross-env",
     "cross-fetch": "../../node_modules/cross-fetch",
     "expo": "../../node_modules/expo",
     "expo-auth-session": "../../node_modules/expo-auth-session",

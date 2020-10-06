@@ -109,5 +109,6 @@ export class Invoices2020091601905859728 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    /* intentionally left blank */
   }
 }

@@ -54,9 +54,6 @@ jobs:
       - run: yarn affected:test --base=origin/master
         env:
           CI: true
-      - run: yarn affected:e2e --base=origin/master
-        env:
-          CI: true
       - run: (cd apps/mobile && yarn && yarn test)
         env:
           CI: true

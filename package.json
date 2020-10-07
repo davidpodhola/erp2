@@ -126,6 +126,7 @@
     "eslint-plugin-react-hooks": "4.0.4",
     "jest": "26.2.2",
     "jest-expo": "^38.0.2",
+    "jsonwebtoken": "^8.5.1",
     "prettier": "2.0.4",
     "react-test-renderer": "^16.13.1",
     "ts-jest": "26.1.4",

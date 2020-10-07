@@ -39,3 +39,4 @@ testem.log
 Thumbs.db
 /.env
 /apps/mobile/.env
+/apps/web-e2e/cypress.env.json

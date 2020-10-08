@@ -28,22 +28,28 @@ Cypress.Commands.add('login', (email, password) => {
 
 Cypress.Commands.add("loginByAuth0Api", (username: string, password: string) => {
   cy.log(`Logging in as ${username}`);
+  // eslint-disable-next-line @typescript-eslint/camelcase
   const client_id = Cypress.env("NX_AUTH0_CLIENTID");
+  // eslint-disable-next-line @typescript-eslint/camelcase
   const client_secret = Cypress.env("NX_AUTH0_CLIENT_SECRET");
   const audience = Cypress.env("NX_AUTH0_AUDIENCE");
   const scope = "read:sample";
+  // eslint-disable-next-line @typescript-eslint/camelcase
   const grant_type = 'password';
 
   cy.request({
     method: "POST",
     url: `https://${Cypress.env("NX_AUTH0_DOMAIN")}/oauth/token`,
     body: {
+      // eslint-disable-next-line @typescript-eslint/camelcase
       grant_type,
       username,
       password,
       audience,
       scope,
+      // eslint-disable-next-line @typescript-eslint/camelcase
       client_id,
+      // eslint-disable-next-line @typescript-eslint/camelcase
       client_secret,
     },
   }).then(({ body }) => {

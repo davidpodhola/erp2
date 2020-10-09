@@ -57,7 +57,14 @@ jobs:
       - run: (cd apps/mobile && yarn && yarn test)
         env:
           CI: true
-      - run: nohup yarn start api &; yarn affected:e2e --base=origin/master
+
+      - name: Run backend
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          run: yarn start api &
+
+      - run: yarn affected:e2e --base=origin/master
         env:
           CI: true
           # The hostname used to communicate with the PostgreSQL service container
@@ -66,4 +73,4 @@ jobs:
           # The default PostgreSQL port
           NX_POSTGRES_PORT: 5432
           NX_POSTGRES_PASSWORD: postgres
-          
+

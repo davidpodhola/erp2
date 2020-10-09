@@ -75,6 +75,11 @@ jobs:
           NX_POSTGRES_PASSWORD: postgres
           NX_AUTH0_AUDIENCE: ${{ secrets.NX_AUTH0_AUDIENCE }}
           NX_AUTH0_CLIENTID: ${{ secrets.NX_AUTH0_CLIENTID }}
+          NX_AUTH0_CLIENT_SECRET: ${{ secrets.NX_AUTH0_CLIENT_SECRET }}
           NX_AUTH0_DOMAIN: ${{ secrets.NX_AUTH0_DOMAIN }}
           NX_SERVER_CLIENTID: ${{ secrets.NX_SERVER_CLIENTID }}
           NX_SERVER_CLIENT_SECRET: ${{ secrets.NX_SERVER_CLIENT_SECRET }}
+          CYPRESS_NX_AUTH0_CLIENTID: ${{ secrets.NX_AUTH0_CLIENTID }}
+          CYPRESS_NX_AUTH0_CLIENT_SECRET: ${{ secrets.NX_AUTH0_CLIENT_SECRET }}
+          CYPRESS_NX_AUTH0_AUDIENCE: ${{ secrets.NX_AUTH0_AUDIENCE }}
+          CYPRESS_NX_AUTH0_DOMAIN: ${{ secrets.NX_AUTH0_DOMAIN }}

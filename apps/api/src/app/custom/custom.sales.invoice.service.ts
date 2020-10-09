@@ -9,8 +9,6 @@ export class CustomSalesInvoiceService extends SalesInvoiceService {
     transactionalEntityManager: EntityManager,
     args: SalesInvoiceSaveArgsModel
   ) {
-    console.log('*** args', args);
-
     const organization = await this.getOrganization(
       transactionalEntityManager,
       args

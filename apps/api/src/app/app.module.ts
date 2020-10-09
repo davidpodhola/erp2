@@ -29,7 +29,7 @@ import { AuthModule } from '@erp2/auth';
       ssl: false,
 
       synchronize: true,
-      logging: true,
+      logging: !(process.env.CI === "true"),
       migrationsRun: false, // we run migrations programmatically
       // also no subscribers! use Nest DI and push to connection.subscribers
       entities: entities,

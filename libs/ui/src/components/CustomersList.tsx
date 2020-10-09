@@ -43,7 +43,7 @@ export const CustomersList = (args) => {
         </TableHead>
         <TableBody>
           {customers.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow data-testid={row.id} key={row.id}>
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>

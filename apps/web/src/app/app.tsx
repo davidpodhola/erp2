@@ -16,17 +16,29 @@ export const App = () => {
   } = useAuth0();
   // if (!isAuthenticated) loginWithRedirect();
   const [token, setToken] = useState<string>(null);
-  useEffect(() => {
-    const setTokenIfAuthenticated = async () => {
-      if (isAuthenticated) {
-        const token = await getAccessTokenSilently();
-        setToken(token);
-        auth.token = token;
+  if ((window as any).Cypress) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const auth0 = JSON.parse(localStorage.getItem("auth0Cypress")!);
+      if (auth0) {
+        setToken(auth0.access_token);
+        auth.token = auth0.access_token;
       }
-    };
+    }, []);
+  } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const setTokenIfAuthenticated = async () => {
+        if (isAuthenticated) {
+          const token = await getAccessTokenSilently();
+          setToken(token);
+          auth.token = token;
+        }
+      };
 
-    setTokenIfAuthenticated().then();
-  }, [isAuthenticated, getAccessTokenSilently]);
+      setTokenIfAuthenticated().then();
+    }, [isAuthenticated, getAccessTokenSilently]);
+  }
 
   return (
     <Container maxWidth="sm">
@@ -54,6 +66,7 @@ export const App = () => {
               variant={'contained'}
               size={'large'}
               onClick={() => loginWithRedirect()}
+              data-testid={"login-button"}
             >
               Login...
             </Button>

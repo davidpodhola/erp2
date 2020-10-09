@@ -63,6 +63,8 @@ jobs:
         with:
           command: yarn affected:e2e --base=origin/master
           start: yarn start api
+          wait-on: 'http://localhost:3333/api'
+          wait-on-timeout: 300
         env:
           CI: true
           # The hostname used to communicate with the PostgreSQL service container
@@ -71,4 +73,8 @@ jobs:
           # The default PostgreSQL port
           NX_POSTGRES_PORT: 5432
           NX_POSTGRES_PASSWORD: postgres
-
+          NX_AUTH0_AUDIENCE: ${{ secrets.NX_AUTH0_AUDIENCE }}
+          NX_AUTH0_CLIENTID: ${{ secrets.NX_AUTH0_CLIENTID }}
+          NX_AUTH0_DOMAIN: ${{ secrets.NX_AUTH0_DOMAIN }}
+          NX_SERVER_CLIENTID: ${{ secrets.NX_SERVER_CLIENTID }}
+          NX_SERVER_CLIENT_SECRET: ${{ secrets.NX_SERVER_CLIENT_SECRET }}

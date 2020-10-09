@@ -12,6 +12,6 @@ describe('web', () => {
 
     cy.visit('/customers');
 
-    cy.get('[data-testid=1]', {timeout: 60000}).children().should('have.length', 5)
+    cy.get('[data-testid=1]', {timeout: 1200000}).children().should('have.length', 5)
   });
 });

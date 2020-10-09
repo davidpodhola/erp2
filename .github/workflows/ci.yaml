@@ -67,7 +67,7 @@ jobs:
           CI: true
           # The hostname used to communicate with the PostgreSQL service container
           NX_POSTGRES_USER: postgres
-          NX_POSTGRES_HOST: postgres
+          NX_POSTGRES_HOST: localhost
           # The default PostgreSQL port
           NX_POSTGRES_PORT: 5432
           NX_POSTGRES_PASSWORD: postgres

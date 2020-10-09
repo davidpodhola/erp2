@@ -62,7 +62,5 @@ import { AuthModule } from '@erp2/auth';
 export class AppModule {
   constructor(private moduleRef: ModuleRef) {
     new ModuleReferenceService(moduleRef);
-
-    console.log('**** host: process.env.NX_POSTGRES_HOST', process.env.NX_POSTGRES_HOST);
   }
 }
